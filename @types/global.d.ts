@@ -21,4 +21,5 @@ interface Invoice {
     items: InvoiceItem[];
     status: 'pending' | 'unpaid' | 'paid';
     paymentMethod: 'bankTransfer' | 'creditCard' | 'paypal';
+    dateCreated: string;
 }

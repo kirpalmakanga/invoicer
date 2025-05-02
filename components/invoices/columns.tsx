@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import Link from 'next/link';
 import { ColumnDef } from '@tanstack/react-table';
 import { Edit, Trash, MoreHorizontal } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -10,7 +12,8 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { DataTableColumnHeader } from '@/components/InvoiceTable/column-header';
+import { DataTableColumnHeader } from '@/components/data-table/column-header';
+import { InvoiceEditForm } from '@/components/InvoiceEditForm';
 
 export const columns: ColumnDef<Invoice>[] = [
     {
@@ -44,7 +47,7 @@ export const columns: ColumnDef<Invoice>[] = [
             row: {
                 original: { invoiceId },
             },
-        }) => invoiceId,
+        }) => <Link href={`/invoice/${invoiceId}`}>{invoiceId}</Link>,
         enableHiding: false,
     },
     {
@@ -57,7 +60,7 @@ export const columns: ColumnDef<Invoice>[] = [
             row: {
                 original: { customerId },
             },
-        }) => customerId,
+        }) => <Link href={`/customer/${customerId}`}>{customerId}</Link>,
     },
 
     {
@@ -98,32 +101,53 @@ export const columns: ColumnDef<Invoice>[] = [
     },
     {
         id: 'actions',
-        cell: ({
-            row: {
-                original: { id },
-            },
-        }) => {
-            return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                            <span className="sr-only">Open menu</span>
-                            <MoreHorizontal className="h-4 w-4" />
-                        </Button>
-                    </DropdownMenuTrigger>
+        cell: ({ row: { original } }) => {
+            const [formState, setFormState] = useState<{
+                isOpen: boolean;
+                formData?: Invoice;
+            }>({ isOpen: false });
 
-                    <DropdownMenuContent align="end">
-                        <DropdownMenuItem>
-                            <Edit /> Edit
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem className="text-red-500">
-                            <Trash className="text-red-500 fill-current" />
-                            Delete invoice
-                        </DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
+            return (
+                <>
+                    {' '}
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" className="h-8 w-8 p-0">
+                                <span className="sr-only">Open menu</span>
+                                <MoreHorizontal className="h-4 w-4" />
+                            </Button>
+                        </DropdownMenuTrigger>
+
+                        <DropdownMenuContent align="end">
+                            <DropdownMenuItem
+                                onClick={() =>
+                                    setFormState({
+                                        isOpen: true,
+                                        formData: original,
+                                    })
+                                }
+                            >
+                                <Edit /> Edit
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem className="text-red-500">
+                                <Trash className="text-red-500 fill-current" />
+                                Delete invoice
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                    <InvoiceEditForm
+                        {...formState}
+                        onClose={() =>
+                            setFormState({ isOpen: false, formData: undefined })
+                        }
+                    />
+                </>
             );
         },
     },
 ];
+
+export const customerColumns = columns.filter(
+    ({ accessorKey }) => accessorKey !== 'customerId'
+);

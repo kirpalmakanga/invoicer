@@ -29,6 +29,7 @@ export function InvoiceEditForm({ isOpen, formData, onClose }: Props) {
                         {formData ? 'Edit invoice' : 'Create invoice'}
                     </SheetTitle>
                 </SheetHeader>
+                <pre>{JSON.stringify(formData, null, 2)}</pre>
                 {/* 
                 <div className="grid gap-4 p-4">
                     <div className="grid grid-cols-4 items-center gap-4">

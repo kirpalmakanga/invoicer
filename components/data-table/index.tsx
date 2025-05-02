@@ -26,15 +26,15 @@ import { Input } from '@/components/ui/input';
 import { DataTablePagination } from './pagination';
 import { DataTableViewOptions } from './view-options';
 
-interface InvoiceTableProps<TData, TValue> {
+interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
 }
 
-export function InvoiceTable<TData, TValue>({
+export function DataTable<TData, TValue>({
     columns,
     data,
-}: InvoiceTableProps<TData, TValue>) {
+}: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = useState<SortingState>([]);
 
     const [globalFilter, setGlobalFilter] = useState('');
