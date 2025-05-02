@@ -45,9 +45,10 @@ export const columns: ColumnDef<Invoice>[] = [
                 original: { invoiceId },
             },
         }) => invoiceId,
+        enableHiding: false,
     },
     {
-        id: 'customer',
+        id: 'customer ID',
         accessorKey: 'customerId',
         header: ({ column }) => (
             <DataTableColumnHeader column={column} title="Customer" />
