@@ -1,3 +1,6 @@
+import { useCallback } from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
+
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -8,18 +11,31 @@ import {
     SheetHeader,
     SheetTitle,
 } from '@/components/ui/sheet';
-import { useCallback } from 'react';
-
-interface Props {
+interface InvoiceEditFormProps {
     isOpen: boolean;
     formData?: Invoice;
     onClose: () => void;
 }
 
-export function InvoiceEditForm({ isOpen, formData, onClose }: Props) {
-    const onSubmit = useCallback(() => {
-        onClose();
-    }, []);
+type Inputs = Omit<Invoice, 'id' | 'dateCreated' | 'dateSent'>;
+
+export function InvoiceEditForm({
+    isOpen,
+    formData,
+    onClose,
+}: InvoiceEditFormProps) {
+    const {
+        register,
+        handleSubmit,
+        watch,
+        formState: { errors },
+    } = useForm<Inputs>();
+
+    const onSubmit = (data) => {
+        console.log(data);
+
+        // onClose();
+    };
 
     return (
         <Sheet open={isOpen} onOpenChange={onClose}>
@@ -29,44 +45,57 @@ export function InvoiceEditForm({ isOpen, formData, onClose }: Props) {
                         {formData ? 'Edit invoice' : 'Create invoice'}
                     </SheetTitle>
                 </SheetHeader>
-                <pre>{JSON.stringify(formData, null, 2)}</pre>
-                {/* 
-                <div className="grid gap-4 p-4">
-                    <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="name" className="text-right">
-                            ID
+                {/* <pre>{JSON.stringify(formData, null, 2)}</pre> */}
+
+                <form
+                    id="invoiceForm"
+                    className="flex flex-col gap-8 px-4"
+                    onSubmit={handleSubmit(onSubmit)}
+                >
+                    <div>
+                        <Label className="font-bold mb-1" htmlFor="invoiceId">
+                            Invoice ID
                         </Label>
-                        Prefix + year + Autoincrement
+                        <Input id="invoiceId" {...register('invoiceId')} />
                     </div>
-                    <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="name" className="text-right">
+
+                    <div>
+                        <Label className="font-bold mb-1" htmlFor="customerId">
                             Customer
                         </Label>
-                        Customer Select
-                    </div>
-                    <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="username" className="text-right">
-                            Status
-                        </Label>
-                        Status select
-                    </div>
-                    <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="username" className="text-right">
-                            Payment method
-                        </Label>
-                        Payment method select
+                        <Input id="customerId" {...register('customerId')} />
                     </div>
 
-                    <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="username" className="text-right">
+                    <div>
+                        <Label className="font-bold mb-1" htmlFor="items">
                             Items
                         </Label>
-                        Invoice Items table + inner state + onUpdate event
+                        <Input id="items" {...register('items')} />
                     </div>
-                </div> */}
+
+                    <div>
+                        <Label
+                            className="font-bold mb-1"
+                            htmlFor="paymentMethod"
+                        >
+                            Payment method
+                        </Label>
+                        <Input
+                            id="paymentMethod"
+                            {...register('paymentMethod')}
+                        />
+                    </div>
+
+                    <div>
+                        <Label className="font-bold mb-1" htmlFor="status">
+                            Status
+                        </Label>
+                        <Input id="status" {...register('status')} />
+                    </div>
+                </form>
 
                 <SheetFooter>
-                    <Button type="submit" onClick={onSubmit}>
+                    <Button type="submit" form="invoiceForm">
                         Save
                     </Button>
                 </SheetFooter>

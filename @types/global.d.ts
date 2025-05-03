@@ -19,7 +19,8 @@ interface Invoice {
     invoiceId: string;
     customerId: string;
     items: InvoiceItem[];
-    status: 'pending' | 'unpaid' | 'paid';
     paymentMethod: 'bankTransfer' | 'creditCard' | 'paypal';
+    status: 'pending' | 'unpaid' | 'paid';
     dateCreated: string;
+    dateSent: string;
 }

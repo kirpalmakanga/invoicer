@@ -6,7 +6,7 @@ import { InvoiceEditForm } from '@/components/InvoiceEditForm';
 import Link from 'next/link';
 
 export default function Header() {
-    const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
+    const [isFormOpen, setIsFormOpen] = useState<boolean>(true);
 
     return (
         <>
