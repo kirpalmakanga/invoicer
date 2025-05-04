@@ -26,7 +26,6 @@ export const mockInvoices: Invoice[] = [
         status: 'paid',
         paymentMethod: 'PayPal',
         dateCreated: Date.now(),
-        dateSent: Date.now(),
     },
     {
         id: crypto.randomUUID(),
@@ -55,7 +54,6 @@ export const mockInvoices: Invoice[] = [
         status: 'unpaid',
         paymentMethod: 'Bank transfer',
         dateCreated: Date.now(),
-        dateSent: Date.now(),
     },
     {
         id: crypto.randomUUID(),
@@ -84,6 +82,5 @@ export const mockInvoices: Invoice[] = [
         status: 'pending',
         paymentMethod: 'Credit card',
         dateCreated: Date.now(),
-        dateSent: Date.now(),
     },
 ];

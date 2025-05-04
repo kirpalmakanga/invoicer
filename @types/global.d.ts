@@ -24,5 +24,5 @@ interface Invoice {
     paymentMethod: PaymentMethod;
     status: InvoiceStatus;
     dateCreated: number;
-    dateSent: number;
+    dateSent?: number;
 }
