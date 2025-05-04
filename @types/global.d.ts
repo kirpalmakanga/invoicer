@@ -19,7 +19,7 @@ interface Invoice {
     invoiceId: string;
     customerId: string;
     items: InvoiceItem[];
-    paymentMethod: 'bankTransfer' | 'creditCard' | 'paypal';
+    paymentMethod: 'Bank transfer' | 'Credit card' | 'PayPal';
     status: 'pending' | 'unpaid' | 'paid';
     dateCreated: string;
     dateSent: string;
