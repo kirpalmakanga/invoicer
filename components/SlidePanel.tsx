@@ -6,14 +6,19 @@ import {
 } from '@/components/ui/sheet';
 import { ReactNode } from 'react';
 
-interface SlidePanel {
+interface SlidePanelProps {
     isOpen: boolean;
     title: string;
     onClose: () => void;
-    children: ReactNode;
+    children?: ReactNode;
 }
 
-export function SlidePanel({ isOpen, title, children, onClose }: SlidePanel) {
+export function SlidePanel({
+    isOpen,
+    title,
+    children,
+    onClose,
+}: SlidePanelProps) {
     return (
         <Sheet open={isOpen} onOpenChange={onClose}>
             <SheetContent>
