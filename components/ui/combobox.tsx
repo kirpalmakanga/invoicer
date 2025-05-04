@@ -20,7 +20,7 @@ import {
 
 import { cn, isEqual } from '@/lib/utils';
 
-interface ComboboxItem<T> {
+export interface ComboboxItem<T> {
     label: string;
     value: T;
 }
