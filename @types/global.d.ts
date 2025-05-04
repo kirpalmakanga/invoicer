@@ -1,9 +1,9 @@
 interface Customer {
     id: string;
+    name: string;
     address: string;
     tel: string;
     email: string;
-    companyId: string;
 }
 
 interface InvoiceItem {
