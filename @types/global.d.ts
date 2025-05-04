@@ -7,7 +7,7 @@ interface Customer {
 }
 
 interface InvoiceItem {
-    name: string;
+    description: string;
     amount: number;
     pricePerUnit: number;
     unit: 'hour' | 'day';
