@@ -14,6 +14,8 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { DataTableColumnHeader } from '@/components/data-table/column-header';
 import { InvoiceForm } from '@/components/invoices/InvoiceForm';
+import { useInvoicesStore } from '@/store/invoices';
+import { SlidePanel } from '../SlidePanel';
 
 export const columns: ColumnDef<Invoice>[] = [
     {
@@ -124,10 +126,14 @@ export const columns: ColumnDef<Invoice>[] = [
     {
         id: 'actions',
         cell: ({ row: { original } }) => {
-            const [formState, setFormState] = useState<{
-                isOpen: boolean;
+            const removeInvoice = useInvoicesStore(
+                ({ removeInvoice }) => removeInvoice
+            );
+
+            const [{ isFormOpen, formData }, setFormState] = useState<{
+                isFormOpen: boolean;
                 formData?: Invoice;
-            }>({ isOpen: false });
+            }>({ isFormOpen: false });
 
             return (
                 <>
@@ -143,7 +149,7 @@ export const columns: ColumnDef<Invoice>[] = [
                             <DropdownMenuItem
                                 onClick={() =>
                                     setFormState({
-                                        isOpen: true,
+                                        isFormOpen: true,
                                         formData: original,
                                     })
                                 }
@@ -151,18 +157,28 @@ export const columns: ColumnDef<Invoice>[] = [
                                 <Edit /> Edit
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem className="text-red-500">
+                            <DropdownMenuItem
+                                className="text-red-500"
+                                onClick={() => removeInvoice(original.id)}
+                            >
                                 <Trash className="text-red-500 fill-current" />
                                 Delete invoice
                             </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
-                    <InvoiceForm
-                        {...formState}
+
+                    <SlidePanel
+                        title="Edit invoice"
+                        isOpen={isFormOpen}
                         onClose={() =>
-                            setFormState({ isOpen: false, formData: undefined })
+                            setFormState({
+                                isFormOpen: false,
+                                formData: undefined,
+                            })
                         }
-                    />
+                    >
+                        <InvoiceForm formData={formData} />
+                    </SlidePanel>
                 </>
             );
         },

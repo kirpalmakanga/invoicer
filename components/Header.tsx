@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { InvoiceForm } from '@/components/invoices/InvoiceForm';
 import Link from 'next/link';
+import { SlidePanel } from './SlidePanel';
 
 export default function Header() {
     const [isFormOpen, setIsFormOpen] = useState<boolean>(true);
@@ -20,10 +21,13 @@ export default function Header() {
                 </div>
             </header>
 
-            <InvoiceForm
+            <SlidePanel
+                title="Add invoice"
                 isOpen={isFormOpen}
                 onClose={() => setIsFormOpen(false)}
-            />
+            >
+                <InvoiceForm />
+            </SlidePanel>
         </>
     );
 }
