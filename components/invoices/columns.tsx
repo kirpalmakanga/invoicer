@@ -79,13 +79,35 @@ export const columns: ColumnDef<Invoice>[] = [
         id: 'status',
         accessorKey: 'status',
         header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Status" />
+            <DataTableColumnHeader
+                column={column}
+                title="Status"
+                className="bg-red"
+            />
         ),
         cell: ({
             row: {
                 original: { status },
             },
-        }) => <Badge>{status}</Badge>,
+        }) => {
+            let badgeColor = '';
+
+            switch (status) {
+                case 'paid':
+                    badgeColor = 'bg-green-500 text-zinc-100';
+                    break;
+
+                case 'unpaid':
+                    badgeColor = 'bg-red-500 text-zinc-100';
+                    break;
+
+                default:
+                    badgeColor = 'bg-blue-500 text-zinc-100';
+                    break;
+            }
+
+            return <Badge className={badgeColor}>{status}</Badge>;
+        },
     },
     {
         header: 'Amount',
@@ -109,7 +131,6 @@ export const columns: ColumnDef<Invoice>[] = [
 
             return (
                 <>
-                    {' '}
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button variant="ghost" className="h-8 w-8 p-0">
