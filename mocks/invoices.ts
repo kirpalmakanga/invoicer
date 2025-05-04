@@ -5,21 +5,18 @@ export const mockInvoices: Invoice[] = [
         customerId: 'C001',
         items: [
             {
-                productId: 'P001',
                 name: 'Product 1',
                 amount: 5,
                 pricePerUnit: 50,
                 unit: 'hour',
             },
             {
-                productId: 'P002',
                 name: 'Product 2',
                 amount: 3,
                 pricePerUnit: 500,
                 unit: 'day',
             },
             {
-                productId: 'P003',
                 name: 'Product 3',
                 amount: 10,
                 pricePerUnit: 50,
@@ -37,21 +34,18 @@ export const mockInvoices: Invoice[] = [
         customerId: 'C002',
         items: [
             {
-                productId: 'P004',
                 name: 'Product 4',
                 amount: 5,
                 pricePerUnit: 50,
                 unit: 'hour',
             },
             {
-                productId: 'P005',
                 name: 'Product 5',
                 amount: 7,
                 pricePerUnit: 500,
                 unit: 'day',
             },
             {
-                productId: 'P006',
                 name: 'Product 6',
                 amount: 5,
                 pricePerUnit: 50,
@@ -69,21 +63,18 @@ export const mockInvoices: Invoice[] = [
         customerId: 'C003',
         items: [
             {
-                productId: 'P007',
                 name: 'Product 7',
                 amount: 1,
                 pricePerUnit: 30,
                 unit: 'hour',
             },
             {
-                productId: 'P008',
                 name: 'Product 8',
                 amount: 3,
                 pricePerUnit: 500,
                 unit: 'day',
             },
             {
-                productId: 'P009',
                 name: 'Product 9',
                 amount: 8,
                 pricePerUnit: 60,
