@@ -5,19 +5,19 @@ export const mockInvoices: Invoice[] = [
         customerId: 'C001',
         items: [
             {
-                name: 'Product 1',
+                description: 'Product 1',
                 amount: 5,
                 pricePerUnit: 50,
                 unit: 'hour',
             },
             {
-                name: 'Product 2',
+                description: 'Product 2',
                 amount: 3,
                 pricePerUnit: 500,
                 unit: 'day',
             },
             {
-                name: 'Product 3',
+                description: 'Product 3',
                 amount: 10,
                 pricePerUnit: 50,
                 unit: 'hour',
@@ -34,19 +34,19 @@ export const mockInvoices: Invoice[] = [
         customerId: 'C002',
         items: [
             {
-                name: 'Product 4',
+                description: 'Product 4',
                 amount: 5,
                 pricePerUnit: 50,
                 unit: 'hour',
             },
             {
-                name: 'Product 5',
+                description: 'Product 5',
                 amount: 7,
                 pricePerUnit: 500,
                 unit: 'day',
             },
             {
-                name: 'Product 6',
+                description: 'Product 6',
                 amount: 5,
                 pricePerUnit: 50,
                 unit: 'hour',
@@ -63,19 +63,19 @@ export const mockInvoices: Invoice[] = [
         customerId: 'C003',
         items: [
             {
-                name: 'Product 7',
+                description: 'Product 7',
                 amount: 1,
                 pricePerUnit: 30,
                 unit: 'hour',
             },
             {
-                name: 'Product 8',
+                description: 'Product 8',
                 amount: 3,
                 pricePerUnit: 500,
                 unit: 'day',
             },
             {
-                name: 'Product 9',
+                description: 'Product 9',
                 amount: 8,
                 pricePerUnit: 60,
                 unit: 'hour',
