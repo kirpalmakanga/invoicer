@@ -135,6 +135,20 @@ export const columns: ColumnDef<Invoice>[] = [
                 formData?: Invoice;
             }>({ isFormOpen: false });
 
+            function openForm() {
+                setFormState({
+                    isFormOpen: true,
+                    formData: original,
+                });
+            }
+
+            function closeForm() {
+                setFormState({
+                    isFormOpen: false,
+                    formData: undefined,
+                });
+            }
+
             return (
                 <>
                     <DropdownMenu>
@@ -146,14 +160,7 @@ export const columns: ColumnDef<Invoice>[] = [
                         </DropdownMenuTrigger>
 
                         <DropdownMenuContent align="end">
-                            <DropdownMenuItem
-                                onClick={() =>
-                                    setFormState({
-                                        isFormOpen: true,
-                                        formData: original,
-                                    })
-                                }
-                            >
+                            <DropdownMenuItem onClick={openForm}>
                                 <Edit /> Edit
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
@@ -170,14 +177,9 @@ export const columns: ColumnDef<Invoice>[] = [
                     <SlidePanel
                         title="Edit invoice"
                         isOpen={isFormOpen}
-                        onClose={() =>
-                            setFormState({
-                                isFormOpen: false,
-                                formData: undefined,
-                            })
-                        }
+                        onClose={closeForm}
                     >
-                        <InvoiceForm formData={formData} />
+                        <InvoiceForm formData={formData} onSubmit={closeForm} />
                     </SlidePanel>
                 </>
             );
