@@ -9,6 +9,14 @@ import { SlidePanel } from './SlidePanel';
 export default function Header() {
     const [isFormOpen, setIsFormOpen] = useState<boolean>(true);
 
+    function openForm() {
+        setIsFormOpen(true);
+    }
+
+    function closeForm() {
+        setIsFormOpen(false);
+    }
+
     return (
         <>
             <header className="p-4 flex justify-between items-center container mx-auto">
@@ -16,9 +24,7 @@ export default function Header() {
                     Invoicer
                 </Link>
 
-                <div>
-                    <Button onClick={() => setIsFormOpen(true)}>Add</Button>
-                </div>
+                <Button onClick={openForm}>Add</Button>
             </header>
 
             <SlidePanel
@@ -26,7 +32,7 @@ export default function Header() {
                 isOpen={isFormOpen}
                 onClose={() => setIsFormOpen(false)}
             >
-                <InvoiceForm />
+                <InvoiceForm onSubmit={closeForm} />
             </SlidePanel>
         </>
     );
