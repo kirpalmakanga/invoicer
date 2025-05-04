@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { InvoiceEditForm } from '@/components/InvoiceEditForm';
+import { InvoiceEditForm } from '@/components/invoices/InvoiceEditForm';
 import Link from 'next/link';
 
 export default function Header() {

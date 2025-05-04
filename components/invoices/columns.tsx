@@ -13,7 +13,7 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { DataTableColumnHeader } from '@/components/data-table/column-header';
-import { InvoiceEditForm } from '@/components/InvoiceEditForm';
+import { InvoiceEditForm } from '@/components/invoices/InvoiceEditForm';
 
 export const columns: ColumnDef<Invoice>[] = [
     {
