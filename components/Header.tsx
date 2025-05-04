@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { InvoiceEditForm } from '@/components/invoices/InvoiceEditForm';
+import { InvoiceForm } from '@/components/invoices/InvoiceForm';
 import Link from 'next/link';
 
 export default function Header() {
@@ -20,7 +20,7 @@ export default function Header() {
                 </div>
             </header>
 
-            <InvoiceEditForm
+            <InvoiceForm
                 isOpen={isFormOpen}
                 onClose={() => setIsFormOpen(false)}
             />

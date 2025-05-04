@@ -13,7 +13,7 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { DataTableColumnHeader } from '@/components/data-table/column-header';
-import { InvoiceEditForm } from '@/components/invoices/InvoiceEditForm';
+import { InvoiceForm } from '@/components/invoices/InvoiceForm';
 
 export const columns: ColumnDef<Invoice>[] = [
     {
@@ -157,7 +157,7 @@ export const columns: ColumnDef<Invoice>[] = [
                             </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
-                    <InvoiceEditForm
+                    <InvoiceForm
                         {...formState}
                         onClose={() =>
                             setFormState({ isOpen: false, formData: undefined })

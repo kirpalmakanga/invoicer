@@ -40,7 +40,7 @@ const statusSelectItems: ComboboxItem<InvoiceStatus>[] = [
     { label: 'Paid', value: 'paid' },
 ];
 
-export function InvoiceEditForm({
+export function InvoiceForm({
     isOpen,
     formData,
     onClose,
