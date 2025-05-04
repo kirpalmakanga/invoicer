@@ -1,13 +1,11 @@
 'use client';
 
-import { useState } from 'react';
-
-import { mockInvoices } from '@/mocks/invoices';
 import { DataTable } from '@/components/data-table';
 import { columns } from '@/components/invoices/columns';
+import { useInvoicesStore } from '@/store/invoices';
 
 export default function Home() {
-    const [invoices] = useState<Invoice[]>(mockInvoices);
+    const invoices = useInvoicesStore(({ invoices }) => invoices);
 
     return <DataTable columns={columns} data={invoices} />;
 }
