@@ -53,7 +53,7 @@ export function InvoiceForm({ formData, onSubmit }: InvoiceEditFormProps) {
             items: [],
             paymentMethod: 'Bank transfer',
             status: 'pending',
-            ...(formData && omit(formData, 'id', 'dateCreated', 'dateSent')),
+            ...(formData && omit(formData, 'dateCreated', 'dateSent')),
         },
     });
 
