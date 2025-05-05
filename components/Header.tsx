@@ -20,11 +20,13 @@ export default function Header() {
     return (
         <>
             <header className="p-4 flex justify-between items-center container mx-auto">
-                <Link className="font-bold uppercase" href="/">
+                <Link className="text-primary font-bold uppercase" href="/">
                     Invoicer
                 </Link>
 
-                <Button onClick={openForm}>Add</Button>
+                <Button className="h-8" onClick={openForm}>
+                    Add
+                </Button>
             </header>
 
             <SlidePanel
