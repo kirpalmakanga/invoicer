@@ -47,9 +47,9 @@ export const columns: ColumnDef<Invoice>[] = [
         ),
         cell: ({
             row: {
-                original: { invoiceId },
+                original: { id },
             },
-        }) => <Link href={`/invoice/${invoiceId}`}>{invoiceId}</Link>,
+        }) => <Link href={`/invoice/${id}`}>{id}</Link>,
         enableHiding: false,
     },
     {
