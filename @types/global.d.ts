@@ -18,7 +18,6 @@ type PaymentMethod = 'Bank transfer' | 'Credit card' | 'PayPal';
 
 interface Invoice {
     id: string;
-    invoiceId: string;
     customerId: string;
     items: InvoiceItem[];
     paymentMethod: PaymentMethod;
