@@ -14,8 +14,8 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { DataTableColumnHeader } from '@/components/data-table/column-header';
 import { InvoiceForm } from '@/components/invoices/InvoiceForm';
+import { SlidePanel } from '@/components/SlidePanel';
 import { useInvoicesStore } from '@/store/invoices';
-import { SlidePanel } from '../SlidePanel';
 
 export const columns: ColumnDef<Invoice>[] = [
     {
