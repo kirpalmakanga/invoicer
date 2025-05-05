@@ -33,7 +33,10 @@ const statusSelectItems: ComboboxItem<InvoiceStatus>[] = [
 
 export function InvoiceForm({ formData, onSubmit }: InvoiceEditFormProps) {
     const customers = useCustomersStore(({ customers }) => customers);
-    const { addInvoice, updateInvoice } = useInvoicesStore.getState();
+    const addInvoice = useInvoicesStore(({ addInvoice }) => addInvoice);
+    const updateInvoice = useInvoicesStore(
+        ({ updateInvoice }) => updateInvoice
+    );
 
     const customerSelectItems = useMemo(
         () => customers.map(({ id: value, name: label }) => ({ label, value })),
