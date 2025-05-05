@@ -49,7 +49,14 @@ export const columns: ColumnDef<Invoice>[] = [
             row: {
                 original: { id },
             },
-        }) => <Link href={`/invoice/${id}`}>{id}</Link>,
+        }) => (
+            <Link
+                className="text-primary hover:underline"
+                href={`/invoice/${id}`}
+            >
+                {id}
+            </Link>
+        ),
         enableHiding: false,
     },
     {
@@ -62,7 +69,14 @@ export const columns: ColumnDef<Invoice>[] = [
             row: {
                 original: { customerId },
             },
-        }) => <Link href={`/customer/${customerId}`}>{customerId}</Link>,
+        }) => (
+            <Link
+                className="text-primary hover:underline"
+                href={`/customer/${customerId}`}
+            >
+                {customerId}
+            </Link>
+        ),
     },
 
     {
