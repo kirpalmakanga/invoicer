@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { mockInvoices } from '@/mocks/invoices';
+import { mockInvoices } from '@/mocks';
 
 interface InvoicesState {
     invoices: Invoice[];
