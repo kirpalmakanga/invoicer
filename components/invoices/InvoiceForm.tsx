@@ -1,5 +1,6 @@
 'use client';
 
+import { useMemo } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 
 import { Button } from '@/components/ui/button';
@@ -10,18 +11,13 @@ import { Combobox, ComboboxItem } from '@/components/ui/combobox';
 
 import { cn, omit } from '@/lib/utils';
 import { useInvoicesStore } from '@/store/invoices';
-
+import { useCustomersStore } from '@/store/customers';
 interface InvoiceEditFormProps {
     formData?: Invoice;
+    onSubmit: () => void;
 }
 
-type InvoiceFormData = Omit<Invoice, 'id' | 'dateCreated' | 'dateSent'>;
-
-const customerSelectItems = [
-    { label: 'ACME Ltd.', value: 'C001' },
-    { label: 'Corpo Inc.', value: 'C002' },
-    { label: 'The Company', value: 'C003' },
-];
+type InvoiceFormData = Omit<Invoice, 'dateCreated' | 'dateSent'>;
 
 const paymentMethodSelectItems: ComboboxItem<PaymentMethod>[] = [
     { label: 'Bank transfer', value: 'Bank transfer' },
@@ -35,8 +31,14 @@ const statusSelectItems: ComboboxItem<InvoiceStatus>[] = [
     { label: 'Paid', value: 'paid' },
 ];
 
-export function InvoiceForm({ formData }: InvoiceEditFormProps) {
+export function InvoiceForm({ formData, onSubmit }: InvoiceEditFormProps) {
+    const customers = useCustomersStore(({ customers }) => customers);
     const { addInvoice, updateInvoice } = useInvoicesStore.getState();
+
+    const customerSelectItems = useMemo(
+        () => customers.map(({ id: value, name: label }) => ({ label, value })),
+        [customers]
+    );
 
     const {
         register,
@@ -46,7 +48,7 @@ export function InvoiceForm({ formData }: InvoiceEditFormProps) {
         formState: { errors },
     } = useForm<InvoiceFormData>({
         defaultValues: {
-            invoiceId: '',
+            id: '',
             customerId: '',
             items: [],
             paymentMethod: 'Bank transfer',
@@ -55,9 +57,7 @@ export function InvoiceForm({ formData }: InvoiceEditFormProps) {
         },
     });
 
-    const onSubmit: SubmitHandler<InvoiceFormData> = (data) => {
-        // onClose();
-
+    const submit: SubmitHandler<InvoiceFormData> = (data) => {
         if (formData?.id) {
             updateInvoice(data);
         } else {
@@ -67,30 +67,29 @@ export function InvoiceForm({ formData }: InvoiceEditFormProps) {
                 dateCreated: Date.now(),
             });
         }
+
+        onSubmit();
     };
 
     return (
         <form
             id="invoiceForm"
-            className="flex flex-col grow gap-6 px-4"
-            onSubmit={handleSubmit(onSubmit)}
+            className="flex flex-col grow px-4"
+            onSubmit={handleSubmit(submit)}
         >
-            <div className="grow">
+            <div className="flex flex-col grow gap-6">
                 <div>
                     <Label
                         className={cn(
                             'font-bold mb-1',
-                            errors.invoiceId && 'text-red-500'
+                            errors.id && 'text-red-500'
                         )}
-                        htmlFor="invoiceId"
+                        htmlFor="id"
                     >
                         Invoice ID
                     </Label>
-                    <Input
-                        id="invoiceId"
-                        {...register('invoiceId', { required: true })}
-                    />
-                    {errors.invoiceId && (
+                    <Input id="id" {...register('id', { required: true })} />
+                    {errors.id && (
                         <span className="text-xs text-red-500">
                             This field is required
                         </span>

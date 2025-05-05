@@ -41,7 +41,7 @@ export const columns: ColumnDef<Invoice>[] = [
         ),
     },
     {
-        accessorKey: 'invoiceId',
+        accessorKey: 'id',
         header: ({ column }) => (
             <DataTableColumnHeader column={column} title="ID" />
         ),
