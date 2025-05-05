@@ -12,6 +12,7 @@ import { Combobox, ComboboxItem } from '@/components/ui/combobox';
 import { cn, omit } from '@/lib/utils';
 import { useInvoicesStore } from '@/store/invoices';
 import { useCustomersStore } from '@/store/customers';
+import { InvoiceItemInput } from './InvoiceItemInput';
 interface InvoiceEditFormProps {
     formData?: Invoice;
     onSubmit: () => void;
@@ -53,7 +54,14 @@ export function InvoiceForm({ formData, onSubmit }: InvoiceEditFormProps) {
         defaultValues: {
             id: '',
             customerId: '',
-            items: [],
+            items: [
+                {
+                    description: '',
+                    amount: 0,
+                    pricePerUnit: 0,
+                    unit: 'hour',
+                },
+            ],
             paymentMethod: 'Bank transfer',
             status: 'pending',
             ...(formData && omit(formData, 'dateCreated', 'dateSent')),
@@ -135,8 +143,10 @@ export function InvoiceForm({ formData, onSubmit }: InvoiceEditFormProps) {
                     >
                         Items
                     </Label>
-                    <Input
-                        id="items"
+
+                    <InvoiceItemInput
+                        items={getValues('items')}
+                        onUpdate={(items) => setValue('items', items)}
                         {...register('items', { minLength: 1 })}
                     />
                 </div>

@@ -6,11 +6,13 @@ interface Customer {
     email: string;
 }
 
+type InvoiceItemUnit = 'hour' | 'day' | 'week';
+
 interface InvoiceItem {
     description: string;
     amount: number;
     pricePerUnit: number;
-    unit: 'hour' | 'day';
+    unit: InvoiceItemUnit;
 }
 
 type InvoiceStatus = 'pending' | 'unpaid' | 'paid';
