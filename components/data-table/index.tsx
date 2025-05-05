@@ -1,4 +1,4 @@
-import { FormEventHandler, useCallback, useState } from 'react';
+import { FormEventHandler, useCallback, useEffect, useState } from 'react';
 
 import {
     ColumnDef,
@@ -67,6 +67,10 @@ export function DataTable<TData, TValue>({
     );
 
     const handleFilterReset = useCallback(() => setGlobalFilter(''), []);
+
+    useEffect(() => {
+        console.log({ rowSelection });
+    });
 
     return (
         <div>

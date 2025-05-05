@@ -190,3 +190,27 @@ export const columns: ColumnDef<Invoice>[] = [
 export const customerColumns = columns.filter(
     ({ accessorKey }) => accessorKey !== 'customerId'
 );
+
+export const invoiceColumns: ColumnDef<InvoiceItem>[] = [
+    {
+        header: 'Description',
+        accessorKey: 'description',
+    },
+    { header: 'Quantity', accessorKey: 'amount' },
+    { header: 'Price/Unit', accessorKey: 'pricePerUnit' },
+    { header: 'Unit', accessorKey: 'unit' },
+    {
+        header: 'Total',
+        cell({
+            row: {
+                original: { amount, pricePerUnit, unit },
+            },
+        }) {
+            return (
+                <div className="w-full text-right">
+                    {`${amount * pricePerUnit}€`}
+                </div>
+            );
+        },
+    },
+];
