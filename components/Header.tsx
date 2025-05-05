@@ -1,10 +1,10 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { InvoiceForm } from '@/components/invoices/InvoiceForm';
-import Link from 'next/link';
-import { SlidePanel } from './SlidePanel';
+import { SlidePanel } from '@/components/SlidePanel';
 
 export default function Header() {
     const [isFormOpen, setIsFormOpen] = useState<boolean>(true);
