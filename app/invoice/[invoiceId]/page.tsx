@@ -7,11 +7,17 @@ import H2 from '@/components/atoms/H2';
 import { NotFound } from '@/components/NotFound';
 import { useInvoicesStore } from '@/store/invoices';
 import { useCustomersStore } from '@/store/customers';
-import { DataTable } from '@/components/data-table';
 import { CustomerInfo } from '@/components/customers/CustomerInfo';
 import { Badge } from '@/components/ui/badge';
 import { Clock, Send } from 'lucide-react';
-import { invoiceColumns } from '@/components/invoices/columns';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/components/ui/table';
 
 /** TODO: use simpler table, icon for badge (in table cell too), create StatusBadge (set colors in component) */
 
@@ -32,38 +38,102 @@ export default function Invoice() {
         }
     }, [invoice]);
 
+    const total = useMemo(
+        () =>
+            invoice
+                ? invoice.items.reduce(
+                      (acc, { amount, pricePerUnit }) =>
+                          acc + amount * pricePerUnit,
+                      0
+                  )
+                : 0,
+        [invoice]
+    );
+
     return invoice ? (
         <>
-            <H1 className="flex items-center gap-2 mb-4">
-                <span>{invoiceId}</span>
-                <Badge>{invoice.status}</Badge>
-            </H1>
+            <div className="grid grid-cols-2">
+                <div>
+                    <H1 className="flex items-center gap-2 mb-4">
+                        <span>Invoice n° {invoice.reference}</span>
+                        <Badge>{invoice.status}</Badge>
+                    </H1>
 
-            <p className="flex items-center gap-2 mb-4">
-                <Clock /> {invoice.dateCreated}
-            </p>
+                    <p className="flex items-center gap-2 mb-4">
+                        <Clock /> {invoice.dateCreated}
+                    </p>
 
-            {invoice.dateSent ? (
-                <p className="flex items-center gap-2 mb-4">
-                    <Send /> {invoice.dateSent}
-                </p>
-            ) : null}
+                    {invoice.dateSent ? (
+                        <p className="flex items-center gap-2 mb-4">
+                            <Send /> {invoice.dateSent}
+                        </p>
+                    ) : null}
 
-            <p className="mb-4">Payment method: {invoice.paymentMethod}</p>
+                    <p className="mb-4">
+                        Payment method: {invoice.paymentMethod}
+                    </p>
+                </div>
 
-            {customer ? (
-                <>
-                    <H2 className="mb-4">Customer</H2>
+                {customer ? (
+                    <div>
+                        <H2 className="mb-4">Customer</H2>
 
-                    <p className="mb-4">{customer.name}</p>
+                        <p className="mb-4">{customer.name}</p>
 
-                    <CustomerInfo {...customer} />
-                </>
-            ) : null}
+                        <CustomerInfo {...customer} />
+                    </div>
+                ) : null}
+            </div>
 
             <H2 className="mt-8 mb-2">Details</H2>
 
-            <DataTable columns={invoiceColumns} data={invoice.items} />
+            <div className="border-1 rounded-md">
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead className="font-bold">
+                                Description
+                            </TableHead>
+                            <TableHead className="font-bold">
+                                Quantity
+                            </TableHead>
+                            <TableHead className="font-bold">
+                                Price/Unit
+                            </TableHead>
+                            <TableHead className="font-bold">Unit</TableHead>
+                            <TableHead className="font-bold text-right">
+                                Total
+                            </TableHead>
+                        </TableRow>
+                    </TableHeader>
+
+                    <TableBody>
+                        {invoice.items.map(
+                            ({ description, amount, pricePerUnit, unit }) => (
+                                <TableRow>
+                                    <TableCell>{description}</TableCell>
+                                    <TableCell>{amount}</TableCell>
+                                    <TableCell>{pricePerUnit}</TableCell>
+                                    <TableCell>{unit}</TableCell>
+                                    <TableCell className="text-right">
+                                        {amount * pricePerUnit}€
+                                    </TableCell>
+                                </TableRow>
+                            )
+                        )}
+                        <TableRow>
+                            <TableCell
+                                className="text-right"
+                                colSpan={4}
+                            ></TableCell>
+                            <TableCell className="text-right">
+                                <span className="font-bold">Total: </span>
+                                {total}€
+                            </TableCell>
+                        </TableRow>
+                    </TableBody>
+                </Table>
+            </div>
         </>
     ) : (
         <NotFound />

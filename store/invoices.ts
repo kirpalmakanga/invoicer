@@ -3,9 +3,8 @@ import { mockInvoices } from '@/mocks';
 
 interface InvoicesState {
     invoices: Invoice[];
-    getSingleInvoice: (invoiceId: string) => void;
     addInvoice: (invoice: Invoice) => void;
-    updateInvoice: (invoice: Partial<Invoice>) => void;
+    updateInvoice: (invoiceId: string, invoiceData: Partial<Invoice>) => void;
     removeInvoice: (invoiceId: string) => void;
     removeBulkInvoices: (invoiceIds: string[]) => void;
 }
@@ -13,19 +12,18 @@ interface InvoicesState {
 export const useInvoicesStore = create<InvoicesState>((set, get) => ({
     // invoices: [],
     invoices: mockInvoices,
-    getSingleInvoice(invoiceId) {},
     addInvoice(invoice) {
         set(({ invoices }) => ({ invoices: [...invoices, invoice] }));
     },
-    updateInvoice(invoice) {
+    updateInvoice(invoiceId, invoiceData) {
         const { invoices } = get();
-        const index = invoices.findIndex(({ id }) => id === invoice.id);
+        const index = invoices.findIndex(({ id }) => id === invoiceId);
 
         if (index > -1) {
             set(() => ({
                 invoices: invoices.with(index, {
                     ...invoices[index],
-                    ...invoice,
+                    ...invoiceData,
                 }),
             }));
         }

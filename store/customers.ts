@@ -3,7 +3,6 @@ import { mockCustomers } from '@/mocks';
 
 interface CustomersState {
     customers: Customer[];
-    getSingleCustomer: (customerId: string) => void;
     addCustomer: (customer: Customer) => void;
     updateCustomer: (customer: Partial<Customer>) => void;
     removeCustomer: (customerId: string) => void;
@@ -13,7 +12,6 @@ interface CustomersState {
 export const useCustomersStore = create<CustomersState>((set, get) => ({
     // customers: [],
     customers: mockCustomers,
-    getSingleCustomer(customerId) {},
     addCustomer(customer) {
         set(({ customers }) => ({ customers: [...customers, customer] }));
     },

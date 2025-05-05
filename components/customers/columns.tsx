@@ -12,7 +12,7 @@ export const invoiceColumns: ColumnDef<InvoiceItem>[] = [
         header: 'Total',
         cell({
             row: {
-                original: { amount, pricePerUnit, unit },
+                original: { amount, pricePerUnit },
             },
         }) {
             return (

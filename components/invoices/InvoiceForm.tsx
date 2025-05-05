@@ -61,8 +61,8 @@ export function InvoiceForm({ formData, onSubmit }: InvoiceEditFormProps) {
     });
 
     const submit: SubmitHandler<InvoiceFormData> = (data) => {
-        if (formData?.id) {
-            updateInvoice(data);
+        if (formData) {
+            updateInvoice(formData.id, data);
         } else {
             addInvoice({
                 ...data,
@@ -87,11 +87,14 @@ export function InvoiceForm({ formData, onSubmit }: InvoiceEditFormProps) {
                             'font-bold mb-1',
                             errors.id && 'text-red-500'
                         )}
-                        htmlFor="id"
+                        htmlFor="reference"
                     >
                         Invoice ID
                     </Label>
-                    <Input id="id" {...register('id', { required: true })} />
+                    <Input
+                        id="reference"
+                        {...register('reference', { required: true })}
+                    />
                     {errors.id && (
                         <span className="text-xs text-red-500">
                             This field is required

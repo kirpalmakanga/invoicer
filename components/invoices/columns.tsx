@@ -16,6 +16,7 @@ import { DataTableColumnHeader } from '@/components/data-table/column-header';
 import { InvoiceForm } from '@/components/invoices/InvoiceForm';
 import { SlidePanel } from '@/components/SlidePanel';
 import { useInvoicesStore } from '@/store/invoices';
+import { useCustomersStore } from '@/store/customers';
 
 export const columns: ColumnDef<Invoice>[] = [
     {
@@ -41,15 +42,15 @@ export const columns: ColumnDef<Invoice>[] = [
         ),
     },
     {
-        accessorKey: 'id',
+        accessorKey: 'reference',
         header: ({ column }) => (
             <DataTableColumnHeader column={column} title="ID" />
         ),
         cell: ({
             row: {
-                original: { id },
+                original: { id, reference },
             },
-        }) => <Link href={`/invoice/${id}`}>{id}</Link>,
+        }) => <Link href={`/invoice/${id}`}>{reference}</Link>,
         enableHiding: false,
     },
     {
@@ -62,7 +63,21 @@ export const columns: ColumnDef<Invoice>[] = [
             row: {
                 original: { customerId },
             },
-        }) => <Link href={`/customer/${customerId}`}>{customerId}</Link>,
+        }) => {
+            const customer = useCustomersStore(({ customers }) =>
+                customers.find(({ id }) => id === customerId)
+            );
+
+            if (customer) {
+                return (
+                    <Link href={`/customer/${customerId}`}>
+                        {customer.name}
+                    </Link>
+                );
+            }
+
+            return 'Customer not found';
+        },
     },
 
     {
@@ -190,27 +205,3 @@ export const columns: ColumnDef<Invoice>[] = [
 export const customerColumns = columns.filter(
     ({ accessorKey }) => accessorKey !== 'customerId'
 );
-
-export const invoiceColumns: ColumnDef<InvoiceItem>[] = [
-    {
-        header: 'Description',
-        accessorKey: 'description',
-    },
-    { header: 'Quantity', accessorKey: 'amount' },
-    { header: 'Price/Unit', accessorKey: 'pricePerUnit' },
-    { header: 'Unit', accessorKey: 'unit' },
-    {
-        header: 'Total',
-        cell({
-            row: {
-                original: { amount, pricePerUnit, unit },
-            },
-        }) {
-            return (
-                <div className="w-full text-right">
-                    {`${amount * pricePerUnit}€`}
-                </div>
-            );
-        },
-    },
-];
