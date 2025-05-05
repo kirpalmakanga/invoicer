@@ -7,6 +7,7 @@ import {
 import { ReactNode } from 'react';
 
 interface SlidePanelProps {
+    className?: string;
     isOpen: boolean;
     title: string;
     onClose: () => void;
@@ -18,10 +19,11 @@ export function SlidePanel({
     title,
     children,
     onClose,
+    className,
 }: SlidePanelProps) {
     return (
         <Sheet open={isOpen} onOpenChange={onClose}>
-            <SheetContent>
+            <SheetContent className={className}>
                 <SheetHeader className="border-b-2">
                     <SheetTitle>{title}</SheetTitle>
                 </SheetHeader>

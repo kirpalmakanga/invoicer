@@ -133,10 +133,10 @@ export const columns: ColumnDef<Invoice>[] = [
                 original: { items },
             },
         }) =>
-            items.reduce(
+            `${items.reduce(
                 (acc, { amount, pricePerUnit }) => acc + amount * pricePerUnit,
                 0
-            ),
+            )}€`,
     },
     {
         id: 'actions',
@@ -190,6 +190,7 @@ export const columns: ColumnDef<Invoice>[] = [
                     </DropdownMenu>
 
                     <SlidePanel
+                        className="sm:max-w-1/2"
                         title="Edit invoice"
                         isOpen={isFormOpen}
                         onClose={closeForm}

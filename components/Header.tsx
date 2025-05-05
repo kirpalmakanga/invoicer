@@ -30,6 +30,7 @@ export default function Header() {
             </header>
 
             <SlidePanel
+                className="sm:max-w-1/2"
                 title="Add invoice"
                 isOpen={isFormOpen}
                 onClose={() => setIsFormOpen(false)}
