@@ -54,8 +54,9 @@ export const columns: ColumnDef<Invoice>[] = [
         enableHiding: false,
     },
     {
-        id: 'customer ID',
+        id: 'customer',
         accessorKey: 'customerId',
+        meta: 'Customer',
         header: ({ column }) => (
             <DataTableColumnHeader column={column} title="Customer" />
         ),
@@ -81,7 +82,7 @@ export const columns: ColumnDef<Invoice>[] = [
     },
 
     {
-        id: 'payment method',
+        meta: 'Payment method',
         accessorKey: 'paymentMethod',
         header: ({ column }) => (
             <DataTableColumnHeader column={column} title="Payment method" />
@@ -93,7 +94,7 @@ export const columns: ColumnDef<Invoice>[] = [
         }) => paymentMethod,
     },
     {
-        id: 'status',
+        meta: 'Status',
         accessorKey: 'status',
         header: ({ column }) => (
             <DataTableColumnHeader
@@ -127,7 +128,8 @@ export const columns: ColumnDef<Invoice>[] = [
         },
     },
     {
-        header: 'Amount',
+        header: 'Quantity',
+        meta: 'Quantity',
         cell: ({
             row: {
                 original: { items },
@@ -203,6 +205,4 @@ export const columns: ColumnDef<Invoice>[] = [
     },
 ];
 
-export const customerColumns = columns.filter(
-    ({ accessorKey }) => accessorKey !== 'customerId'
-);
+export const customerColumns = columns.filter(({ id }) => id !== 'customer');
