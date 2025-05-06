@@ -47,6 +47,8 @@ export function InvoiceItemInput({ items, onUpdate }: InvoiceItemInputProps) {
         setCurrentItems((items) =>
             items.with(index, { ...items[index], ...data })
         );
+
+        onUpdate(currentItems);
     }
 
     return (
