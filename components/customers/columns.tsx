@@ -1,3 +1,4 @@
+import { getInvoiceItemTotal } from '@/lib/invoices';
 import { ColumnDef } from '@tanstack/react-table';
 
 export const invoiceColumns: ColumnDef<InvoiceItem>[] = [
@@ -10,14 +11,10 @@ export const invoiceColumns: ColumnDef<InvoiceItem>[] = [
     { header: 'Unit', accessorKey: 'unit' },
     {
         header: 'Total',
-        cell({
-            row: {
-                original: { quantity, pricePerUnit },
-            },
-        }) {
+        cell({ row: { original } }) {
             return (
                 <div className="w-full text-right">
-                    {`${quantity * pricePerUnit}€`}
+                    {`${getInvoiceItemTotal(original)}€`}
                 </div>
             );
         },

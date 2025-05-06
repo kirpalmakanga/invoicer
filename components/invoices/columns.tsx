@@ -17,6 +17,7 @@ import { InvoiceForm } from '@/components/invoices/InvoiceForm';
 import { SlidePanel } from '@/components/SlidePanel';
 import { useInvoicesStore } from '@/store/invoices';
 import { useCustomersStore } from '@/store/customers';
+import { getInvoiceTotal } from '@/lib/invoices';
 
 export const columns: ColumnDef<Invoice>[] = [
     {
@@ -128,18 +129,9 @@ export const columns: ColumnDef<Invoice>[] = [
         },
     },
     {
-        header: 'Quantity',
-        meta: 'Quantity',
-        cell: ({
-            row: {
-                original: { items },
-            },
-        }) =>
-            `${items.reduce(
-                (acc, { quantity, pricePerUnit }) =>
-                    acc + quantity * pricePerUnit,
-                0
-            )}€`,
+        header: 'Amount',
+        meta: 'Amount',
+        cell: ({ row: { original } }) => `${getInvoiceTotal(original)}€`,
     },
     {
         id: 'actions',

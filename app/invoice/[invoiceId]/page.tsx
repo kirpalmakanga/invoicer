@@ -18,6 +18,7 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
+import { getInvoiceTotal } from '@/lib/invoices';
 
 /** TODO: use simpler table, icon for badge (in table cell too), create StatusBadge (set colors in component) */
 
@@ -39,14 +40,7 @@ export default function Invoice() {
     }, [invoice]);
 
     const total = useMemo(
-        () =>
-            invoice
-                ? invoice.items.reduce(
-                      (acc, { quantity, pricePerUnit }) =>
-                          acc + quantity * pricePerUnit,
-                      0
-                  )
-                : 0,
+        () => (invoice ? getInvoiceTotal(invoice) : 0),
         [invoice]
     );
 
