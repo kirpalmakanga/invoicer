@@ -57,7 +57,7 @@ export function InvoiceForm({ formData, onSubmit }: InvoiceEditFormProps) {
             items: [
                 {
                     description: '',
-                    amount: 0,
+                    quantity: 0,
                     pricePerUnit: 0,
                     unit: 'hour',
                 },

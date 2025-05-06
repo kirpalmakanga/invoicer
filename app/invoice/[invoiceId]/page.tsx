@@ -42,8 +42,8 @@ export default function Invoice() {
         () =>
             invoice
                 ? invoice.items.reduce(
-                      (acc, { amount, pricePerUnit }) =>
-                          acc + amount * pricePerUnit,
+                      (acc, { quantity, pricePerUnit }) =>
+                          acc + quantity * pricePerUnit,
                       0
                   )
                 : 0,
@@ -109,14 +109,14 @@ export default function Invoice() {
 
                     <TableBody>
                         {invoice.items.map(
-                            ({ description, amount, pricePerUnit, unit }) => (
+                            ({ description, quantity, pricePerUnit, unit }) => (
                                 <TableRow>
                                     <TableCell>{description}</TableCell>
-                                    <TableCell>{amount}</TableCell>
+                                    <TableCell>{quantity}</TableCell>
                                     <TableCell>{pricePerUnit}</TableCell>
                                     <TableCell>{unit}</TableCell>
                                     <TableCell className="text-right">
-                                        {amount * pricePerUnit}€
+                                        {quantity * pricePerUnit}€
                                     </TableCell>
                                 </TableRow>
                             )

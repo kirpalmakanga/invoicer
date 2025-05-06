@@ -27,7 +27,7 @@ interface InvoiceItemInputProps {
 }
 
 function getInitialRowState(): InvoiceItem {
-    return { description: '', amount: 0, pricePerUnit: 0, unit: 'hour' };
+    return { description: '', quantity: 0, pricePerUnit: 0, unit: 'hour' };
 }
 
 export function InvoiceItemInput({ items, onUpdate }: InvoiceItemInputProps) {
@@ -70,7 +70,7 @@ export function InvoiceItemInput({ items, onUpdate }: InvoiceItemInputProps) {
                 <TableBody>
                     {currentItems.map(
                         (
-                            { description, amount, pricePerUnit, unit },
+                            { description, quantity, pricePerUnit, unit },
                             index
                         ) => (
                             <TableRow>
@@ -87,14 +87,14 @@ export function InvoiceItemInput({ items, onUpdate }: InvoiceItemInputProps) {
                                 <TableCell>
                                     <Input
                                         type="number"
-                                        value={amount}
+                                        value={quantity}
                                         step={1}
                                         min={0}
                                         onInput={({
                                             currentTarget: { value },
                                         }) =>
                                             updateRow(index, {
-                                                amount: parseFloat(value),
+                                                quantity: parseFloat(value),
                                             })
                                         }
                                     />

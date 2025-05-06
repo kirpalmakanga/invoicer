@@ -136,7 +136,8 @@ export const columns: ColumnDef<Invoice>[] = [
             },
         }) =>
             `${items.reduce(
-                (acc, { amount, pricePerUnit }) => acc + amount * pricePerUnit,
+                (acc, { quantity, pricePerUnit }) =>
+                    acc + quantity * pricePerUnit,
                 0
             )}€`,
     },

@@ -10,7 +10,7 @@ type InvoiceItemUnit = 'hour' | 'day' | 'week';
 
 interface InvoiceItem {
     description: string;
-    amount: number;
+    quantity: number;
     pricePerUnit: number;
     unit: InvoiceItemUnit;
 }

@@ -21,19 +21,19 @@ export const mockInvoices: Invoice[] = [...Array(50).keys()]
         items: [
             {
                 description: 'Product 1',
-                amount: 5,
+                quantity: 5,
                 pricePerUnit: 50,
                 unit: 'hour',
             },
             {
                 description: 'Product 2',
-                amount: 3,
+                quantity: 3,
                 pricePerUnit: 500,
                 unit: 'day',
             },
             {
                 description: 'Product 3',
-                amount: 10,
+                quantity: 10,
                 pricePerUnit: 50,
                 unit: 'hour',
             },

@@ -5,19 +5,19 @@ export const invoiceColumns: ColumnDef<InvoiceItem>[] = [
         header: 'Description',
         accessorKey: 'description',
     },
-    { header: 'Quantity', accessorKey: 'amount' },
+    { header: 'Quantity', accessorKey: 'quantity' },
     { header: 'Price/Unit', accessorKey: 'pricePerUnit' },
     { header: 'Unit', accessorKey: 'unit' },
     {
         header: 'Total',
         cell({
             row: {
-                original: { amount, pricePerUnit },
+                original: { quantity, pricePerUnit },
             },
         }) {
             return (
                 <div className="w-full text-right">
-                    {`${amount * pricePerUnit}€`}
+                    {`${quantity * pricePerUnit}€`}
                 </div>
             );
         },
