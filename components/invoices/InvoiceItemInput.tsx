@@ -94,7 +94,7 @@ export function InvoiceItemInput({ items, onUpdate }: InvoiceItemInputProps) {
                                             currentTarget: { value },
                                         }) =>
                                             updateRow(index, {
-                                                quantity: parseFloat(value),
+                                                quantity: parseInt(value),
                                             })
                                         }
                                     />
