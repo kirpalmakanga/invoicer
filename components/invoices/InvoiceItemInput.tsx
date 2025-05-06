@@ -84,7 +84,7 @@ export function InvoiceItemInput({ items, onUpdate }: InvoiceItemInputProps) {
                                         }) => updateRow(index, { description })}
                                     />
                                 </TableCell>
-                                <TableCell>
+                                <TableCell className="align-top w-[100px]">
                                     <Input
                                         type="number"
                                         value={quantity}
@@ -99,7 +99,7 @@ export function InvoiceItemInput({ items, onUpdate }: InvoiceItemInputProps) {
                                         }
                                     />
                                 </TableCell>
-                                <TableCell>
+                                <TableCell className="align-top w-[100px]">
                                     <Input
                                         type="number"
                                         value={pricePerUnit}
@@ -114,7 +114,7 @@ export function InvoiceItemInput({ items, onUpdate }: InvoiceItemInputProps) {
                                         }
                                     />
                                 </TableCell>
-                                <TableCell>
+                                <TableCell className="align-top w-[100px]">
                                     <Select
                                         value={unit}
                                         onValueChange={(
@@ -142,8 +142,8 @@ export function InvoiceItemInput({ items, onUpdate }: InvoiceItemInputProps) {
                                         </SelectContent>
                                     </Select>
                                 </TableCell>
-                                {currentItems.length > 1 && index > 0 ? (
-                                    <TableCell>
+                                {currentItems.length > 1 ? (
+                                    <TableCell className="align-top w-[50px]">
                                         <Button
                                             onClick={() => deleteRow(index)}
                                         >
