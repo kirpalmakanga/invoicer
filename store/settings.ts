@@ -15,7 +15,7 @@ export const useSettingsStore = create<SettingsState>((set, get) => ({
     // address: '',
     // email: '',
     // companyId: '',
-    // invoicePrefix: 'INV',
+    // invoicePrefix: '',
     ...mockSettings,
     updateSettings(data: Partial<SettingsState>) {
         set(() => data);
