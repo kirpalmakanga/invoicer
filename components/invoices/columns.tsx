@@ -19,6 +19,79 @@ import { useInvoicesStore } from '@/store/invoices';
 import { useCustomersStore } from '@/store/customers';
 import { getInvoiceTotal } from '@/lib/invoices';
 
+function InvoiceCustomerLink({ customerId }: { customerId: string }) {
+    const customer = useCustomersStore(({ customers }) =>
+        customers.find(({ id }) => id === customerId)
+    );
+
+    if (customer) {
+        return <Link href={`/customer/${customerId}`}>{customer.name}</Link>;
+    }
+
+    return 'Customer not found';
+}
+
+function InvoiceMenu({ invoice }: { invoice: Invoice }) {
+    const removeInvoice = useInvoicesStore(
+        ({ removeInvoice }) => removeInvoice
+    );
+
+    const [{ isFormOpen, formData }, setFormState] = useState<{
+        isFormOpen: boolean;
+        formData?: Invoice;
+    }>({ isFormOpen: false });
+
+    function openForm() {
+        setFormState({
+            isFormOpen: true,
+            formData: invoice,
+        });
+    }
+
+    function closeForm() {
+        setFormState({
+            isFormOpen: false,
+            formData: undefined,
+        });
+    }
+
+    return (
+        <>
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" className="h-8 w-8 p-0">
+                        <span className="sr-only">Open menu</span>
+                        <MoreHorizontal className="h-4 w-4" />
+                    </Button>
+                </DropdownMenuTrigger>
+
+                <DropdownMenuContent align="end">
+                    <DropdownMenuItem onClick={openForm}>
+                        <Edit /> Edit
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                        className="text-red-500"
+                        onClick={() => removeInvoice(invoice.id)}
+                    >
+                        <Trash className="text-red-500 fill-current" />
+                        Delete invoice
+                    </DropdownMenuItem>
+                </DropdownMenuContent>
+            </DropdownMenu>
+
+            <SlidePanel
+                className="sm:max-w-1/2"
+                title="Edit invoice"
+                isOpen={isFormOpen}
+                onClose={closeForm}
+            >
+                <InvoiceForm formData={formData} onSubmit={closeForm} />
+            </SlidePanel>
+        </>
+    );
+}
+
 export const columns: ColumnDef<Invoice>[] = [
     {
         id: 'select',
@@ -65,21 +138,7 @@ export const columns: ColumnDef<Invoice>[] = [
             row: {
                 original: { customerId },
             },
-        }) => {
-            const customer = useCustomersStore(({ customers }) =>
-                customers.find(({ id }) => id === customerId)
-            );
-
-            if (customer) {
-                return (
-                    <Link href={`/customer/${customerId}`}>
-                        {customer.name}
-                    </Link>
-                );
-            }
-
-            return 'Customer not found';
-        },
+        }) => <InvoiceCustomerLink customerId={customerId} />,
     },
 
     {
@@ -135,66 +194,7 @@ export const columns: ColumnDef<Invoice>[] = [
     },
     {
         id: 'actions',
-        cell: ({ row: { original } }) => {
-            const removeInvoice = useInvoicesStore(
-                ({ removeInvoice }) => removeInvoice
-            );
-
-            const [{ isFormOpen, formData }, setFormState] = useState<{
-                isFormOpen: boolean;
-                formData?: Invoice;
-            }>({ isFormOpen: false });
-
-            function openForm() {
-                setFormState({
-                    isFormOpen: true,
-                    formData: original,
-                });
-            }
-
-            function closeForm() {
-                setFormState({
-                    isFormOpen: false,
-                    formData: undefined,
-                });
-            }
-
-            return (
-                <>
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="h-8 w-8 p-0">
-                                <span className="sr-only">Open menu</span>
-                                <MoreHorizontal className="h-4 w-4" />
-                            </Button>
-                        </DropdownMenuTrigger>
-
-                        <DropdownMenuContent align="end">
-                            <DropdownMenuItem onClick={openForm}>
-                                <Edit /> Edit
-                            </DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem
-                                className="text-red-500"
-                                onClick={() => removeInvoice(original.id)}
-                            >
-                                <Trash className="text-red-500 fill-current" />
-                                Delete invoice
-                            </DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-
-                    <SlidePanel
-                        className="sm:max-w-1/2"
-                        title="Edit invoice"
-                        isOpen={isFormOpen}
-                        onClose={closeForm}
-                    >
-                        <InvoiceForm formData={formData} onSubmit={closeForm} />
-                    </SlidePanel>
-                </>
-            );
-        },
+        cell: ({ row: { original } }) => <InvoiceMenu invoice={original} />,
     },
 ];
 

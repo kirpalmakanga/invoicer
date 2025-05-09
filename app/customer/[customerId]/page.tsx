@@ -18,7 +18,7 @@ export default function Customer() {
 
     const customer = useMemo(
         () => customers.find(({ id }) => id === customerId),
-        [customers]
+        [customers, customerId]
     );
 
     const customerInvoices = useMemo(
@@ -27,7 +27,7 @@ export default function Customer() {
                 ({ customerId: itemCustomerId }) =>
                     itemCustomerId === customerId
             ),
-        [invoices]
+        [invoices, customerId]
     );
 
     return customer ? (

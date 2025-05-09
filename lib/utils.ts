@@ -5,7 +5,7 @@ export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
 }
 
-export function isEqual(a: any, b: any): boolean {
+export function isEqual(a: unknown, b: unknown): boolean {
     if (a === b) return true;
 
     if (a == null || b == null) return a === b;
@@ -17,9 +17,9 @@ export function isEqual(a: any, b: any): boolean {
         return a.every((item, index) => isEqual(item, b[index]));
     }
 
-    if (typeof a === 'object') {
-        const keysA = Object.keys(a);
-        const keysB = Object.keys(b);
+    if (typeof a === 'object' && typeof b === 'object') {
+        const keysA = Object.keys(a) as (keyof typeof a)[];
+        const keysB = Object.keys(b) as (keyof typeof b)[];
 
         if (keysA.length !== keysB.length) return false;
         return keysA.every((key) => key in b && isEqual(a[key], b[key]));

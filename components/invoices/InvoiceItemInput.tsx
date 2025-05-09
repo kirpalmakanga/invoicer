@@ -73,7 +73,7 @@ export function InvoiceItemInput({ items, onUpdate }: InvoiceItemInputProps) {
                             { description, quantity, pricePerUnit, unit },
                             index
                         ) => (
-                            <TableRow>
+                            <TableRow key={index}>
                                 <TableCell>
                                     <Textarea
                                         value={description}

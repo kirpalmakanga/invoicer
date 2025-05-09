@@ -30,14 +30,14 @@ export default function Invoice() {
 
     const invoice = useMemo(
         () => invoices.find(({ id }) => id === invoiceId),
-        [invoices]
+        [invoices, invoiceId]
     );
 
     const customer = useMemo(() => {
         if (invoice) {
             return customers.find(({ id }) => id === invoice.customerId);
         }
-    }, [invoice]);
+    }, [invoice, customers]);
 
     const total = useMemo(
         () => (invoice ? getInvoiceTotal(invoice) : 0),
@@ -103,8 +103,11 @@ export default function Invoice() {
 
                     <TableBody>
                         {invoice.items.map(
-                            ({ description, quantity, pricePerUnit, unit }) => (
-                                <TableRow>
+                            (
+                                { description, quantity, pricePerUnit, unit },
+                                index
+                            ) => (
+                                <TableRow key={index}>
                                     <TableCell>{description}</TableCell>
                                     <TableCell>{quantity}</TableCell>
                                     <TableCell>{pricePerUnit}</TableCell>
