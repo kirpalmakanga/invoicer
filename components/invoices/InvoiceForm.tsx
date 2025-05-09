@@ -6,19 +6,20 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-
 import { Combobox, ComboboxItem } from '@/components/ui/combobox';
+import { InvoiceItemInput } from '@/components/invoices/InvoiceItemInput';
 
-import { cn, omit } from '@/lib/utils';
-import { useInvoicesStore } from '@/store/invoices';
+import { useSettingsStore } from '@/store/settings';
 import { useCustomersStore } from '@/store/customers';
-import { InvoiceItemInput } from './InvoiceItemInput';
+import { useInvoicesStore } from '@/store/invoices';
+
+import { cn, getCurrentYear, omit } from '@/lib/utils';
 interface InvoiceEditFormProps {
     formData?: Invoice;
     onSubmit: () => void;
 }
 
-type InvoiceFormData = Omit<Invoice, 'dateCreated' | 'dateSent'>;
+type InvoiceFormData = Omit<Invoice, 'id' | 'dateCreated' | 'dateSent'>;
 
 const paymentMethodSelectItems: ComboboxItem<PaymentMethod>[] = [
     { label: 'Bank transfer', value: 'Bank transfer' },
@@ -33,6 +34,9 @@ const statusSelectItems: ComboboxItem<InvoiceStatus>[] = [
 ];
 
 export function InvoiceForm({ formData, onSubmit }: InvoiceEditFormProps) {
+    const invoicePrefix = useSettingsStore(
+        ({ invoicePrefix }) => `${invoicePrefix}${getCurrentYear()}`
+    );
     const customers = useCustomersStore(({ customers }) => customers);
     const addInvoice = useInvoicesStore(({ addInvoice }) => addInvoice);
     const updateInvoice = useInvoicesStore(
@@ -51,21 +55,22 @@ export function InvoiceForm({ formData, onSubmit }: InvoiceEditFormProps) {
         setValue,
         formState: { errors },
     } = useForm<InvoiceFormData>({
-        defaultValues: {
-            id: '',
-            customerId: '',
-            items: [
-                {
-                    description: '',
-                    quantity: 0,
-                    pricePerUnit: 0,
-                    unit: 'hour',
-                },
-            ],
-            paymentMethod: 'Bank transfer',
-            status: 'pending',
-            ...(formData && omit(formData, 'dateCreated', 'dateSent')),
-        },
+        defaultValues: formData
+            ? omit(formData, 'dateCreated', 'dateSent')
+            : {
+                  reference: invoicePrefix,
+                  customerId: '',
+                  items: [
+                      {
+                          description: '',
+                          quantity: 0,
+                          pricePerUnit: 0,
+                          unit: 'hour',
+                      },
+                  ],
+                  paymentMethod: 'Bank transfer',
+                  status: 'pending',
+              },
     });
 
     const submit: SubmitHandler<InvoiceFormData> = (data) => {
@@ -93,7 +98,7 @@ export function InvoiceForm({ formData, onSubmit }: InvoiceEditFormProps) {
                     <Label
                         className={cn(
                             'font-bold mb-1',
-                            errors.id && 'text-red-500'
+                            errors.reference && 'text-red-500'
                         )}
                         htmlFor="reference"
                     >
@@ -103,7 +108,7 @@ export function InvoiceForm({ formData, onSubmit }: InvoiceEditFormProps) {
                         id="reference"
                         {...register('reference', { required: true })}
                     />
-                    {errors.id && (
+                    {errors.reference && (
                         <span className="text-xs text-red-500">
                             This field is required
                         </span>

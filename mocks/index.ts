@@ -51,5 +51,4 @@ export const mockInvoices: Invoice[] = [...Array(50).keys()]
         status: 'paid',
         paymentMethod: 'PayPal',
         dateCreated: Date.now(),
-    }))
-    .reverse();
+    }));
