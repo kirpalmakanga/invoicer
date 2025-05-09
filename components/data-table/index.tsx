@@ -1,4 +1,5 @@
-import { FormEventHandler, useCallback, useEffect, useState } from 'react';
+import { FormEventHandler, useCallback, useState } from 'react';
+import { Trash } from 'lucide-react';
 
 import {
     ColumnDef,
@@ -29,11 +30,13 @@ import { DataTableViewOptions } from './view-options';
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
+    onRemoveSelected?: (indexes: number[]) => void;
 }
 
 export function DataTable<TData, TValue>({
     columns,
     data,
+    onRemoveSelected,
 }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = useState<SortingState>([]);
 
@@ -68,9 +71,13 @@ export function DataTable<TData, TValue>({
 
     const handleFilterReset = useCallback(() => setGlobalFilter(''), []);
 
-    useEffect(() => {
-        console.log({ rowSelection });
-    });
+    const handleRemoveSelected = useCallback(() => {
+        if (onRemoveSelected) {
+            onRemoveSelected(Object.keys(rowSelection).map((k) => parseInt(k)));
+
+            setRowSelection({});
+        }
+    }, [rowSelection, onRemoveSelected]);
 
     return (
         <div>
@@ -83,14 +90,23 @@ export function DataTable<TData, TValue>({
                         onInput={handleFilterUpdate}
                     />
 
-                    {globalFilter && (
+                    {globalFilter ? (
                         <Button className="h-8" onClick={handleFilterReset}>
                             Reset
                         </Button>
-                    )}
+                    ) : null}
                 </div>
 
-                <DataTableViewOptions table={table} />
+                <div className="flex items-center space-x-2">
+                    {Object.keys(rowSelection).length ? (
+                        <Button className="h-8" onClick={handleRemoveSelected}>
+                            <Trash />
+                            Remove selected
+                        </Button>
+                    ) : null}
+
+                    <DataTableViewOptions table={table} />
+                </div>
             </div>
 
             <div className="rounded-md border">

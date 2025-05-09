@@ -3,12 +3,35 @@
 import { DataTable } from '@/components/data-table';
 import { columns } from '@/components/invoices/columns';
 import { useInvoicesStore } from '@/store/invoices';
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 
 export default function Home() {
     const invoices = useInvoicesStore(({ invoices }) => invoices);
+    const removeBulkInvoices = useInvoicesStore(
+        ({ removeBulkInvoices }) => removeBulkInvoices
+    );
 
     const reversedItems = useMemo(() => invoices.toReversed(), [invoices]);
 
-    return <DataTable columns={columns} data={reversedItems} />;
+    const handleRemoveSelected = useCallback(
+        (indexes: number[]) => {
+            const ids = reversedItems.reduce((acc: string[], { id }, i) => {
+                if (indexes.includes(i)) {
+                    acc.push(id);
+                }
+                return acc;
+            }, []);
+
+            removeBulkInvoices(ids);
+        },
+        [reversedItems, removeBulkInvoices]
+    );
+
+    return (
+        <DataTable
+            columns={columns}
+            data={reversedItems}
+            onRemoveSelected={handleRemoveSelected}
+        />
+    );
 }
