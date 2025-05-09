@@ -1,5 +1,5 @@
-import { mockSettings } from '@/mocks';
 import { create } from 'zustand';
+import { mockSettings } from '@/mocks';
 
 interface SettingsState {
     name: string;
@@ -10,7 +10,7 @@ interface SettingsState {
     updateSettings: (data: Partial<SettingsState>) => void;
 }
 
-export const useSettingsStore = create<SettingsState>((set, get) => ({
+export const useSettingsStore = create<SettingsState>((set) => ({
     // name: '',
     // address: '',
     // email: '',
