@@ -89,7 +89,6 @@ export function InvoiceForm({ formData, onSubmit }: InvoiceEditFormProps) {
 
     return (
         <form
-            id="invoiceForm"
             className="flex flex-col grow px-4"
             onSubmit={handleSubmit(submit)}
         >
@@ -204,9 +203,7 @@ export function InvoiceForm({ formData, onSubmit }: InvoiceEditFormProps) {
             </div>
 
             <div className="flex justify-end pb-4">
-                <Button type="submit" form="invoiceForm">
-                    Save
-                </Button>
+                <Button type="submit">Save</Button>
             </div>
         </form>
     );
