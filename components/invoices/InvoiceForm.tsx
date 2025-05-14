@@ -19,8 +19,6 @@ interface InvoiceEditFormProps {
     onSubmit: () => void;
 }
 
-type InvoiceFormData = Omit<Invoice, 'id' | 'dateCreated' | 'dateSent'>;
-
 const paymentMethodSelectItems: ComboboxItem<PaymentMethod>[] = [
     { label: 'Bank transfer', value: 'bankTransfer' },
     { label: 'Credit card', value: 'creditCard' },
@@ -56,7 +54,7 @@ export function InvoiceForm({ formData, onSubmit }: InvoiceEditFormProps) {
         formState: { errors },
     } = useForm<InvoiceFormData>({
         defaultValues: formData
-            ? omit(formData, 'dateCreated', 'dateSent')
+            ? formData
             : {
                   reference: invoicePrefix,
                   customerId: '',
@@ -77,11 +75,7 @@ export function InvoiceForm({ formData, onSubmit }: InvoiceEditFormProps) {
         if (formData) {
             updateInvoice(formData.id, data);
         } else {
-            addInvoice({
-                ...data,
-                id: crypto.randomUUID(),
-                dateCreated: Date.now(),
-            });
+            addInvoice(data);
         }
 
         onSubmit();
