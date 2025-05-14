@@ -5,6 +5,7 @@ import { DataTable } from '@/components/data-table';
 import { columns } from '@/components/invoices/columns';
 import { useInvoicesStore } from '@/store/invoices';
 import { sortByKey } from '@/lib/utils';
+import H1 from '@/components/atoms/H1';
 
 export default function Home() {
     const invoices = useInvoicesStore(({ invoices }) => invoices);
@@ -39,10 +40,14 @@ export default function Home() {
     }, []);
 
     return (
-        <DataTable
-            columns={columns}
-            data={sortedInvoices}
-            onRemoveSelected={handleRemoveSelected}
-        />
+        <>
+            <H1 className="mb-4">Invoices</H1>
+
+            <DataTable
+                columns={columns}
+                data={sortedInvoices}
+                onRemoveSelected={handleRemoveSelected}
+            />
+        </>
     );
 }
