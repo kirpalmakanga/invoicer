@@ -16,7 +16,7 @@ export default function Home() {
     );
 
     const sortedInvoices = useMemo(
-        () => sortByKey(invoices, 'reference', 'desc'),
+        () => sortByKey(invoices, 'reference', -1),
         [invoices]
     );
 

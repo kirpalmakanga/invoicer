@@ -47,32 +47,16 @@ export function getCurrentYear() {
     return new Date().getFullYear();
 }
 
+enum SortByOrder {
+    ASC = 1,
+    DESC = -1,
+}
 export function sortByKey<T, K extends keyof T>(
     items: T[],
     key: K,
-    order: 'asc' | 'desc' = 'asc'
+    order: SortByOrder = SortByOrder.ASC
 ) {
-    let handler = (a: T[K], b: T[K]) => {
-        if (a < b) {
-            return -1;
-        }
-        if (a > b) {
-            return 1;
-        }
-        return 0;
-    };
-
-    if (order === 'desc') {
-        handler = (a: T[K], b: T[K]) => {
-            if (a > b) {
-                return -1;
-            }
-            if (a < b) {
-                return 1;
-            }
-            return 0;
-        };
-    }
-
-    return items.toSorted(({ [key]: a }, { [key]: b }) => handler(a, b));
+    return items.toSorted(({ [key]: a }, { [key]: b }) => {
+        return order * String(a).localeCompare(String(b));
+    });
 }
