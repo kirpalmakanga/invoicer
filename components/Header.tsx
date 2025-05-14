@@ -8,7 +8,8 @@ import { InvoiceForm } from '@/components/invoices/InvoiceForm';
 import { SlidePanel } from '@/components/SlidePanel';
 
 export default function Header() {
-    const [isCustomerFormOpen, setIsCustomerFormOpen] = useState<boolean>(true);
+    const [isCustomerFormOpen, setIsCustomerFormOpen] =
+        useState<boolean>(false);
     const [isInvoiceFormOpen, setIsInvoiceFormOpen] = useState<boolean>(false);
 
     function openCustomerForm() {
