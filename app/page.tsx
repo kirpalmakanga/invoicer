@@ -1,9 +1,10 @@
 'use client';
 
+import { useCallback, useEffect, useMemo } from 'react';
 import { DataTable } from '@/components/data-table';
 import { columns } from '@/components/invoices/columns';
 import { useInvoicesStore } from '@/store/invoices';
-import { useCallback, useEffect, useMemo } from 'react';
+import { sortByKey } from '@/lib/utils';
 
 export default function Home() {
     const invoices = useInvoicesStore(({ invoices }) => invoices);
@@ -14,11 +15,14 @@ export default function Home() {
         ({ removeBulkInvoices }) => removeBulkInvoices
     );
 
-    const reversedItems = useMemo(() => invoices.toReversed(), [invoices]);
+    const sortedInvoices = useMemo(
+        () => sortByKey(invoices, 'reference', 'desc'),
+        [invoices]
+    );
 
     const handleRemoveSelected = useCallback(
         (indexes: number[]) => {
-            const ids = reversedItems.reduce((acc: string[], { id }, i) => {
+            const ids = sortedInvoices.reduce((acc: string[], { id }, i) => {
                 if (indexes.includes(i)) {
                     acc.push(id);
                 }
@@ -27,7 +31,7 @@ export default function Home() {
 
             removeBulkInvoices(ids);
         },
-        [reversedItems, removeBulkInvoices]
+        [sortedInvoices, removeBulkInvoices]
     );
 
     useEffect(() => {
@@ -37,7 +41,7 @@ export default function Home() {
     return (
         <DataTable
             columns={columns}
-            data={reversedItems}
+            data={sortedInvoices}
             onRemoveSelected={handleRemoveSelected}
         />
     );
