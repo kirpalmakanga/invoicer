@@ -46,3 +46,33 @@ export function omit<T extends object, K extends keyof T>(
 export function getCurrentYear() {
     return new Date().getFullYear();
 }
+
+export function sortByKey<T, K extends keyof T>(
+    items: T[],
+    key: K,
+    order: 'asc' | 'desc' = 'asc'
+) {
+    let handler = (a: T[K], b: T[K]) => {
+        if (a < b) {
+            return -1;
+        }
+        if (a > b) {
+            return 1;
+        }
+        return 0;
+    };
+
+    if (order === 'desc') {
+        handler = (a: T[K], b: T[K]) => {
+            if (a > b) {
+                return -1;
+            }
+            if (a < b) {
+                return 1;
+            }
+            return 0;
+        };
+    }
+
+    return items.toSorted(({ [key]: a }, { [key]: b }) => handler(a, b));
+}
