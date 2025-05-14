@@ -1,9 +1,8 @@
-import { createCustomer } from '@/lib/api';
 import { create } from 'zustand';
-// import { mockCustomers } from '@/mocks';
-
+import { createCustomer, getAllCustomers } from '@/lib/api';
 interface CustomersState {
     customers: Customer[];
+    fetchCustomers: () => void;
     addCustomer: (data: CustomerFormData) => void;
     updateCustomer: (customerId: string, data: Partial<Customer>) => void;
     removeCustomer: (customerId: string) => void;
@@ -12,13 +11,13 @@ interface CustomersState {
 
 export const useCustomersStore = create<CustomersState>((set, get) => ({
     customers: [],
-    // customers: mockCustomers,
+    async fetchCustomers() {
+        const customers = await getAllCustomers();
+
+        set(() => ({ customers }));
+    },
     async addCustomer(data) {
         const customer = await createCustomer(data);
-
-        console.log(JSON.stringify(customer, null, 2));
-
-        return;
 
         set(({ customers }) => ({ customers: [...customers, customer] }));
     },
