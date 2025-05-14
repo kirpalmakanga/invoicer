@@ -1,29 +1,36 @@
+import { createCustomer } from '@/lib/api';
 import { create } from 'zustand';
-import { mockCustomers } from '@/mocks';
+// import { mockCustomers } from '@/mocks';
 
 interface CustomersState {
     customers: Customer[];
-    addCustomer: (customer: Customer) => void;
-    updateCustomer: (customer: Partial<Customer>) => void;
+    addCustomer: (data: CustomerFormData) => void;
+    updateCustomer: (customerId: string, data: Partial<Customer>) => void;
     removeCustomer: (customerId: string) => void;
     removeBulkCustomers: (customerIds: string[]) => void;
 }
 
 export const useCustomersStore = create<CustomersState>((set, get) => ({
-    // customers: [],
-    customers: mockCustomers,
-    addCustomer(customer) {
+    customers: [],
+    // customers: mockCustomers,
+    async addCustomer(data) {
+        const customer = await createCustomer(data);
+
+        console.log(JSON.stringify(customer, null, 2));
+
+        return;
+
         set(({ customers }) => ({ customers: [...customers, customer] }));
     },
-    updateCustomer(customer) {
+    updateCustomer(customerId, data) {
         const { customers } = get();
-        const index = customers.findIndex(({ id }) => id === customer.id);
+        const index = customers.findIndex(({ id }) => id === customerId);
 
         if (index > -1) {
             set(() => ({
                 customers: customers.with(index, {
                     ...customers[index],
-                    ...customer,
+                    ...data,
                 }),
             }));
         }
