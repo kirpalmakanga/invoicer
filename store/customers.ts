@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { createCustomer, getAllCustomers } from '@/lib/api';
+import { createCustomer, getAllCustomers, updateCustomer } from '@/lib/api';
 interface CustomersState {
     customers: Customer[];
     fetchCustomers: () => void;
@@ -21,15 +21,17 @@ export const useCustomersStore = create<CustomersState>((set, get) => ({
 
         set(({ customers }) => ({ customers: [...customers, customer] }));
     },
-    updateCustomer(customerId, data) {
+    async updateCustomer(customerId, customerData) {
         const { customers } = get();
         const index = customers.findIndex(({ id }) => id === customerId);
 
         if (index > -1) {
+            await updateCustomer(customerId, customerData);
+
             set(() => ({
                 customers: customers.with(index, {
                     ...customers[index],
-                    ...data,
+                    ...customerData,
                 }),
             }));
         }
