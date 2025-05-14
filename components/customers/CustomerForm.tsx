@@ -6,10 +6,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
-import { useSettingsStore } from '@/store/settings';
 import { useCustomersStore } from '@/store/customers';
 
-import { cn, getCurrentYear, omit } from '@/lib/utils';
+import { cn, omit } from '@/lib/utils';
 
 interface CustomerEditFormProps {
     formData?: Customer;
@@ -17,10 +16,6 @@ interface CustomerEditFormProps {
 }
 
 export function CustomerForm({ formData, onSubmit }: CustomerEditFormProps) {
-    const invoicePrefix = useSettingsStore(
-        ({ invoicePrefix }) => `${invoicePrefix}${getCurrentYear()}`
-    );
-    const customers = useCustomersStore(({ customers }) => customers);
     const addCustomer = useCustomersStore(({ addCustomer }) => addCustomer);
     const updateCustomer = useCustomersStore(
         ({ updateCustomer }) => updateCustomer
