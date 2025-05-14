@@ -104,7 +104,7 @@ export const customerColumns: ColumnDef<Customer>[] = [
         accessorKey: 'name',
         meta: 'Name',
         header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="ID" />
+            <DataTableColumnHeader column={column} title="Name" />
         ),
         cell: ({
             row: {
