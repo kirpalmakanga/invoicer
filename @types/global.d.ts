@@ -16,15 +16,15 @@ interface InvoiceItem {
 }
 
 type InvoiceStatus = 'pending' | 'unpaid' | 'paid';
-type PaymentMethod = 'Bank transfer' | 'Credit card' | 'PayPal';
+type PaymentMethod = 'bankTransfer' | 'creditCard' | 'payPal';
 
 interface Invoice {
     id: string;
-    reference: string;
     customerId: string;
-    items: InvoiceItem[];
+    reference: string;
     paymentMethod: PaymentMethod;
     status: InvoiceStatus;
+    items: InvoiceItem[];
     dateCreated: number;
     dateSent?: number;
 }

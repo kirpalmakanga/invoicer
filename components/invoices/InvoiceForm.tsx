@@ -22,9 +22,9 @@ interface InvoiceEditFormProps {
 type InvoiceFormData = Omit<Invoice, 'id' | 'dateCreated' | 'dateSent'>;
 
 const paymentMethodSelectItems: ComboboxItem<PaymentMethod>[] = [
-    { label: 'Bank transfer', value: 'Bank transfer' },
-    { label: 'Credit card', value: 'Credit card' },
-    { label: 'PayPal', value: 'PayPal' },
+    { label: 'Bank transfer', value: 'bankTransfer' },
+    { label: 'Credit card', value: 'creditCard' },
+    { label: 'PayPal', value: 'payPal' },
 ];
 
 const statusSelectItems: ComboboxItem<InvoiceStatus>[] = [
@@ -68,7 +68,7 @@ export function InvoiceForm({ formData, onSubmit }: InvoiceEditFormProps) {
                           unit: 'hour',
                       },
                   ],
-                  paymentMethod: 'Bank transfer',
+                  paymentMethod: 'bankTransfer',
                   status: 'pending',
               },
     });
