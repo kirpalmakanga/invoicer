@@ -3,10 +3,13 @@
 import { DataTable } from '@/components/data-table';
 import { columns } from '@/components/invoices/columns';
 import { useInvoicesStore } from '@/store/invoices';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 
 export default function Home() {
     const invoices = useInvoicesStore(({ invoices }) => invoices);
+    const fetchInvoices = useInvoicesStore(
+        ({ fetchInvoices }) => fetchInvoices
+    );
     const removeBulkInvoices = useInvoicesStore(
         ({ removeBulkInvoices }) => removeBulkInvoices
     );
@@ -26,6 +29,8 @@ export default function Home() {
         },
         [reversedItems, removeBulkInvoices]
     );
+
+    useEffect(fetchInvoices, []);
 
     return (
         <DataTable
