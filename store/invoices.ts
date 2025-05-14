@@ -1,5 +1,4 @@
 import { create } from 'zustand';
-// import { mockInvoices } from '@/mocks';
 import { getAllInvoices } from '@/lib/api';
 
 interface InvoicesState {
@@ -13,14 +12,13 @@ interface InvoicesState {
 
 export const useInvoicesStore = create<InvoicesState>((set, get) => ({
     invoices: [],
-    // invoices: mockInvoices,
     async fetchInvoices() {
         const invoices = await getAllInvoices();
 
         set(() => ({ invoices }));
     },
-    addInvoice(invoice) {
-        set(({ invoices }) => ({ invoices: [...invoices, invoice] }));
+    addInvoice(invoice: InvoiceFormData) {
+        // set(({ invoices }) => ({ invoices: [...invoices, invoice] }));
     },
     updateInvoice(invoiceId, invoiceData) {
         const { invoices } = get();

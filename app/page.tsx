@@ -30,7 +30,9 @@ export default function Home() {
         [reversedItems, removeBulkInvoices]
     );
 
-    useEffect(fetchInvoices, []);
+    useEffect(() => {
+        fetchInvoices();
+    }, []);
 
     return (
         <DataTable
