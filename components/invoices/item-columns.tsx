@@ -1,7 +1,7 @@
 import { getInvoiceItemTotal } from '@/lib/invoices';
 import { ColumnDef } from '@tanstack/react-table';
 
-export const invoiceColumns: ColumnDef<InvoiceItem>[] = [
+export const invoiceItemColumns: ColumnDef<InvoiceItem>[] = [
     {
         header: 'Description',
         accessorKey: 'description',
