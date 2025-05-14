@@ -6,6 +6,8 @@ interface Customer {
     email: string;
 }
 
+type CustomerFormData = Omit<Customer, 'id'>;
+
 type InvoiceItemUnit = 'hour' | 'day' | 'week';
 
 interface InvoiceItem {
@@ -25,6 +27,6 @@ interface Invoice {
     paymentMethod: PaymentMethod;
     status: InvoiceStatus;
     items: InvoiceItem[];
-    dateCreated: number;
-    dateSent?: number;
 }
+
+type InvoiceFormData = Omit<Invoice, 'id'>;
