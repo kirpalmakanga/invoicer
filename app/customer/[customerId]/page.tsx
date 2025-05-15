@@ -6,10 +6,10 @@ import { DataTable } from '@/components/data-table';
 import { customerColumns } from '@/components/invoices/columns';
 import H1 from '@/components/atoms/H1';
 import H2 from '@/components/atoms/H2';
+import { CustomerInfo } from '@/components/customers/CustomerInfo';
 import { NotFound } from '@/components/NotFound';
 import { useInvoicesStore } from '@/store/invoices';
 import { useCustomersStore } from '@/store/customers';
-import { CustomerInfo } from '@/components/customers/CustomerInfo';
 
 export default function Customer() {
     const { customerId } = useParams<{ customerId: string }>();
