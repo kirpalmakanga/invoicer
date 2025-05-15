@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo } from 'react';
 import { DataTable } from '@/components/data-table';
 import { columns } from '@/components/invoices/columns';
+import { useCustomersStore } from '@/store/customers';
 import { useInvoicesStore } from '@/store/invoices';
 import { sortByKey } from '@/lib/utils';
 import H1 from '@/components/atoms/H1';
@@ -14,6 +15,9 @@ export default function Home() {
     );
     const removeBulkInvoices = useInvoicesStore(
         ({ removeBulkInvoices }) => removeBulkInvoices
+    );
+    const fetchCustomers = useCustomersStore(
+        ({ fetchCustomers }) => fetchCustomers
     );
 
     const sortedInvoices = useMemo(
@@ -36,7 +40,10 @@ export default function Home() {
     );
 
     useEffect(() => {
-        fetchInvoices();
+        (async () => {
+            await fetchCustomers();
+            await fetchInvoices();
+        })();
     }, []);
 
     return (
