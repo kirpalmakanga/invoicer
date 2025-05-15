@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Trash } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -20,6 +20,7 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
+import { isEqual } from '@/lib/utils';
 
 interface InvoiceItemInputProps {
     items: InvoiceItem[];
@@ -35,21 +36,28 @@ export function InvoiceItemInput({ items, onUpdate }: InvoiceItemInputProps) {
         items.length ? items : [getInitialRowState()]
     );
 
-    function addRow() {
+    const addRow = useCallback(() => {
         setCurrentItems((items) => [...items, getInitialRowState()]);
-    }
+    }, []);
 
-    function deleteRow(index: number) {
+    const deleteRow = useCallback((index: number) => {
         setCurrentItems((items) => items.filter((_, i) => i !== index));
-    }
+    }, []);
 
-    function updateRow(index: number, data: Partial<InvoiceItem>) {
-        setCurrentItems((items) =>
-            items.with(index, { ...items[index], ...data })
-        );
+    const updateRow = useCallback(
+        (index: number, data: Partial<InvoiceItem>) => {
+            setCurrentItems((items) =>
+                items.with(index, { ...items[index], ...data })
+            );
+        },
+        []
+    );
 
-        onUpdate(currentItems);
-    }
+    useEffect(() => {
+        if (!isEqual(items, currentItems)) {
+            onUpdate(currentItems);
+        }
+    }, [items, currentItems, onUpdate]);
 
     return (
         <div>
