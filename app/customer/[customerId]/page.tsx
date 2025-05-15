@@ -16,6 +16,8 @@ export default function Customer() {
     const customers = useCustomersStore(({ customers }) => customers);
     const invoices = useInvoicesStore(({ invoices }) => invoices);
 
+    /** TODO: sort invoices by datecreated desc */
+
     const fetchSingleCustomer = useCustomersStore(
         ({ fetchSingleCustomer }) => fetchSingleCustomer
     );
@@ -36,7 +38,7 @@ export default function Customer() {
 
     useEffect(() => {
         fetchSingleCustomer(customerId);
-    }, [customerId, fetchSingleCustomer]);
+    }, [customerId]);
 
     return customer ? (
         <>
