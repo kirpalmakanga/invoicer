@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useParams } from 'next/navigation';
 import { DataTable } from '@/components/data-table';
 import { customerColumns } from '@/components/invoices/columns';
@@ -16,6 +16,10 @@ export default function Customer() {
     const customers = useCustomersStore(({ customers }) => customers);
     const invoices = useInvoicesStore(({ invoices }) => invoices);
 
+    const fetchSingleCustomer = useCustomersStore(
+        ({ fetchSingleCustomer }) => fetchSingleCustomer
+    );
+
     const customer = useMemo(
         () => customers.find(({ id }) => id === customerId),
         [customers, customerId]
@@ -29,6 +33,10 @@ export default function Customer() {
             ),
         [invoices, customerId]
     );
+
+    useEffect(() => {
+        fetchSingleCustomer(customerId);
+    }, [customerId, fetchSingleCustomer]);
 
     return customer ? (
         <>

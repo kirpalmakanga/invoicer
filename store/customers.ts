@@ -1,8 +1,14 @@
 import { create } from 'zustand';
-import { createCustomer, getAllCustomers, updateCustomer } from '@/lib/api';
+import {
+    createCustomer,
+    getAllCustomers,
+    getCustomerById,
+    updateCustomer,
+} from '@/lib/api';
 interface CustomersState {
     customers: Customer[];
     fetchCustomers: () => void;
+    fetchSingleCustomer: (customerId: string) => void;
     addCustomer: (data: CustomerFormData) => void;
     updateCustomer: (customerId: string, data: Partial<Customer>) => void;
     removeCustomer: (customerId: string) => void;
@@ -15,6 +21,23 @@ export const useCustomersStore = create<CustomersState>((set, get) => ({
         const customers = await getAllCustomers();
 
         set(() => ({ customers }));
+    },
+    async fetchSingleCustomer(customerId: string) {
+        const { customers } = get();
+        const index = customers.findIndex(({ id }) => id === customerId);
+
+        const customer = await getCustomerById(customerId);
+
+        if (index > -1) {
+            set(() => ({
+                customers: customers.with(index, {
+                    ...customers[index],
+                    ...customer,
+                }),
+            }));
+        } else {
+            set(() => ({ customers: [...customers, customer] }));
+        }
     },
     async addCustomer(data) {
         const customer = await createCustomer(data);
