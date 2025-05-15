@@ -1,9 +1,15 @@
 import { create } from 'zustand';
-import { createInvoice, getAllInvoices, updateInvoice } from '@/lib/api';
+import {
+    createInvoice,
+    getAllInvoices,
+    getInvoiceById,
+    updateInvoice,
+} from '@/lib/api';
 
 interface InvoicesState {
     invoices: Invoice[];
     fetchInvoices: () => void;
+    fetchSingleInvoice: (invoiceId: string) => void;
     addInvoice: (invoicedata: InvoiceFormData) => void;
     updateInvoice: (invoiceId: string, invoiceData: Partial<Invoice>) => void;
     removeInvoice: (invoiceId: string) => void;
@@ -16,6 +22,23 @@ export const useInvoicesStore = create<InvoicesState>((set, get) => ({
         const invoices = await getAllInvoices();
 
         set(() => ({ invoices }));
+    },
+    async fetchSingleInvoice(invoiceId: string) {
+        const { invoices } = get();
+        const index = invoices.findIndex(({ id }) => id === invoiceId);
+
+        const invoice = await getInvoiceById(invoiceId);
+
+        if (index > -1) {
+            set(() => ({
+                invoices: invoices.with(index, {
+                    ...invoices[index],
+                    ...invoice,
+                }),
+            }));
+        } else {
+            set(() => ({ invoices: [...invoices, invoice] }));
+        }
     },
     async addInvoice(invoiceData: InvoiceFormData) {
         const invoice = await createInvoice(invoiceData);

@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useParams } from 'next/navigation';
 import H1 from '@/components/atoms/H1';
 import H2 from '@/components/atoms/H2';
@@ -28,6 +28,14 @@ export default function Invoice() {
     const invoices = useInvoicesStore(({ invoices }) => invoices);
     const customers = useCustomersStore(({ customers }) => customers);
 
+    const fetchSingleInvoice = useInvoicesStore(
+        ({ fetchSingleInvoice }) => fetchSingleInvoice
+    );
+
+    const fetchSingleCustomer = useCustomersStore(
+        ({ fetchSingleCustomer }) => fetchSingleCustomer
+    );
+
     const invoice = useMemo(
         () => invoices.find(({ id }) => id === invoiceId),
         [invoices, invoiceId]
@@ -44,6 +52,14 @@ export default function Invoice() {
         [invoice]
     );
 
+    useEffect(() => {
+        fetchSingleInvoice(invoiceId);
+    }, [invoiceId, fetchSingleInvoice]);
+
+    useEffect(() => {
+        if (invoice) fetchSingleCustomer(invoice.customerId);
+    }, [invoice]);
+
     return invoice ? (
         <>
             <div className="grid grid-cols-2">
@@ -53,7 +69,7 @@ export default function Invoice() {
                         <Badge>{invoice.status}</Badge>
                     </H1>
 
-                    <p className="flex items-center gap-2 mb-4">
+                    {/* <p className="flex items-center gap-2 mb-4">
                         <Clock /> {invoice.dateCreated}
                     </p>
 
@@ -61,7 +77,7 @@ export default function Invoice() {
                         <p className="flex items-center gap-2 mb-4">
                             <Send /> {invoice.dateSent}
                         </p>
-                    ) : null}
+                    ) : null} */}
 
                     <p className="mb-4">
                         Payment method: {invoice.paymentMethod}
