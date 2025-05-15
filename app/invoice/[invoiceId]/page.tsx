@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo } from 'react';
+import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import H1 from '@/components/atoms/H1';
 import H2 from '@/components/atoms/H2';
@@ -57,7 +58,9 @@ export default function Invoice() {
     }, [invoiceId, fetchSingleInvoice]);
 
     useEffect(() => {
-        if (invoice) fetchSingleCustomer(invoice.customerId);
+        if (invoice) {
+            fetchSingleCustomer(invoice.customerId);
+        }
     }, [invoice]);
 
     return invoice ? (
@@ -88,7 +91,11 @@ export default function Invoice() {
                     <div>
                         <H2 className="mb-4">Customer</H2>
 
-                        <p className="mb-4">{customer.name}</p>
+                        <p className="mb-4">
+                            <Link href={`/customer/${customer.id}`}>
+                                {customer.name}
+                            </Link>
+                        </p>
 
                         <CustomerInfo {...customer} />
                     </div>
