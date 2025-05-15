@@ -24,21 +24,22 @@ export const useInvoicesStore = create<InvoicesState>((set, get) => ({
         set(() => ({ invoices }));
     },
     async fetchSingleInvoice(invoiceId: string) {
-        const { invoices } = get();
-        const index = invoices.findIndex(({ id }) => id === invoiceId);
-
         const invoice = await getInvoiceById(invoiceId);
 
-        if (index > -1) {
-            set(() => ({
-                invoices: invoices.with(index, {
-                    ...invoices[index],
-                    ...invoice,
-                }),
-            }));
-        } else {
-            set(() => ({ invoices: [...invoices, invoice] }));
-        }
+        set(({ invoices }) => {
+            const index = invoices.findIndex(({ id }) => id === invoiceId);
+
+            if (index > -1) {
+                return {
+                    invoices: invoices.with(index, {
+                        ...invoices[index],
+                        ...invoice,
+                    }),
+                };
+            } else {
+                return { invoices: [...invoices, invoice] };
+            }
+        });
     },
     async addInvoice(invoiceData: InvoiceFormData) {
         const invoice = await createInvoice(invoiceData);

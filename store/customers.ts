@@ -23,21 +23,22 @@ export const useCustomersStore = create<CustomersState>((set, get) => ({
         set(() => ({ customers }));
     },
     async fetchSingleCustomer(customerId: string) {
-        const { customers } = get();
-        const index = customers.findIndex(({ id }) => id === customerId);
-
         const customer = await getCustomerById(customerId);
 
-        if (index > -1) {
-            set(() => ({
-                customers: customers.with(index, {
-                    ...customers[index],
-                    ...customer,
-                }),
-            }));
-        } else {
-            set(() => ({ customers: [...customers, customer] }));
-        }
+        set(({ customers }) => {
+            const index = customers.findIndex(({ id }) => id === customerId);
+
+            if (index > -1) {
+                return {
+                    customers: customers.with(index, {
+                        ...customers[index],
+                        ...customer,
+                    }),
+                };
+            } else {
+                return { customers: [...customers, customer] };
+            }
+        });
     },
     async addCustomer(data) {
         const customer = await createCustomer(data);
