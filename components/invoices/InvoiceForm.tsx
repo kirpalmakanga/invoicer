@@ -13,7 +13,7 @@ import { useSettingsStore } from '@/store/settings';
 import { useCustomersStore } from '@/store/customers';
 import { useInvoicesStore } from '@/store/invoices';
 
-import { cn, getCurrentYear, omit } from '@/lib/utils';
+import { cn, getCurrentYear } from '@/lib/utils';
 interface InvoiceEditFormProps {
     formData?: Invoice;
     onSubmit: () => void;
