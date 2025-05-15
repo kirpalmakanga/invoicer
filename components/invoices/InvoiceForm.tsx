@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 
 import { Button } from '@/components/ui/button';
@@ -39,6 +39,10 @@ export function InvoiceForm({ formData, onSubmit }: InvoiceEditFormProps) {
     const addInvoice = useInvoicesStore(({ addInvoice }) => addInvoice);
     const updateInvoice = useInvoicesStore(
         ({ updateInvoice }) => updateInvoice
+    );
+
+    const fetchCustomers = useCustomersStore(
+        ({ fetchCustomers }) => fetchCustomers
     );
 
     const customerSelectItems = useMemo(
@@ -80,6 +84,10 @@ export function InvoiceForm({ formData, onSubmit }: InvoiceEditFormProps) {
 
         onSubmit();
     };
+
+    useEffect(() => {
+        fetchCustomers();
+    }, []);
 
     return (
         <form
