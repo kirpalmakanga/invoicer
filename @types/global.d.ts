@@ -1,3 +1,11 @@
+interface Settings {
+    name: string;
+    address: string;
+    email: string;
+    companyId: string;
+    invoicePrefix: string;
+}
+
 interface Customer {
     id: string;
     name: string;
