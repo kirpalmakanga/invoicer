@@ -1,6 +1,7 @@
 import { create } from 'zustand';
+import { updateSettings } from '@/lib/api';
 interface SettingsStoreActions {
-    saveSettings: (data: Partial<Settings>) => void;
+    saveSettings: (data: Settings) => void;
 }
 
 export const useSettingsStore = create<Settings & SettingsStoreActions>(
@@ -10,8 +11,7 @@ export const useSettingsStore = create<Settings & SettingsStoreActions>(
         email: '',
         companyId: '',
         invoicePrefix: '',
-        async saveSettings(updatedSettings: Partial<Settings>) {
-            console.log(JSON.stringify(updatedSettings, null, 2));
+        async saveSettings(updatedSettings: Settings) {
             await updateSettings(updatedSettings);
 
             set((settings) => ({ ...settings, ...updatedSettings }));

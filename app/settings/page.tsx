@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import H1 from '@/components/atoms/H1';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { SettingsStoreState, useSettingsStore } from '@/store/settings';
+import { useSettingsStore } from '@/store/settings';
 import { cn, debounce } from '@/lib/utils';
 import { useEffect } from 'react';
 
@@ -27,7 +27,9 @@ export default function Settings() {
     });
 
     useEffect(() => {
-        const { unsubscribe } = watch(debounce(saveSettings, 500));
+        const { unsubscribe } = watch(
+            debounce((data) => saveSettings(data as Settings), 500)
+        );
 
         return unsubscribe;
     }, [watch]);
