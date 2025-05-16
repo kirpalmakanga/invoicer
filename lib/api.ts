@@ -40,6 +40,10 @@ export async function deleteCustomer(id: string) {
     await api.delete(`/customers/${id}`);
 }
 
+export async function deleteCustomers(ids: string[]) {
+    await api.delete('/customers', { params: { ids: ids.join(',') } });
+}
+
 /** Invoices */
 export async function getAllInvoices() {
     const {
@@ -71,4 +75,8 @@ export async function updateInvoice(id: string, invoiceData: Partial<Invoice>) {
 
 export async function deleteInvoice(id: string) {
     await api.delete(`/invoices/${id}`);
+}
+
+export async function deleteInvoices(ids: string[]) {
+    await api.delete('/invoices', { params: { ids: ids.join(',') } });
 }

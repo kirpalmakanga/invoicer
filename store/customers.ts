@@ -1,6 +1,8 @@
 import { create } from 'zustand';
 import {
     createCustomer,
+    deleteCustomer,
+    deleteCustomers,
     getAllCustomers,
     getCustomerById,
     updateCustomer,
@@ -60,12 +62,16 @@ export const useCustomersStore = create<CustomersState>((set, get) => ({
             }));
         }
     },
-    removeCustomer(customerId) {
+    async removeCustomer(customerId) {
+        await deleteCustomer(customerId);
+
         set(({ customers }) => ({
             customers: customers.filter(({ id }) => id !== customerId),
         }));
     },
-    removeBulkCustomers(customerIds) {
+    async removeBulkCustomers(customerIds) {
+        await deleteCustomers(customerIds);
+
         set(({ customers }) => ({
             customers: customers.filter(({ id }) => !customerIds.includes(id)),
         }));

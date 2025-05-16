@@ -1,6 +1,8 @@
 import { create } from 'zustand';
 import {
     createInvoice,
+    deleteInvoice,
+    deleteInvoices,
     getAllInvoices,
     getInvoiceById,
     updateInvoice,
@@ -61,12 +63,16 @@ export const useInvoicesStore = create<InvoicesState>((set, get) => ({
             }));
         }
     },
-    removeInvoice(invoiceId) {
+    async removeInvoice(invoiceId) {
+        await deleteInvoice(invoiceId);
+
         set(({ invoices }) => ({
             invoices: invoices.filter(({ id }) => id !== invoiceId),
         }));
     },
-    removeBulkInvoices(invoiceIds) {
+    async removeBulkInvoices(invoiceIds) {
+        await deleteInvoices(invoiceIds);
+
         set(({ invoices }) => ({
             invoices: invoices.filter(({ id }) => !invoiceIds.includes(id)),
         }));
