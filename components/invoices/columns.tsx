@@ -43,6 +43,11 @@ function InvoiceMenu({ invoice }: { invoice: Invoice }) {
 
     const closeForm = useCallback(() => setIsFormOpen(false), []);
 
+    const handleRemoveInvoice = useCallback(
+        () => removeInvoice(invoice.id),
+        [invoice]
+    );
+
     return (
         <>
             <DropdownMenu>
@@ -60,7 +65,7 @@ function InvoiceMenu({ invoice }: { invoice: Invoice }) {
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
                         className="text-red-500"
-                        onClick={() => removeInvoice(invoice.id)}
+                        onClick={handleRemoveInvoice}
                     >
                         <Trash className="text-red-500 fill-current" />
                         Delete invoice
