@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import Link from 'next/link';
 import { ColumnDef } from '@tanstack/react-table';
 import { Edit, Trash, MoreHorizontal } from 'lucide-react';
@@ -37,24 +37,11 @@ function InvoiceMenu({ invoice }: { invoice: Invoice }) {
         ({ removeInvoice }) => removeInvoice
     );
 
-    const [{ isFormOpen, formData }, setFormState] = useState<{
-        isFormOpen: boolean;
-        formData?: Invoice;
-    }>({ isFormOpen: false });
+    const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
 
-    function openForm() {
-        setFormState({
-            isFormOpen: true,
-            formData: invoice,
-        });
-    }
+    const openForm = useCallback(() => setIsFormOpen(true), []);
 
-    function closeForm() {
-        setFormState({
-            isFormOpen: false,
-            formData: undefined,
-        });
-    }
+    const closeForm = useCallback(() => setIsFormOpen(false), []);
 
     return (
         <>
@@ -87,7 +74,7 @@ function InvoiceMenu({ invoice }: { invoice: Invoice }) {
                 isOpen={isFormOpen}
                 onClose={closeForm}
             >
-                <InvoiceForm formData={formData} onSubmit={closeForm} />
+                <InvoiceForm invoice={invoice} onSubmit={closeForm} />
             </SlidePanel>
         </>
     );

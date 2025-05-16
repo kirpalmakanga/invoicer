@@ -15,7 +15,7 @@ import { useInvoicesStore } from '@/store/invoices';
 
 import { cn, getCurrentYear } from '@/lib/utils';
 interface InvoiceEditFormProps {
-    formData?: Invoice;
+    invoice?: Invoice;
     onSubmit: () => void;
 }
 
@@ -31,7 +31,7 @@ const statusSelectItems: ComboboxItem<InvoiceStatus>[] = [
     { label: 'Paid', value: 'paid' },
 ];
 
-export function InvoiceForm({ formData, onSubmit }: InvoiceEditFormProps) {
+export function InvoiceForm({ invoice, onSubmit }: InvoiceEditFormProps) {
     const invoicePrefix = useSettingsStore(
         ({ invoicePrefix }) => `${invoicePrefix}${getCurrentYear()}`
     );
@@ -57,8 +57,8 @@ export function InvoiceForm({ formData, onSubmit }: InvoiceEditFormProps) {
         setValue,
         formState: { errors },
     } = useForm<InvoiceFormData>({
-        defaultValues: formData
-            ? formData
+        defaultValues: invoice
+            ? invoice
             : {
                   reference: invoicePrefix,
                   customerId: '',
@@ -76,8 +76,8 @@ export function InvoiceForm({ formData, onSubmit }: InvoiceEditFormProps) {
     });
 
     const submit: SubmitHandler<InvoiceFormData> = (data) => {
-        if (formData) {
-            updateInvoice(formData.id, data);
+        if (invoice) {
+            updateInvoice(invoice.id, data);
         } else {
             addInvoice(data);
         }
