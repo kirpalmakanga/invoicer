@@ -51,7 +51,7 @@ function CustomerMenu({ customer }: { customer: Customer }) {
                         className="text-red-500"
                         onClick={handleRemoveCustomer}
                     >
-                        <Trash className="text-red-500 fill-current" />
+                        <Trash className="text-current" />
                         Delete customer
                     </DropdownMenuItem>
                 </DropdownMenuContent>

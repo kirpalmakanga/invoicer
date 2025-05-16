@@ -67,7 +67,7 @@ function InvoiceMenu({ invoice }: { invoice: Invoice }) {
                         className="text-red-500"
                         onClick={handleRemoveInvoice}
                     >
-                        <Trash className="text-red-500 fill-current" />
+                        <Trash className="text-current" />
                         Delete invoice
                     </DropdownMenuItem>
                 </DropdownMenuContent>
