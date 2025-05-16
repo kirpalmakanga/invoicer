@@ -11,11 +11,11 @@ import { useCustomersStore } from '@/store/customers';
 import { cn, omit } from '@/lib/utils';
 
 interface CustomerEditFormProps {
-    formData?: Customer;
+    customer?: Customer;
     onSubmit: () => void;
 }
 
-export function CustomerForm({ formData, onSubmit }: CustomerEditFormProps) {
+export function CustomerForm({ customer, onSubmit }: CustomerEditFormProps) {
     const addCustomer = useCustomersStore(({ addCustomer }) => addCustomer);
     const updateCustomer = useCustomersStore(
         ({ updateCustomer }) => updateCustomer
@@ -26,8 +26,8 @@ export function CustomerForm({ formData, onSubmit }: CustomerEditFormProps) {
         handleSubmit,
         formState: { errors },
     } = useForm<CustomerFormData>({
-        defaultValues: formData
-            ? omit(formData, 'id')
+        defaultValues: customer
+            ? omit(customer, 'id')
             : {
                   name: '',
                   address: '',
@@ -37,8 +37,8 @@ export function CustomerForm({ formData, onSubmit }: CustomerEditFormProps) {
     });
 
     const submit: SubmitHandler<CustomerFormData> = (data) => {
-        if (formData) {
-            updateCustomer(formData.id, data);
+        if (customer) {
+            updateCustomer(customer.id, data);
         } else {
             addCustomer(data);
         }

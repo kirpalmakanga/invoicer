@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import Link from 'next/link';
 import { Edit, MoreHorizontal, Trash } from 'lucide-react';
 import { ColumnDef } from '@tanstack/react-table';
@@ -21,24 +21,16 @@ function CustomerMenu({ customer }: { customer: Customer }) {
         ({ removeCustomer }) => removeCustomer
     );
 
-    const [{ isFormOpen, formData }, setFormState] = useState<{
-        isFormOpen: boolean;
-        formData?: Customer;
-    }>({ isFormOpen: false });
+    const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
 
-    function openForm() {
-        setFormState({
-            isFormOpen: true,
-            formData: customer,
-        });
-    }
+    const openForm = useCallback(() => setIsFormOpen(true), []);
 
-    function closeForm() {
-        setFormState({
-            isFormOpen: false,
-            formData: undefined,
-        });
-    }
+    const closeForm = useCallback(() => setIsFormOpen(false), []);
+
+    const handleRemoveCustomer = useCallback(
+        () => removeCustomer(customer.id),
+        [customer]
+    );
 
     return (
         <>
@@ -57,7 +49,7 @@ function CustomerMenu({ customer }: { customer: Customer }) {
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
                         className="text-red-500"
-                        onClick={() => removeCustomer(customer.id)}
+                        onClick={handleRemoveCustomer}
                     >
                         <Trash className="text-red-500 fill-current" />
                         Delete customer
@@ -71,7 +63,7 @@ function CustomerMenu({ customer }: { customer: Customer }) {
                 isOpen={isFormOpen}
                 onClose={closeForm}
             >
-                <CustomerForm formData={formData} onSubmit={closeForm} />
+                <CustomerForm customer={customer} onSubmit={closeForm} />
             </SlidePanel>
         </>
     );
