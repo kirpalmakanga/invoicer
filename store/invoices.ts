@@ -8,8 +8,11 @@ import {
     updateInvoice,
 } from '@/lib/api';
 
-interface InvoicesState {
+interface InvoicesStoreState {
     invoices: Invoice[];
+}
+
+interface InvoicesStoreActions {
     fetchInvoices: () => void;
     fetchSingleInvoice: (invoiceId: string) => void;
     addInvoice: (invoicedata: InvoiceFormData) => void;
@@ -18,7 +21,9 @@ interface InvoicesState {
     removeBulkInvoices: (invoiceIds: string[]) => void;
 }
 
-export const useInvoicesStore = create<InvoicesState>((set, get) => ({
+export const useInvoicesStore = create<
+    InvoicesStoreState & InvoicesStoreActions
+>((set, get) => ({
     invoices: [],
     async fetchInvoices() {
         const invoices = await getAllInvoices();

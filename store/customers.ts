@@ -7,7 +7,7 @@ import {
     getCustomerById,
     updateCustomer,
 } from '@/lib/api';
-interface CustomersState {
+interface CustomersStoreState {
     customers: Customer[];
     fetchCustomers: () => void;
     fetchSingleCustomer: (customerId: string) => void;
@@ -17,7 +17,19 @@ interface CustomersState {
     removeBulkCustomers: (customerIds: string[]) => void;
 }
 
-export const useCustomersStore = create<CustomersState>((set, get) => ({
+interface CustomersStoreActions {
+    customers: Customer[];
+    fetchCustomers: () => void;
+    fetchSingleCustomer: (customerId: string) => void;
+    addCustomer: (data: CustomerFormData) => void;
+    updateCustomer: (customerId: string, data: Partial<Customer>) => void;
+    removeCustomer: (customerId: string) => void;
+    removeBulkCustomers: (customerIds: string[]) => void;
+}
+
+export const useCustomersStore = create<
+    CustomersStoreState & CustomersStoreActions
+>((set, get) => ({
     customers: [],
     async fetchCustomers() {
         const customers = await getAllCustomers();
