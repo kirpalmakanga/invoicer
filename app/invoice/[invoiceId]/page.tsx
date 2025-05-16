@@ -3,14 +3,12 @@
 import { useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
+import { Clock, Send } from 'lucide-react';
 import H1 from '@/components/atoms/H1';
 import H2 from '@/components/atoms/H2';
 import { NotFound } from '@/components/NotFound';
 import { useInvoicesStore } from '@/store/invoices';
 import { useCustomersStore } from '@/store/customers';
-import { CustomerInfo } from '@/components/customers/CustomerInfo';
-import { Badge } from '@/components/ui/badge';
-import { Clock, Send } from 'lucide-react';
 import {
     Table,
     TableBody,
@@ -19,9 +17,11 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
+import { CustomerInfo } from '@/components/customers/CustomerInfo';
+import { InvoiceStatusBadge } from '@/components/invoices/InvoiceStatusBadge';
 import { getInvoiceTotal } from '@/lib/invoices';
 
-/** TODO: use simpler table, icon for badge (in table cell too), create StatusBadge (set colors in component) */
+/** TODO: create StatusBadge (set colors in component) */
 
 export default function Invoice() {
     const { invoiceId } = useParams<{ invoiceId: string }>();
@@ -69,7 +69,8 @@ export default function Invoice() {
                 <div>
                     <H1 className="flex items-center gap-2 mb-4">
                         <span>Invoice n° {invoice.reference}</span>
-                        <Badge>{invoice.status}</Badge>
+
+                        <InvoiceStatusBadge status={invoice.status} />
                     </H1>
 
                     {/* <p className="flex items-center gap-2 mb-4">

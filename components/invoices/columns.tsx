@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { DataTableColumnHeader } from '@/components/data-table/column-header';
 import { InvoiceForm } from '@/components/invoices/InvoiceForm';
+import { InvoiceStatusBadge } from '@/components/invoices/InvoiceStatusBadge';
 import { SlidePanel } from '@/components/SlidePanel';
 import { useInvoicesStore } from '@/store/invoices';
 import { useCustomersStore } from '@/store/customers';
@@ -167,25 +168,7 @@ export const columns: ColumnDef<Invoice>[] = [
             row: {
                 original: { status },
             },
-        }) => {
-            let badgeColor = '';
-
-            switch (status) {
-                case 'paid':
-                    badgeColor = 'bg-green-500 text-zinc-100';
-                    break;
-
-                case 'unpaid':
-                    badgeColor = 'bg-red-500 text-zinc-100';
-                    break;
-
-                default:
-                    badgeColor = 'bg-blue-500 text-zinc-100';
-                    break;
-            }
-
-            return <Badge className={badgeColor}>{status}</Badge>;
-        },
+        }) => <InvoiceStatusBadge status={status} />,
     },
     {
         header: 'Amount',
