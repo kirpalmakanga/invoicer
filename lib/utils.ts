@@ -60,3 +60,16 @@ export function sortByKey<T, K extends keyof T>(
         return order * String(a).localeCompare(String(b));
     });
 }
+
+export function debounce<A extends unknown>(
+    callback: (...args: A[]) => void,
+    delay: number
+) {
+    let timer: ReturnType<typeof setTimeout>;
+
+    return (...args: A[]) => {
+        if (timer) clearTimeout(timer);
+
+        timer = setTimeout(() => callback(...args), delay);
+    };
+}
