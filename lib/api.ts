@@ -80,3 +80,7 @@ export async function deleteInvoice(id: string) {
 export async function deleteInvoices(ids: string[]) {
     await api.delete('/invoices', { params: { ids: ids.join(',') } });
 }
+
+export async function updateSettings(settings: Settings) {
+    await api.put('/settings', settings);
+}

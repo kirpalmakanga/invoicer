@@ -1,23 +1,20 @@
 import { create } from 'zustand';
-import { mockSettings } from '@/mocks';
-
-interface SettingsState {
-    name: string;
-    address: string;
-    email: string;
-    companyId: string;
-    invoicePrefix: string;
-    updateSettings: (data: Partial<SettingsState>) => void;
+interface SettingsStoreActions {
+    saveSettings: (data: Partial<Settings>) => void;
 }
 
-export const useSettingsStore = create<SettingsState>((set) => ({
-    // name: '',
-    // address: '',
-    // email: '',
-    // companyId: '',
-    // invoicePrefix: '',
-    ...mockSettings,
-    updateSettings(data: Partial<SettingsState>) {
-        set(() => data);
-    },
-}));
+export const useSettingsStore = create<Settings & SettingsStoreActions>(
+    (set) => ({
+        name: '',
+        address: '',
+        email: '',
+        companyId: '',
+        invoicePrefix: '',
+        async saveSettings(updatedSettings: Partial<Settings>) {
+            console.log(JSON.stringify(updatedSettings, null, 2));
+            await updateSettings(updatedSettings);
+
+            set((settings) => ({ ...settings, ...updatedSettings }));
+        },
+    })
+);
