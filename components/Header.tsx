@@ -3,9 +3,72 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { CustomerForm } from '@/components/customers/CustomerForm';
 import { InvoiceForm } from '@/components/invoices/InvoiceForm';
 import { SlidePanel } from '@/components/SlidePanel';
+import {
+    File,
+    Handshake,
+    LogOut,
+    Settings,
+    User,
+    User2,
+    Users,
+} from 'lucide-react';
+
+function ProfileDropDown() {
+    return (
+        <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="h-8 w-8 p-0">
+                    <span className="sr-only">Open menu</span>
+                    <User className="size-5" />
+                </Button>
+            </DropdownMenuTrigger>
+
+            <DropdownMenuContent align="end">
+                <DropdownMenuItem asChild>
+                    <Link
+                        className="items-center gap-2 text-zinc-100 no-underline"
+                        href="/"
+                    >
+                        <File className="text-current" /> Invoices
+                    </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                    <Link
+                        className="items-center gap-2 text-zinc-100 no-underline"
+                        href="/customers"
+                    >
+                        <Users className="text-current" />
+                        Customers
+                    </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                    <Link
+                        className="items-center gap-2 text-zinc-100 no-underline"
+                        href="/settings"
+                    >
+                        <Settings className="text-current" />
+                        Settings
+                    </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem className="items-center gap-2 text-red-700">
+                    <LogOut className="text-current" />
+                    Log out
+                </DropdownMenuItem>
+            </DropdownMenuContent>
+        </DropdownMenu>
+    );
+}
 
 export default function Header() {
     const [isCustomerFormOpen, setIsCustomerFormOpen] =
@@ -42,6 +105,8 @@ export default function Header() {
                     <Button className="h-8" onClick={openInvoiceForm}>
                         Add invoice
                     </Button>
+
+                    <ProfileDropDown />
                 </div>
             </header>
 
