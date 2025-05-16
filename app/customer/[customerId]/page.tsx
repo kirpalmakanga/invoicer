@@ -22,6 +22,11 @@ export default function Customer() {
         ({ fetchSingleCustomer }) => fetchSingleCustomer
     );
 
+    /** TODO: fetch invoice for current customerId */
+    const fetchInvoices = useInvoicesStore(
+        ({ fetchInvoices }) => fetchInvoices
+    );
+
     const customer = useMemo(
         () => customers.find(({ id }) => id === customerId),
         [customers, customerId]
@@ -38,6 +43,7 @@ export default function Customer() {
 
     useEffect(() => {
         fetchSingleCustomer(customerId);
+        fetchInvoices();
     }, [customerId]);
 
     return customer ? (
