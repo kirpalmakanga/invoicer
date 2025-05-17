@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { signIn, signUp } from '@/lib/api';
+import { useShallow } from 'zustand/react/shallow';
 
 interface AuthStoreState {
     userName: '';
@@ -52,3 +53,7 @@ export const useAuthStore = create<AuthStoreState & AuthStoreActions>()(
         }
     )
 );
+
+export function useAuthentication() {
+    return useAuthStore(useShallow(({ accessToken }) => !!accessToken));
+}

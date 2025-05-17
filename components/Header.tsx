@@ -11,7 +11,6 @@ import {
     UserPlus,
     Users,
 } from 'lucide-react';
-import { useShallow } from 'zustand/react/shallow';
 import { Button } from '@/components/ui/button';
 import {
     DropdownMenu,
@@ -27,11 +26,10 @@ import { LogInForm } from '@/components/auth/LogInForm';
 import { SignUpForm } from '@/components/auth/SignUpForm';
 
 import { useAuthStore } from '@/store/auth';
-function ProfileDropDown() {
-    const isLoggedIn = useAuthStore(
-        useShallow(({ accessToken }) => !!accessToken)
-    );
+import { Authenticated } from './Authenticated';
+import { Unauthenticated } from './Unauthenticated';
 
+function ProfileDropDown() {
     const [isSignUpFormOpen, setIsSignUpFormOpen] = useState<boolean>(false);
     const [isLogInFormOpen, setIsLogInFormOpen] = useState<boolean>(false);
 
@@ -64,61 +62,59 @@ function ProfileDropDown() {
                 </DropdownMenuTrigger>
 
                 <DropdownMenuContent align="end">
-                    {isLoggedIn ? (
-                        <>
-                            <DropdownMenuItem asChild>
-                                <Link
-                                    className="items-center gap-2 text-zinc-100 no-underline"
-                                    href="/"
-                                >
-                                    <File className="text-current" /> Invoices
-                                </Link>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem asChild>
-                                <Link
-                                    className="items-center gap-2 text-zinc-100 no-underline"
-                                    href="/customers"
-                                >
-                                    <Users className="text-current" />
-                                    Customers
-                                </Link>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem asChild>
-                                <Link
-                                    className="items-center gap-2 text-zinc-100 no-underline"
-                                    href="/settings"
-                                >
-                                    <Settings className="text-current" />
-                                    Settings
-                                </Link>
-                            </DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem
-                                className="items-center gap-2 text-red-700"
-                                onClick={logOut}
+                    <Authenticated>
+                        <DropdownMenuItem asChild>
+                            <Link
+                                className="items-center gap-2 text-zinc-100 no-underline"
+                                href="/"
                             >
-                                <LogOut className="text-current" />
-                                Log out
-                            </DropdownMenuItem>
-                        </>
-                    ) : (
-                        <>
-                            <DropdownMenuItem
-                                className="items-center gap-2"
-                                onClick={openLogInForm}
+                                <File className="text-current" /> Invoices
+                            </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                            <Link
+                                className="items-center gap-2 text-zinc-100 no-underline"
+                                href="/customers"
                             >
-                                <LogIn className="text-current" />
-                                Log in
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
-                                className="items-center gap-2"
-                                onClick={openSignUpForm}
+                                <Users className="text-current" />
+                                Customers
+                            </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                            <Link
+                                className="items-center gap-2 text-zinc-100 no-underline"
+                                href="/settings"
                             >
-                                <UserPlus className="text-current" />
-                                Sign up
-                            </DropdownMenuItem>
-                        </>
-                    )}
+                                <Settings className="text-current" />
+                                Settings
+                            </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem
+                            className="items-center gap-2 text-red-700"
+                            onClick={logOut}
+                        >
+                            <LogOut className="text-current" />
+                            Log out
+                        </DropdownMenuItem>
+                    </Authenticated>
+
+                    <Unauthenticated>
+                        <DropdownMenuItem
+                            className="items-center gap-2"
+                            onClick={openLogInForm}
+                        >
+                            <LogIn className="text-current" />
+                            Log in
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                            className="items-center gap-2"
+                            onClick={openSignUpForm}
+                        >
+                            <UserPlus className="text-current" />
+                            Sign up
+                        </DropdownMenuItem>
+                    </Unauthenticated>
                 </DropdownMenuContent>
             </DropdownMenu>
 
@@ -144,10 +140,6 @@ function ProfileDropDown() {
 }
 
 export default function Header() {
-    const isLoggedIn = useAuthStore(
-        useShallow(({ accessToken }) => !!accessToken)
-    );
-
     const [isCustomerFormOpen, setIsCustomerFormOpen] =
         useState<boolean>(false);
     const [isInvoiceFormOpen, setIsInvoiceFormOpen] = useState<boolean>(false);
@@ -176,16 +168,14 @@ export default function Header() {
                 </Link>
 
                 <div className="flex gap-2">
-                    {isLoggedIn ? (
-                        <>
-                            <Button className="h-8" onClick={openCustomerForm}>
-                                Add customer
-                            </Button>
-                            <Button className="h-8" onClick={openInvoiceForm}>
-                                Add invoice
-                            </Button>
-                        </>
-                    ) : null}
+                    <Authenticated>
+                        <Button className="h-8" onClick={openCustomerForm}>
+                            Add customer
+                        </Button>
+                        <Button className="h-8" onClick={openInvoiceForm}>
+                            Add invoice
+                        </Button>
+                    </Authenticated>
 
                     <ProfileDropDown />
                 </div>

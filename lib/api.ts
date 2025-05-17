@@ -1,8 +1,4 @@
-import axios from 'axios';
-
-const api = axios.create({
-    baseURL: `https://api.invoicer.dev`,
-});
+import api from './axiosInstance';
 
 /** Auth */
 export async function signUp(credentials: AuthRegisterCredentials) {
