@@ -1,7 +1,16 @@
 'use client';
 
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import Link from 'next/link';
+import {
+    File,
+    LogIn,
+    LogOut,
+    Settings,
+    User,
+    UserPlus,
+    Users,
+} from 'lucide-react';
 import { useShallow } from 'zustand/react/shallow';
 import { Button } from '@/components/ui/button';
 import {
@@ -14,117 +23,150 @@ import {
 import { CustomerForm } from '@/components/customers/CustomerForm';
 import { InvoiceForm } from '@/components/invoices/InvoiceForm';
 import { SlidePanel } from '@/components/SlidePanel';
-import {
-    File,
-    Handshake,
-    LogIn,
-    LogOut,
-    Settings,
-    User,
-    User2,
-    Users,
-} from 'lucide-react';
-import { useAuthStore } from '@/store/auth';
-import { register } from '@/lib/api';
+import { LogInForm } from '@/components/auth/LogInForm';
+import { SignUpForm } from '@/components/auth/SignUpForm';
 
+import { useAuthStore } from '@/store/auth';
 function ProfileDropDown() {
-    const logIn = useAuthStore(({ logIn }) => logIn);
-    const logOut = useAuthStore(({ logOut }) => logOut);
     const isLoggedIn = useAuthStore(
         useShallow(({ accessToken }) => !!accessToken)
     );
 
-    return (
-        <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="h-8 w-8 p-0">
-                    <span className="sr-only">Open menu</span>
-                    <User className="size-5" />
-                </Button>
-            </DropdownMenuTrigger>
+    const [isSignUpFormOpen, setIsSignUpFormOpen] = useState<boolean>(false);
+    const [isLogInFormOpen, setIsLogInFormOpen] = useState<boolean>(false);
 
-            <DropdownMenuContent align="end">
-                {isLoggedIn ? (
-                    <>
-                        {' '}
-                        <DropdownMenuItem asChild>
-                            <Link
-                                className="items-center gap-2 text-zinc-100 no-underline"
-                                href="/"
+    const openSignUpForm = useCallback(() => {
+        setIsSignUpFormOpen(true);
+    }, []);
+
+    const closeSignUpForm = useCallback(() => {
+        setIsSignUpFormOpen(false);
+    }, []);
+
+    const openLogInForm = useCallback(() => {
+        setIsLogInFormOpen(true);
+    }, []);
+
+    const closeLogInForm = useCallback(() => {
+        setIsLogInFormOpen(false);
+    }, []);
+
+    const logOut = useAuthStore(({ logOut }) => logOut);
+
+    return (
+        <>
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" className="h-8 w-8 p-0">
+                        <span className="sr-only">Open menu</span>
+                        <User className="size-5" />
+                    </Button>
+                </DropdownMenuTrigger>
+
+                <DropdownMenuContent align="end">
+                    {isLoggedIn ? (
+                        <>
+                            <DropdownMenuItem asChild>
+                                <Link
+                                    className="items-center gap-2 text-zinc-100 no-underline"
+                                    href="/"
+                                >
+                                    <File className="text-current" /> Invoices
+                                </Link>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem asChild>
+                                <Link
+                                    className="items-center gap-2 text-zinc-100 no-underline"
+                                    href="/customers"
+                                >
+                                    <Users className="text-current" />
+                                    Customers
+                                </Link>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem asChild>
+                                <Link
+                                    className="items-center gap-2 text-zinc-100 no-underline"
+                                    href="/settings"
+                                >
+                                    <Settings className="text-current" />
+                                    Settings
+                                </Link>
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem
+                                className="items-center gap-2 text-red-700"
+                                onClick={logOut}
                             >
-                                <File className="text-current" /> Invoices
-                            </Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem asChild>
-                            <Link
-                                className="items-center gap-2 text-zinc-100 no-underline"
-                                href="/customers"
+                                <LogOut className="text-current" />
+                                Log out
+                            </DropdownMenuItem>
+                        </>
+                    ) : (
+                        <>
+                            <DropdownMenuItem
+                                className="items-center gap-2"
+                                onClick={openLogInForm}
                             >
-                                <Users className="text-current" />
-                                Customers
-                            </Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem asChild>
-                            <Link
-                                className="items-center gap-2 text-zinc-100 no-underline"
-                                href="/settings"
+                                <LogIn className="text-current" />
+                                Log in
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                                className="items-center gap-2"
+                                onClick={openSignUpForm}
                             >
-                                <Settings className="text-current" />
-                                Settings
-                            </Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem
-                            className="items-center gap-2 text-red-700"
-                            onClick={logOut}
-                        >
-                            <LogOut className="text-current" />
-                            Log out
-                        </DropdownMenuItem>
-                    </>
-                ) : (
-                    <>
-                        <DropdownMenuItem
-                            className="items-center gap-2"
-                            onClick={register}
-                        >
-                            <LogIn className="text-current" />
-                            Register
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                            className="items-center gap-2"
-                            onClick={logIn}
-                        >
-                            <LogIn className="text-current" />
-                            Log in
-                        </DropdownMenuItem>
-                    </>
-                )}
-            </DropdownMenuContent>
-        </DropdownMenu>
+                                <UserPlus className="text-current" />
+                                Sign up
+                            </DropdownMenuItem>
+                        </>
+                    )}
+                </DropdownMenuContent>
+            </DropdownMenu>
+
+            <SlidePanel
+                className="sm:max-w-1/2"
+                title="Sign up"
+                isOpen={isSignUpFormOpen}
+                onClose={closeSignUpForm}
+            >
+                <SignUpForm onSubmit={closeSignUpForm} />
+            </SlidePanel>
+
+            <SlidePanel
+                className="sm:max-w-1/2"
+                title="Log in"
+                isOpen={isLogInFormOpen}
+                onClose={closeLogInForm}
+            >
+                <LogInForm onSubmit={closeLogInForm} />
+            </SlidePanel>
+        </>
     );
 }
 
 export default function Header() {
+    const isLoggedIn = useAuthStore(
+        useShallow(({ accessToken }) => !!accessToken)
+    );
+
     const [isCustomerFormOpen, setIsCustomerFormOpen] =
         useState<boolean>(false);
     const [isInvoiceFormOpen, setIsInvoiceFormOpen] = useState<boolean>(false);
 
-    function openCustomerForm() {
+    const openCustomerForm = useCallback(() => {
         setIsCustomerFormOpen(true);
-    }
+    }, []);
 
-    function closeCustomerForm() {
+    const closeCustomerForm = useCallback(() => {
         setIsCustomerFormOpen(false);
-    }
+    }, []);
 
-    function openInvoiceForm() {
+    const openInvoiceForm = useCallback(() => {
         setIsInvoiceFormOpen(true);
-    }
+    }, []);
 
-    function closeInvoiceForm() {
+    const closeInvoiceForm = useCallback(() => {
         setIsInvoiceFormOpen(false);
-    }
+    }, []);
 
     return (
         <>
@@ -134,12 +176,16 @@ export default function Header() {
                 </Link>
 
                 <div className="flex gap-2">
-                    <Button className="h-8" onClick={openCustomerForm}>
-                        Add customer
-                    </Button>
-                    <Button className="h-8" onClick={openInvoiceForm}>
-                        Add invoice
-                    </Button>
+                    {isLoggedIn ? (
+                        <>
+                            <Button className="h-8" onClick={openCustomerForm}>
+                                Add customer
+                            </Button>
+                            <Button className="h-8" onClick={openInvoiceForm}>
+                                Add invoice
+                            </Button>
+                        </>
+                    ) : null}
 
                     <ProfileDropDown />
                 </div>

@@ -1,3 +1,18 @@
+interface AuthCredentials {
+    email: string;
+    password: string;
+}
+
+interface AuthRegisterCredentials extends AuthCredentials {
+    name: string;
+    confirmPassword: string;
+}
+
+interface AuthTokens {
+    accessToken: string;
+    refreshToken: string;
+}
+
 interface Settings {
     name: string;
     address: string;

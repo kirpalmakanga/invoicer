@@ -5,20 +5,29 @@ const api = axios.create({
 });
 
 /** Auth */
-export async function register() {
-    await api.post('/auth/register', {
-        email: 'makanga.kirpal@gmail.com',
-        name: 'Kirpal Makanga',
-        password: 'root',
-        password_confirmation: 'root',
-    });
+export async function signUp(credentials: AuthRegisterCredentials) {
+    const {
+        data: { data },
+    } = await api.post('/register', credentials);
+
+    return data as AuthTokens;
 }
 
-export async function authorize() {
-    const { data } = await api.get('/oauth/authorize');
+export async function signIn(credentials: AuthCredentials) {
+    const {
+        data: { data: url },
+    } = await api.post('/login', credentials);
 
-    console.log(data);
+    return url as AuthTokens;
 }
+
+// export async function refreshAccessToken(refreshToken: string) {
+//     const {
+//         data: { data },
+//     } = await api.post('/refresh');
+
+//     console.log('refresh', data);
+// }
 
 /** Customers */
 export async function getAllCustomers() {
