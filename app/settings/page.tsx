@@ -9,8 +9,15 @@ import { cn, debounce } from '@/lib/utils';
 import { useEffect } from 'react';
 
 export default function Settings() {
-    const { name, address, email, companyId, invoicePrefix, saveSettings } =
-        useSettingsStore();
+    const {
+        name,
+        address,
+        email,
+        companyId,
+        invoicePrefix,
+        fetchSettings,
+        saveSettings,
+    } = useSettingsStore();
 
     const {
         register,
@@ -33,6 +40,10 @@ export default function Settings() {
 
         return unsubscribe;
     }, [watch]);
+
+    useEffect(() => {
+        fetchSettings();
+    }, []);
 
     return (
         <>
@@ -111,7 +122,7 @@ export default function Settings() {
                             )}
                             htmlFor="companyId"
                         >
-                            Telephone
+                            Company ID
                         </Label>
                         <Input
                             id="companyId"
@@ -132,7 +143,7 @@ export default function Settings() {
                             )}
                             htmlFor="invoicePrefix"
                         >
-                            Email
+                            Invoice prefix
                         </Label>
                         <Input
                             id="invoicePrefix"

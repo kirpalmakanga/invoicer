@@ -4,6 +4,22 @@ const api = axios.create({
     baseURL: `https://api.invoicer.dev`,
 });
 
+/** Auth */
+export async function register() {
+    await api.post('/auth/register', {
+        email: 'makanga.kirpal@gmail.com',
+        name: 'Kirpal Makanga',
+        password: 'root',
+        password_confirmation: 'root',
+    });
+}
+
+export async function authorize() {
+    const { data } = await api.get('/oauth/authorize');
+
+    console.log(data);
+}
+
 /** Customers */
 export async function getAllCustomers() {
     const {
@@ -79,6 +95,15 @@ export async function deleteInvoice(id: string) {
 
 export async function deleteInvoices(ids: string[]) {
     await api.delete('/invoices', { params: { ids: ids.join(',') } });
+}
+
+/** Settings */
+export async function getSettings() {
+    const {
+        data: { data },
+    } = await api.get('/settings');
+
+    return data as Settings | null;
 }
 
 export async function updateSettings(settings: Settings) {
