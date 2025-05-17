@@ -36,7 +36,7 @@ export const useCustomersStore = create<
 
         set(() => ({ customers }));
     },
-    async fetchSingleCustomer(customerId: string) {
+    async fetchSingleCustomer(customerId) {
         const customer = await getCustomerById(customerId);
 
         set(({ customers }) => {

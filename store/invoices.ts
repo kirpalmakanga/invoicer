@@ -30,7 +30,7 @@ export const useInvoicesStore = create<
 
         set(() => ({ invoices }));
     },
-    async fetchSingleInvoice(invoiceId: string) {
+    async fetchSingleInvoice(invoiceId) {
         const invoice = await getInvoiceById(invoiceId);
 
         set(({ invoices }) => {
@@ -48,7 +48,7 @@ export const useInvoicesStore = create<
             }
         });
     },
-    async addInvoice(invoiceData: InvoiceFormData) {
+    async addInvoice(invoiceData) {
         const invoice = await createInvoice(invoiceData);
 
         set(({ invoices }) => ({ invoices: [...invoices, invoice] }));

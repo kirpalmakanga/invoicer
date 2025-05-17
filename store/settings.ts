@@ -19,7 +19,7 @@ export const useSettingsStore = create<Settings & SettingsStoreActions>(
                 set(() => settings);
             }
         },
-        async saveSettings(updatedSettings: Settings) {
+        async saveSettings(updatedSettings) {
             await updateSettings(updatedSettings);
 
             set((settings) => ({ ...settings, ...updatedSettings }));
