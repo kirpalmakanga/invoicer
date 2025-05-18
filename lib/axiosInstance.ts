@@ -13,8 +13,6 @@ function getAccessToken() {
                 state: { accessToken },
             } = JSON.parse(serializedState);
 
-            console.log({ accessToken });
-
             return accessToken;
         }
 
@@ -26,8 +24,6 @@ function getAccessToken() {
 
 instance.interceptors.request.use((config) => {
     const accessToken = getAccessToken();
-
-    console.log('useToken?', accessToken);
 
     if (accessToken) {
         config.headers.Authorization = `Bearer ${accessToken}`;
