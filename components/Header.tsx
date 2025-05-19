@@ -139,21 +139,21 @@ export default function Header() {
                         <NavigationMenu>
                             <NavigationMenuList>
                                 <NavigationMenuItem>
-                                    <Link href="/">
-                                        <NavigationMenuLink
-                                            className={navigationMenuTriggerStyle()}
-                                        >
-                                            Invoices
-                                        </NavigationMenuLink>
+                                    <Link
+                                        href="/"
+                                        className={navigationMenuTriggerStyle()}
+                                        passHref
+                                    >
+                                        Invoices
                                     </Link>
                                 </NavigationMenuItem>
                                 <NavigationMenuItem>
-                                    <Link href="/customers" passHref>
-                                        <NavigationMenuLink
-                                            className={navigationMenuTriggerStyle()}
-                                        >
-                                            Customers
-                                        </NavigationMenuLink>
+                                    <Link
+                                        href="/customers"
+                                        className={navigationMenuTriggerStyle()}
+                                        passHref
+                                    >
+                                        Customers
                                     </Link>
                                 </NavigationMenuItem>
                             </NavigationMenuList>
