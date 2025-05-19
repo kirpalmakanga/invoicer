@@ -1,12 +1,17 @@
 import api from './axiosInstance';
 
-/** Auth */
-export async function signUp(credentials: AuthRegisterCredentials) {
+/** Auth */ export async function redirect() {
     const {
         data: { data },
-    } = await api.post('/register', credentials);
+    } = await api.get('/auth/redirect');
 
-    return data as AuthTokens;
+    window.location.href = data;
+}
+
+export async function register(credentials: AuthRegisterCredentials) {
+    await api.post('/register', credentials);
+
+    await redirect();
 }
 
 export async function signIn(credentials: AuthCredentials) {
@@ -17,13 +22,21 @@ export async function signIn(credentials: AuthCredentials) {
     return url as AuthTokens;
 }
 
-// export async function refreshAccessToken(refreshToken: string) {
-//     const {
-//         data: { data },
-//     } = await api.post('/refresh');
+export async function logIn(code: string, state: string) {
+    const {
+        data: { data },
+    } = await api.get(`/auth/token`, { params: { code, state } });
 
-//     console.log('refresh', data);
-// }
+    return data as AuthTokens;
+}
+
+export async function refreshAccessToken(refreshToken: string) {
+    const {
+        data: { data },
+    } = await api.post('/refresh', { params: { refreshToken } });
+
+    return data as AuthTokens;
+}
 
 /** Customers */
 export async function getAllCustomers() {
