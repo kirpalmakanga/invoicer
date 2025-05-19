@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { signIn, signUp } from '@/lib/api';
+import { logIn, signIn, signUp, refreshAccessToken } from '@/lib/api';
 import { useShallow } from 'zustand/react/shallow';
 
 interface AuthStoreState {
@@ -10,9 +10,11 @@ interface AuthStoreState {
 }
 
 interface AuthStoreActions {
-    signUp: (userData: AuthRegisterCredentials) => void;
-    logIn: (credentials: AuthCredentials) => void;
-    logOut: () => void;
+    // signUp: (userData: AuthRegisterCredentials) => void;
+    signIn: (credentials: AuthCredentials) => Promise<void>;
+    logIn: (code: string, state: string) => Promise<void>;
+    logOut: () => Promise<void>;
+    refreshAccessToken: () => Promise<void>;
 }
 
 function getInitialState(): AuthStoreState {
@@ -27,26 +29,32 @@ export const useAuthStore = create<AuthStoreState & AuthStoreActions>()(
     persist(
         (set, get) => ({
             ...getInitialState(),
-            async signUp(userData: AuthRegisterCredentials) {
-                const data = await signUp(userData);
+            // async signUp(userData: AuthRegisterCredentials) {
+            //     const data = await signUp(userData);
 
-                set(() => data);
-            },
-            async logIn(credentials) {
+            //     set(() => data);
+            // },
+            async signIn(credentials) {
                 const data = await signIn(credentials);
 
                 set(() => data);
             },
-            logOut() {
+            async logIn(code: string, state: string) {
+                const tokens = await logIn(code, state);
+
+                set(() => tokens);
+            },
+            async logOut() {
+                /** TODO: revoke tokens on backend */
                 set(getInitialState);
             },
-            // async refreshAccessToken() {
-            //     const { refreshToken } = get();
+            async refreshAccessToken() {
+                const { refreshToken } = get();
 
-            //     const accessToken = await refreshAccessToken(refreshToken);
+                const tokens = await refreshAccessToken(refreshToken);
 
-            //     set(() => ({ accessToken }));
-            // },
+                set(() => tokens);
+            },
         }),
         {
             name: 'auth',
