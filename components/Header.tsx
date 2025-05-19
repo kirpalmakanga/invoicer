@@ -28,6 +28,7 @@ import { SignUpForm } from '@/components/auth/SignUpForm';
 import { useAuthStore } from '@/store/auth';
 import { Authenticated } from './Authenticated';
 import { Unauthenticated } from './Unauthenticated';
+import { redirect } from '@/lib/api';
 
 function ProfileDropDown() {
     const [isSignUpFormOpen, setIsSignUpFormOpen] = useState<boolean>(false);
@@ -102,7 +103,7 @@ function ProfileDropDown() {
                     <Unauthenticated>
                         <DropdownMenuItem
                             className="items-center gap-2"
-                            onClick={openLogInForm}
+                            onClick={redirect}
                         >
                             <LogIn className="text-current" />
                             Log in
