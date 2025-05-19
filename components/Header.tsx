@@ -19,8 +19,12 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { CustomerForm } from '@/components/customers/CustomerForm';
-import { InvoiceForm } from '@/components/invoices/InvoiceForm';
+import {
+    NavigationMenu,
+    NavigationMenuItem,
+    NavigationMenuList,
+    navigationMenuTriggerStyle,
+} from '@/components/ui/navigation-menu';
 import { SlidePanel } from '@/components/SlidePanel';
 import { SignUpForm } from '@/components/auth/SignUpForm';
 
@@ -28,6 +32,7 @@ import { useAuthStore } from '@/store/auth';
 import { Authenticated } from './Authenticated';
 import { Unauthenticated } from './Unauthenticated';
 import { redirect } from '@/lib/api';
+import { NavigationMenuLink } from '@radix-ui/react-navigation-menu';
 
 function ProfileDropDown() {
     const [isSignUpFormOpen, setIsSignUpFormOpen] = useState<boolean>(false);
@@ -122,26 +127,6 @@ function ProfileDropDown() {
 }
 
 export default function Header() {
-    const [isCustomerFormOpen, setIsCustomerFormOpen] =
-        useState<boolean>(false);
-    const [isInvoiceFormOpen, setIsInvoiceFormOpen] = useState<boolean>(false);
-
-    const openCustomerForm = useCallback(() => {
-        setIsCustomerFormOpen(true);
-    }, []);
-
-    const closeCustomerForm = useCallback(() => {
-        setIsCustomerFormOpen(false);
-    }, []);
-
-    const openInvoiceForm = useCallback(() => {
-        setIsInvoiceFormOpen(true);
-    }, []);
-
-    const closeInvoiceForm = useCallback(() => {
-        setIsInvoiceFormOpen(false);
-    }, []);
-
     return (
         <>
             <header className="p-4 flex justify-between items-center container mx-auto">
@@ -151,35 +136,33 @@ export default function Header() {
 
                 <div className="flex gap-2">
                     <Authenticated>
-                        <Button className="h-8" onClick={openCustomerForm}>
-                            Add customer
-                        </Button>
-                        <Button className="h-8" onClick={openInvoiceForm}>
-                            Add invoice
-                        </Button>
+                        <NavigationMenu>
+                            <NavigationMenuList>
+                                <NavigationMenuItem>
+                                    <Link href="/">
+                                        <NavigationMenuLink
+                                            className={navigationMenuTriggerStyle()}
+                                        >
+                                            Invoices
+                                        </NavigationMenuLink>
+                                    </Link>
+                                </NavigationMenuItem>
+                                <NavigationMenuItem>
+                                    <Link href="/customers" passHref>
+                                        <NavigationMenuLink
+                                            className={navigationMenuTriggerStyle()}
+                                        >
+                                            Customers
+                                        </NavigationMenuLink>
+                                    </Link>
+                                </NavigationMenuItem>
+                            </NavigationMenuList>
+                        </NavigationMenu>
                     </Authenticated>
 
                     <ProfileDropDown />
                 </div>
             </header>
-
-            <SlidePanel
-                className="sm:max-w-1/2"
-                title="Add customer"
-                isOpen={isCustomerFormOpen}
-                onClose={() => setIsCustomerFormOpen(false)}
-            >
-                <CustomerForm onSubmit={closeCustomerForm} />
-            </SlidePanel>
-
-            <SlidePanel
-                className="sm:max-w-1/2"
-                title="Add invoice"
-                isOpen={isInvoiceFormOpen}
-                onClose={() => setIsInvoiceFormOpen(false)}
-            >
-                <InvoiceForm onSubmit={closeInvoiceForm} />
-            </SlidePanel>
         </>
     );
 }
