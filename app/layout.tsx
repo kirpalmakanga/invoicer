@@ -28,10 +28,10 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <Interceptors>
-                <body
-                    className={`${geistSans.variable} ${geistMono.variable} antialiased dark min-h-screen flex flex-col`}
-                >
+            <body
+                className={`${geistSans.variable} ${geistMono.variable} antialiased dark min-h-screen flex flex-col`}
+            >
+                <Interceptors>
                     <Header />
 
                     {/* <Authenticated> */}
@@ -39,8 +39,8 @@ export default function RootLayout({
                         {children}
                     </main>
                     {/* </Authenticated> */}
-                </body>
-            </Interceptors>
+                </Interceptors>
+            </body>
         </html>
     );
 }
