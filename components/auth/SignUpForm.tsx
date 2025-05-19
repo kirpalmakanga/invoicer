@@ -6,13 +6,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
-import { useAuthStore } from '@/store/auth';
-
 import { cn } from '@/lib/utils';
+import { register as registerUser } from '@/lib/api';
 
 export function SignUpForm({ onSubmit }: { onSubmit: () => void }) {
-    const signUp = useAuthStore(({ signUp }) => signUp);
-
     const {
         register,
         handleSubmit,
@@ -27,7 +24,7 @@ export function SignUpForm({ onSubmit }: { onSubmit: () => void }) {
     });
 
     const submit: SubmitHandler<AuthRegisterCredentials> = (data) => {
-        signUp(data);
+        registerUser(data);
 
         onSubmit();
     };

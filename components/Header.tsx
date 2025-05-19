@@ -22,7 +22,6 @@ import {
 import { CustomerForm } from '@/components/customers/CustomerForm';
 import { InvoiceForm } from '@/components/invoices/InvoiceForm';
 import { SlidePanel } from '@/components/SlidePanel';
-import { LogInForm } from '@/components/auth/LogInForm';
 import { SignUpForm } from '@/components/auth/SignUpForm';
 
 import { useAuthStore } from '@/store/auth';
@@ -32,7 +31,6 @@ import { redirect } from '@/lib/api';
 
 function ProfileDropDown() {
     const [isSignUpFormOpen, setIsSignUpFormOpen] = useState<boolean>(false);
-    const [isLogInFormOpen, setIsLogInFormOpen] = useState<boolean>(false);
 
     const openSignUpForm = useCallback(() => {
         setIsSignUpFormOpen(true);
@@ -40,14 +38,6 @@ function ProfileDropDown() {
 
     const closeSignUpForm = useCallback(() => {
         setIsSignUpFormOpen(false);
-    }, []);
-
-    const openLogInForm = useCallback(() => {
-        setIsLogInFormOpen(true);
-    }, []);
-
-    const closeLogInForm = useCallback(() => {
-        setIsLogInFormOpen(false);
     }, []);
 
     const logOut = useAuthStore(({ logOut }) => logOut);
@@ -126,15 +116,6 @@ function ProfileDropDown() {
                 onClose={closeSignUpForm}
             >
                 <SignUpForm onSubmit={closeSignUpForm} />
-            </SlidePanel>
-
-            <SlidePanel
-                className="sm:max-w-1/2"
-                title="Log in"
-                isOpen={isLogInFormOpen}
-                onClose={closeLogInForm}
-            >
-                <LogInForm onSubmit={closeLogInForm} />
             </SlidePanel>
         </>
     );

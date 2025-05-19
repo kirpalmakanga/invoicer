@@ -9,17 +9,9 @@ import api from './axiosInstance';
 }
 
 export async function register(credentials: AuthRegisterCredentials) {
-    await api.post('/register', credentials);
+    await api.post('/auth/register', credentials);
 
     await redirect();
-}
-
-export async function signIn(credentials: AuthCredentials) {
-    const {
-        data: { data: url },
-    } = await api.post('/login', credentials);
-
-    return url as AuthTokens;
 }
 
 export async function logIn(code: string, state: string) {
@@ -33,9 +25,13 @@ export async function logIn(code: string, state: string) {
 export async function refreshAccessToken(refreshToken: string) {
     const {
         data: { data },
-    } = await api.post('/refresh', { params: { refreshToken } });
+    } = await api.post('/auth/refresh', { params: { refreshToken } });
 
     return data as AuthTokens;
+}
+
+export async function logOut() {
+    await api.get('/auth/logout');
 }
 
 /** Customers */

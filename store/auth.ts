@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { logIn, signIn, signUp, refreshAccessToken } from '@/lib/api';
+import { logIn, refreshAccessToken, logOut } from '@/lib/api';
 import { useShallow } from 'zustand/react/shallow';
 
 interface AuthStoreState {
@@ -10,8 +10,6 @@ interface AuthStoreState {
 }
 
 interface AuthStoreActions {
-    // signUp: (userData: AuthRegisterCredentials) => void;
-    signIn: (credentials: AuthCredentials) => Promise<void>;
     logIn: (code: string, state: string) => Promise<void>;
     logOut: () => Promise<void>;
     refreshAccessToken: () => Promise<void>;
@@ -29,23 +27,14 @@ export const useAuthStore = create<AuthStoreState & AuthStoreActions>()(
     persist(
         (set, get) => ({
             ...getInitialState(),
-            // async signUp(userData: AuthRegisterCredentials) {
-            //     const data = await signUp(userData);
-
-            //     set(() => data);
-            // },
-            async signIn(credentials) {
-                const data = await signIn(credentials);
-
-                set(() => data);
-            },
             async logIn(code: string, state: string) {
                 const tokens = await logIn(code, state);
 
                 set(() => tokens);
             },
             async logOut() {
-                /** TODO: revoke tokens on backend */
+                await logOut();
+
                 set(getInitialState);
             },
             async refreshAccessToken() {
