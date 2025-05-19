@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import Header from '@/components/Header';
 import './globals.css';
 import { Authenticated } from '@/components/Authenticated';
+import { Interceptors } from '@/components/Interceptors';
 
 const geistSans = Geist({
     variable: '--font-geist-sans',
@@ -27,17 +28,19 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body
-                className={`${geistSans.variable} ${geistMono.variable} antialiased dark min-h-screen flex flex-col`}
-            >
-                <Header />
+            <Interceptors>
+                <body
+                    className={`${geistSans.variable} ${geistMono.variable} antialiased dark min-h-screen flex flex-col`}
+                >
+                    <Header />
 
-                <Authenticated>
+                    {/* <Authenticated> */}
                     <main className="flex flex-col grow p-4 container mx-auto">
                         {children}
                     </main>
-                </Authenticated>
-            </body>
+                    {/* </Authenticated> */}
+                </body>
+            </Interceptors>
         </html>
     );
 }
