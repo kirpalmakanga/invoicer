@@ -3,7 +3,6 @@ import Link from 'next/link';
 import { ColumnDef } from '@tanstack/react-table';
 import { Edit, Trash, MoreHorizontal } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
     DropdownMenu,
