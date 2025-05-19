@@ -1,12 +1,13 @@
 'use client';
 
-import { useForm } from 'react-hook-form';
+import { useEffect, useMemo } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import H1 from '@/components/atoms/H1';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
 import { useSettingsStore } from '@/store/settings';
-import { cn, debounce } from '@/lib/utils';
-import { useEffect } from 'react';
+import { cn, isEqual } from '@/lib/utils';
 
 export default function Settings() {
     const {
@@ -20,8 +21,10 @@ export default function Settings() {
     } = useSettingsStore();
 
     const {
+        getValues,
+        reset,
         register,
-        watch,
+        handleSubmit,
         formState: { errors },
     } = useForm<Settings>({
         defaultValues: {
@@ -34,22 +37,26 @@ export default function Settings() {
     });
 
     useEffect(() => {
-        const { unsubscribe } = watch(
-            debounce((data) => saveSettings(data as Settings), 500)
-        );
-
-        return unsubscribe;
-    }, [watch]);
-
-    useEffect(() => {
         fetchSettings();
     }, []);
+
+    useEffect(() => {
+        reset({ name, address, email, companyId, invoicePrefix });
+    }, [name, address, email, companyId, invoicePrefix]);
+
+    const submit: SubmitHandler<Settings> = (data) => {
+        if (
+            !isEqual(data, { name, address, email, companyId, invoicePrefix })
+        ) {
+            saveSettings(data);
+        }
+    };
 
     return (
         <>
             <H1 className="mb-4">Settings</H1>
 
-            <form>
+            <form onSubmit={handleSubmit(submit)}>
                 <div className="flex flex-col grow gap-6">
                     <div>
                         <Label
@@ -155,6 +162,10 @@ export default function Settings() {
                             </span>
                         )}
                     </div>
+                </div>
+
+                <div className="flex justify-end pb-4 mt-6">
+                    <Button type="submit">Save</Button>
                 </div>
             </form>
         </>
