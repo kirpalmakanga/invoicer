@@ -7,6 +7,8 @@ import { useCustomersStore } from '@/store/customers';
 import { useInvoicesStore } from '@/store/invoices';
 import { sortByKey } from '@/lib/utils';
 import H1 from '@/components/atoms/H1';
+import { AddCustomerButton } from '@/components/customers/AddCustomerButton';
+import { AddInvoiceButton } from '@/components/invoices/AddInvoiceButton';
 
 export default function Home() {
     const invoices = useInvoicesStore(({ invoices }) => invoices);
@@ -49,6 +51,11 @@ export default function Home() {
     return (
         <>
             <H1 className="mb-4">Invoices</H1>
+
+            <div className="flex justify-end gap-4">
+                <AddCustomerButton />
+                <AddInvoiceButton />
+            </div>
 
             <DataTable
                 columns={columns}
