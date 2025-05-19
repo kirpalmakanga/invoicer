@@ -12,7 +12,7 @@ import { cn, omit } from '@/lib/utils';
 
 interface CustomerEditFormProps {
     customer?: Customer;
-    onSubmit: () => void;
+    onSubmit: (customer?: Customer) => void;
 }
 
 export function CustomerForm({ customer, onSubmit }: CustomerEditFormProps) {
@@ -36,14 +36,16 @@ export function CustomerForm({ customer, onSubmit }: CustomerEditFormProps) {
               },
     });
 
-    const submit: SubmitHandler<CustomerFormData> = (data) => {
+    const submit: SubmitHandler<CustomerFormData> = async (data) => {
         if (customer) {
             updateCustomer(customer.id, data);
-        } else {
-            addCustomer(data);
-        }
 
-        onSubmit();
+            onSubmit();
+        } else {
+            const customer = await addCustomer(data);
+
+            onSubmit(customer);
+        }
     };
 
     return (

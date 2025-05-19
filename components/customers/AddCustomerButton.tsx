@@ -3,7 +3,11 @@ import { Button } from '@/components/ui/button';
 import { SlidePanel } from '@/components/SlidePanel';
 import { CustomerForm } from '@/components/customers/CustomerForm';
 
-export function AddCustomerButton() {
+export function AddCustomerButton({
+    onCreated,
+}: {
+    onCreated?: (customer: Customer) => void;
+}) {
     const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
 
     const openForm = useCallback(() => {
@@ -14,9 +18,17 @@ export function AddCustomerButton() {
         setIsFormOpen(false);
     }, []);
 
+    const handleSubmit = useCallback((customer?: Customer) => {
+        if (customer && onCreated) {
+            onCreated(customer);
+        }
+
+        closeForm();
+    }, []);
+
     return (
         <>
-            <Button className="h-8" onClick={openForm}>
+            <Button className="h-8" type="button" onClick={openForm}>
                 Add customer
             </Button>
 
@@ -26,7 +38,7 @@ export function AddCustomerButton() {
                 isOpen={isFormOpen}
                 onClose={closeForm}
             >
-                <CustomerForm onSubmit={closeForm} />
+                <CustomerForm onSubmit={handleSubmit} />
             </SlidePanel>
         </>
     );
