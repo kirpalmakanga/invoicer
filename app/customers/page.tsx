@@ -6,6 +6,7 @@ import { DataTable } from '@/components/data-table';
 import { useCustomersStore } from '@/store/customers';
 import { sortByKey } from '@/lib/utils';
 import H1 from '@/components/atoms/H1';
+import { AddCustomerButton } from '@/components/customers/AddCustomerButton';
 
 export default function Customers() {
     const customers = useCustomersStore(({ customers }) => customers);
@@ -44,6 +45,10 @@ export default function Customers() {
     return (
         <>
             <H1>Customers</H1>
+
+            <div className="flex justify-end gap-4">
+                <AddCustomerButton />
+            </div>
 
             <DataTable
                 columns={customerColumns}
