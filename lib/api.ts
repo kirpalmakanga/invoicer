@@ -25,7 +25,7 @@ export async function logIn(code: string, state: string) {
 export async function refreshAccessToken(refreshToken: string) {
     const {
         data: { data },
-    } = await api.post('/auth/refresh', { params: { refreshToken } });
+    } = await api.get('/auth/refresh', { params: { refreshToken } });
 
     return data as AuthTokens;
 }
