@@ -41,6 +41,9 @@ export function InvoiceForm({ invoice, onSubmit }: InvoiceEditFormProps) {
         ({ updateInvoice }) => updateInvoice
     );
 
+    const fetchSettings = useSettingsStore(
+        ({ fetchSettings }) => fetchSettings
+    );
     const fetchCustomers = useCustomersStore(
         ({ fetchCustomers }) => fetchCustomers
     );
@@ -60,7 +63,7 @@ export function InvoiceForm({ invoice, onSubmit }: InvoiceEditFormProps) {
         defaultValues: invoice
             ? invoice
             : {
-                  reference: invoicePrefix,
+                  reference: '',
                   customerId: '',
                   items: [
                       {
@@ -86,8 +89,17 @@ export function InvoiceForm({ invoice, onSubmit }: InvoiceEditFormProps) {
     };
 
     useEffect(() => {
+        fetchSettings();
         fetchCustomers();
     }, []);
+
+    useEffect(() => {
+        const currentReference = getValues('reference');
+
+        if (!currentReference) {
+            setValue('reference', invoicePrefix);
+        }
+    }, [invoicePrefix]);
 
     return (
         <form
