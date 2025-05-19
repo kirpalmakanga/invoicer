@@ -16,7 +16,7 @@ export function AddInvoiceButton() {
 
     return (
         <>
-            <Button className="h-8" onClick={openForm}>
+            <Button className="h-8" type="button" onClick={openForm}>
                 Add invoice
             </Button>
 
