@@ -1,13 +1,14 @@
 'use client';
 
+import { ReactNode, useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import instance from '@/lib/axiosInstance';
 import { useAuthStore } from '@/store/auth';
-import { useRouter } from 'next/navigation';
-import { ReactNode, useEffect } from 'react';
 
 export function Interceptors({ children }: { children: ReactNode }) {
     const { push } = useRouter();
     const { refreshAccessToken, logOut } = useAuthStore();
+    const [isAuthReady, setIsAuthReady] = useState<boolean>(false);
 
     useEffect(() => {
         instance.interceptors.request.use((config) => {
@@ -44,7 +45,9 @@ export function Interceptors({ children }: { children: ReactNode }) {
                 return Promise.reject(error);
             }
         );
+
+        setIsAuthReady(true);
     }, []);
 
-    return children;
+    return isAuthReady ? children : null;
 }
