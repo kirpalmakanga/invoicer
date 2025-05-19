@@ -11,7 +11,7 @@ interface CustomersStoreState {
     customers: Customer[];
     fetchCustomers: () => void;
     fetchSingleCustomer: (customerId: string) => void;
-    addCustomer: (data: CustomerFormData) => void;
+    addCustomer: (data: CustomerFormData) => Promise<Customer>;
     updateCustomer: (customerId: string, data: Partial<Customer>) => void;
     removeCustomer: (customerId: string) => void;
     removeBulkCustomers: (customerIds: string[]) => void;
@@ -58,6 +58,8 @@ export const useCustomersStore = create<
         const customer = await createCustomer(data);
 
         set(({ customers }) => ({ customers: [...customers, customer] }));
+
+        return customer;
     },
     async updateCustomer(customerId, customerData) {
         const { customers } = get();
