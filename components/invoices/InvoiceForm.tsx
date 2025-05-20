@@ -100,7 +100,7 @@ export function InvoiceForm({ invoice, onSubmit }: InvoiceEditFormProps) {
     }, []);
 
     const onCreatedCustomer = useCallback(({ id: customerId }: Customer) => {
-        setValue('customerId', customerId, { shouldDirty: true });
+        setValue('customerId', customerId);
 
         forceRender();
     }, []);
