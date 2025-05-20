@@ -1,6 +1,6 @@
 'use client';
 
-import { Key, useState } from 'react';
+import { Key, useEffect, useState } from 'react';
 import { Check, ChevronsUpDown } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
@@ -67,6 +67,8 @@ export function Combobox<T>({
             setOpen(false);
         };
     }
+
+    useEffect(() => setLocalValue(selectedValue), [selectedValue]);
 
     return (
         <Popover open={open} onOpenChange={setOpen}>
