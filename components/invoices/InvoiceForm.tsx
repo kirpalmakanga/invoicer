@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 
 import { Button } from '@/components/ui/button';
@@ -13,7 +13,9 @@ import { useSettingsStore } from '@/store/settings';
 import { useCustomersStore } from '@/store/customers';
 import { useInvoicesStore } from '@/store/invoices';
 
-import { cn, getCurrentYear } from '@/lib/utils';
+import { cn, getCurrentYear, sortByKey } from '@/lib/utils';
+import { useShallow } from 'zustand/react/shallow';
+import { AddCustomerButton } from '../customers/AddCustomerButton';
 interface InvoiceEditFormProps {
     invoice?: Invoice;
     onSubmit: () => void;
@@ -31,11 +33,25 @@ const statusSelectItems: ComboboxItem<InvoiceStatus>[] = [
     { label: 'Paid', value: 'paid' },
 ];
 
+function useForceRender() {
+    const [, setState] = useState<boolean>(false);
+
+    return () => setState((v) => !v);
+}
+
 export function InvoiceForm({ invoice, onSubmit }: InvoiceEditFormProps) {
+    const forceRender = useForceRender();
+
     const invoicePrefix = useSettingsStore(
         ({ invoicePrefix }) => `${invoicePrefix}${getCurrentYear()}`
     );
-    const customers = useCustomersStore(({ customers }) => customers);
+    const customers = useCustomersStore(
+        useShallow(({ customers }) => sortByKey(customers, 'name'))
+    );
+    const customerSelectItems = useMemo(
+        () => customers.map(({ id: value, name: label }) => ({ label, value })),
+        [customers]
+    );
     const addInvoice = useInvoicesStore(({ addInvoice }) => addInvoice);
     const updateInvoice = useInvoicesStore(
         ({ updateInvoice }) => updateInvoice
@@ -46,11 +62,6 @@ export function InvoiceForm({ invoice, onSubmit }: InvoiceEditFormProps) {
     );
     const fetchCustomers = useCustomersStore(
         ({ fetchCustomers }) => fetchCustomers
-    );
-
-    const customerSelectItems = useMemo(
-        () => customers.map(({ id: value, name: label }) => ({ label, value })),
-        [customers]
     );
 
     const {
@@ -78,7 +89,7 @@ export function InvoiceForm({ invoice, onSubmit }: InvoiceEditFormProps) {
               },
     });
 
-    const submit: SubmitHandler<InvoiceFormData> = (data) => {
+    const submit: SubmitHandler<InvoiceFormData> = useCallback((data) => {
         if (invoice) {
             updateInvoice(invoice.id, data);
         } else {
@@ -86,7 +97,13 @@ export function InvoiceForm({ invoice, onSubmit }: InvoiceEditFormProps) {
         }
 
         onSubmit();
-    };
+    }, []);
+
+    const onCreatedCustomer = useCallback(({ id: customerId }: Customer) => {
+        setValue('customerId', customerId, { shouldDirty: true });
+
+        forceRender();
+    }, []);
 
     useEffect(() => {
         fetchSettings();
@@ -149,6 +166,10 @@ export function InvoiceForm({ invoice, onSubmit }: InvoiceEditFormProps) {
                             This field is required
                         </span>
                     )}
+
+                    <div className="flex justify-end mt-4">
+                        <AddCustomerButton onCreated={onCreatedCustomer} />
+                    </div>
                 </div>
 
                 <div>
