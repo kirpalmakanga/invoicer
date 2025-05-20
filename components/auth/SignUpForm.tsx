@@ -122,7 +122,7 @@ export function SignUpForm({ onSubmit }: { onSubmit: () => void }) {
                 </div>
             </div>
 
-            <div className="flex justify-end pb-4">
+            <div className="flex justify-end mt-8 mb-4">
                 <Button type="submit">Save</Button>
             </div>
         </form>
