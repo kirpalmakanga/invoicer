@@ -1,6 +1,5 @@
 'use client';
 
-import { useCallback, useState } from 'react';
 import Link from 'next/link';
 import {
     File,
@@ -25,27 +24,24 @@ import {
     NavigationMenuList,
     navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu';
-import { SlidePanel } from '@/components/SlidePanel';
-import { SignUpForm } from '@/components/auth/SignUpForm';
 
 import { useAuthStore } from '@/store/auth';
 import { Authenticated } from './Authenticated';
 import { Unauthenticated } from './Unauthenticated';
 import { redirect } from '@/lib/api';
-import { NavigationMenuLink } from '@radix-ui/react-navigation-menu';
+import { useRouter } from 'next/navigation';
+import { useCallback } from 'react';
 
 function ProfileDropDown() {
-    const [isSignUpFormOpen, setIsSignUpFormOpen] = useState<boolean>(false);
-
-    const openSignUpForm = useCallback(() => {
-        setIsSignUpFormOpen(true);
-    }, []);
-
-    const closeSignUpForm = useCallback(() => {
-        setIsSignUpFormOpen(false);
-    }, []);
+    const { push } = useRouter();
 
     const logOut = useAuthStore(({ logOut }) => logOut);
+
+    const handleLogOut = useCallback(() => {
+        logOut();
+
+        push('/');
+    }, []);
 
     return (
         <>
@@ -62,23 +58,6 @@ function ProfileDropDown() {
                         <DropdownMenuItem asChild>
                             <Link
                                 className="items-center gap-2 text-zinc-100 no-underline"
-                                href="/"
-                            >
-                                <File className="text-current" /> Invoices
-                            </Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem asChild>
-                            <Link
-                                className="items-center gap-2 text-zinc-100 no-underline"
-                                href="/customers"
-                            >
-                                <Users className="text-current" />
-                                Customers
-                            </Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem asChild>
-                            <Link
-                                className="items-center gap-2 text-zinc-100 no-underline"
                                 href="/settings"
                             >
                                 <Settings className="text-current" />
@@ -88,7 +67,7 @@ function ProfileDropDown() {
                         <DropdownMenuSeparator />
                         <DropdownMenuItem
                             className="items-center gap-2 text-red-700"
-                            onClick={logOut}
+                            onClick={handleLogOut}
                         >
                             <LogOut className="text-current" />
                             Log out
@@ -105,7 +84,7 @@ function ProfileDropDown() {
                         </DropdownMenuItem>
                         <DropdownMenuItem
                             className="items-center gap-2"
-                            onClick={openSignUpForm}
+                            onClick={() => push('/auth/sign-up')}
                         >
                             <UserPlus className="text-current" />
                             Sign up
@@ -113,15 +92,6 @@ function ProfileDropDown() {
                     </Unauthenticated>
                 </DropdownMenuContent>
             </DropdownMenu>
-
-            <SlidePanel
-                className="sm:max-w-1/2"
-                title="Sign up"
-                isOpen={isSignUpFormOpen}
-                onClose={closeSignUpForm}
-            >
-                <SignUpForm onSubmit={closeSignUpForm} />
-            </SlidePanel>
         </>
     );
 }
