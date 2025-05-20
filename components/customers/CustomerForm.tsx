@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 
 import { useCustomersStore } from '@/store/customers';
 
-import { cn, omit } from '@/lib/utils';
+import { cn, omit, stopPropagation } from '@/lib/utils';
 
 interface CustomerEditFormProps {
     customer?: Customer;
@@ -51,7 +51,7 @@ export function CustomerForm({ customer, onSubmit }: CustomerEditFormProps) {
     return (
         <form
             className="flex flex-col grow px-4"
-            onSubmit={handleSubmit(submit)}
+            onSubmit={stopPropagation(handleSubmit(submit))}
         >
             <div className="flex flex-col grow gap-6">
                 <div>
