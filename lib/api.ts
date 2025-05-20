@@ -1,4 +1,5 @@
 import api from './axiosInstance';
+import { InvoiceSchema } from './validation';
 
 /** Auth */ export async function redirect() {
     const {
@@ -91,7 +92,7 @@ export async function getInvoiceById(id: string) {
     return data as Invoice;
 }
 
-export async function createInvoice(invoiceData: InvoiceFormData) {
+export async function createInvoice(invoiceData: InvoiceSchema) {
     const {
         data: { data },
     } = await api.post(`/invoices`, invoiceData);
@@ -99,7 +100,7 @@ export async function createInvoice(invoiceData: InvoiceFormData) {
     return data as Invoice;
 }
 
-export async function updateInvoice(id: string, invoiceData: Partial<Invoice>) {
+export async function updateInvoice(id: string, invoiceData: InvoiceSchema) {
     await api.put(`/invoices/${id}`, invoiceData);
 }
 

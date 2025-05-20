@@ -7,6 +7,7 @@ import {
     getInvoiceById,
     updateInvoice,
 } from '@/lib/api';
+import { InvoiceSchema } from '@/lib/validation';
 
 interface InvoicesStoreState {
     invoices: Invoice[];
@@ -15,8 +16,8 @@ interface InvoicesStoreState {
 interface InvoicesStoreActions {
     fetchInvoices: () => void;
     fetchSingleInvoice: (invoiceId: string) => void;
-    addInvoice: (invoicedata: InvoiceFormData) => void;
-    updateInvoice: (invoiceId: string, invoiceData: Partial<Invoice>) => void;
+    addInvoice: (invoicedata: InvoiceSchema) => void;
+    updateInvoice: (invoiceId: string, invoiceData: InvoiceSchema) => void;
     removeInvoice: (invoiceId: string) => void;
     removeBulkInvoices: (invoiceIds: string[]) => void;
 }

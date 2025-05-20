@@ -21,6 +21,8 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
 import { isEqual } from '@/lib/utils';
+import { useFormContext } from 'react-hook-form';
+import { InvoiceSchema } from '@/lib/validation';
 
 interface InvoiceItemInputProps {
     items: InvoiceItem[];
@@ -32,6 +34,11 @@ function getInitialRowState(): InvoiceItem {
 }
 
 export function InvoiceItemInput({ items, onUpdate }: InvoiceItemInputProps) {
+    const {
+        formState: { errors },
+        setValue,
+    } = useFormContext<InvoiceSchema>();
+
     const [currentItems, setCurrentItems] = useState<InvoiceItem[]>(
         items.length ? items : [getInitialRowState()]
     );
@@ -91,6 +98,11 @@ export function InvoiceItemInput({ items, onUpdate }: InvoiceItemInputProps) {
                                             },
                                         }) => updateRow(index, { description })}
                                     />
+                                    {errors.items?.[index]?.description && (
+                                        <span className="text-xs text-red-500">
+                                            This field is required
+                                        </span>
+                                    )}
                                 </TableCell>
                                 <TableCell className="align-top w-[100px]">
                                     <Input
@@ -106,6 +118,11 @@ export function InvoiceItemInput({ items, onUpdate }: InvoiceItemInputProps) {
                                             })
                                         }
                                     />
+                                    {errors.items?.[index]?.quantity && (
+                                        <span className="text-xs text-red-500">
+                                            This field is required
+                                        </span>
+                                    )}
                                 </TableCell>
                                 <TableCell className="align-top w-[100px]">
                                     <Input
@@ -121,6 +138,11 @@ export function InvoiceItemInput({ items, onUpdate }: InvoiceItemInputProps) {
                                             })
                                         }
                                     />
+                                    {errors.items?.[index]?.pricePerUnit && (
+                                        <span className="text-xs text-red-500">
+                                            This field is required
+                                        </span>
+                                    )}
                                 </TableCell>
                                 <TableCell className="align-top w-[100px]">
                                     <Select
@@ -134,9 +156,6 @@ export function InvoiceItemInput({ items, onUpdate }: InvoiceItemInputProps) {
                                         </SelectTrigger>
                                         <SelectContent>
                                             <SelectGroup>
-                                                <SelectLabel>
-                                                    Fruits
-                                                </SelectLabel>
                                                 <SelectItem value="hour">
                                                     Hour
                                                 </SelectItem>
@@ -149,6 +168,12 @@ export function InvoiceItemInput({ items, onUpdate }: InvoiceItemInputProps) {
                                             </SelectGroup>
                                         </SelectContent>
                                     </Select>
+
+                                    {errors.items?.[index]?.unit && (
+                                        <span className="text-xs text-red-500">
+                                            This field is required
+                                        </span>
+                                    )}
                                 </TableCell>
                                 {currentItems.length > 1 ? (
                                     <TableCell className="align-top w-[50px]">
