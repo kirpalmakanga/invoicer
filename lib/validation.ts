@@ -4,7 +4,9 @@ const invoiceItemSchema = object({
     description: string().required(),
     quantity: number().integer().positive().required(),
     pricePerUnit: number().positive().required(),
-    unit: mixed<InvoiceItemUnit>().required(),
+    unit: mixed<InvoiceItemUnit>()
+        .transform((v) => (!v ? undefined : v))
+        .required(),
 });
 
 export const invoiceSchema = object({
