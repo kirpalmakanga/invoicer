@@ -73,3 +73,11 @@ export function debounce<A extends unknown>(
         timer = setTimeout(() => callback(...args), delay);
     };
 }
+
+export function stopPropagation<F extends Function>(callback: F) {
+    return (e: { stopPropagation: () => void }) => {
+        e.stopPropagation();
+
+        callback(e);
+    };
+}
