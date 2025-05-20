@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useForm, SubmitHandler, Form, FormProvider } from 'react-hook-form';
+import { useForm, SubmitHandler, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { Button } from '@/components/ui/button';
@@ -164,6 +164,7 @@ export function InvoiceForm({ invoice, onSubmit }: InvoiceEditFormProps) {
                             Customer
                         </Label>
                         <Combobox
+                            placeholder="Select a customer"
                             selectedValue={getValues('customerId')}
                             items={customerSelectItems}
                             onSelect={(value) => setValue('customerId', value)}
