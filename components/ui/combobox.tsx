@@ -77,7 +77,10 @@ export function Combobox<T>({
                     variant="outline"
                     role="combobox"
                     aria-expanded={open}
-                    className="w-full text-left"
+                    className="w-full text-left data-[placeholder]:text-muted-foreground"
+                    {...(getCurrentLabel() === placeholder
+                        ? { 'data-placeholder': '' }
+                        : {})}
                 >
                     <span className="grow truncate">{getCurrentLabel()}</span>
 
