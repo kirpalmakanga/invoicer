@@ -30,10 +30,7 @@ export function SignUpForm({ onSubmit }: { onSubmit: () => void }) {
     };
 
     return (
-        <form
-            className="flex flex-col grow px-4"
-            onSubmit={handleSubmit(submit)}
-        >
+        <form className="flex flex-col grow" onSubmit={handleSubmit(submit)}>
             <div className="flex flex-col grow gap-6">
                 <div>
                     <Label
