@@ -115,6 +115,8 @@ export function InvoiceForm({ invoice, onSubmit }: InvoiceEditFormProps) {
 
         if (!currentReference) {
             setValue('reference', invoicePrefix);
+
+            forceRender();
         }
     }, [invoicePrefix]);
 
