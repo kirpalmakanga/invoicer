@@ -24,15 +24,10 @@ export function Interceptors({ children }: { children: ReactNode }) {
         instance.interceptors.response.use(
             (response) => response,
             async (error) => {
-                const { refreshToken } = useAuthStore.getState();
                 const {
                     response: { status },
                     config,
                 } = error;
-
-                if (!refreshToken) {
-                    return Promise.reject(error);
-                }
 
                 if (status === 401 && !config._retry) {
                     await refreshAccessToken();
