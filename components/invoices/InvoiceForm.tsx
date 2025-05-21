@@ -45,7 +45,7 @@ export function InvoiceForm({ invoice, onSubmit }: InvoiceEditFormProps) {
     const forceRender = useForceRender();
 
     const invoicePrefix = useSettingsStore(
-        ({ invoicePrefix }) => `${invoicePrefix}${getCurrentYear()}`
+        ({ invoicePrefix }) => invoicePrefix
     );
     const customers = useCustomersStore(
         useShallow(({ customers }) => sortByKey(customers, 'name'))
@@ -116,10 +116,8 @@ export function InvoiceForm({ invoice, onSubmit }: InvoiceEditFormProps) {
     }, []);
 
     useEffect(() => {
-        const currentReference = getValues('reference');
-
-        if (!currentReference) {
-            setValue('reference', invoicePrefix);
+        if (!invoice?.id) {
+            setValue('reference', `${invoicePrefix}${getCurrentYear()}`);
 
             forceRender();
         }
