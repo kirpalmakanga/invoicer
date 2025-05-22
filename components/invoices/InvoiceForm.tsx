@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm, SubmitHandler, FormProvider } from 'react-hook-form';
+import { useShallow } from 'zustand/react/shallow';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { Button } from '@/components/ui/button';
@@ -9,14 +10,14 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Combobox, ComboboxItem } from '@/components/ui/combobox';
 import { InvoiceItemInput } from '@/components/invoices/InvoiceItemInput';
+import { AddCustomerButton } from '@/components/customers/AddCustomerButton';
 
 import { useSettingsStore } from '@/store/settings';
 import { useCustomersStore } from '@/store/customers';
 import { useInvoicesStore } from '@/store/invoices';
 
-import { cn, getCurrentYear, sortByKey } from '@/lib/utils';
-import { useShallow } from 'zustand/react/shallow';
-import { AddCustomerButton } from '../customers/AddCustomerButton';
+import { cn, sortByKey } from '@/lib/utils';
+import { getCurrentYear } from '@/lib/dates';
 import { InvoiceSchema, invoiceSchema } from '@/lib/validation';
 interface InvoiceEditFormProps {
     invoice?: Invoice;

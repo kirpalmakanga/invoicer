@@ -43,10 +43,6 @@ export function omit<T extends object, K extends keyof T>(
     return base;
 }
 
-export function getCurrentYear() {
-    return new Date().getFullYear();
-}
-
 enum SortByOrder {
     ASC = 1,
     DESC = -1,

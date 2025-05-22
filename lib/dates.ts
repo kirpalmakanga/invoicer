@@ -21,6 +21,10 @@ export function getYear(date: string | number | Date) {
     return getDateObject(date).getFullYear();
 }
 
+export function getCurrentYear() {
+    return getYear(new Date());
+}
+
 export function getMonth(date: string | number | Date) {
     return getDateObject(date).getMonth() + 1;
 }
