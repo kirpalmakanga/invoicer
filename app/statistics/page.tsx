@@ -1,12 +1,10 @@
 'use client';
 
-import { TrendingUp } from 'lucide-react';
-import { Area, AreaChart, CartesianGrid, XAxis } from 'recharts';
+import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts';
 
 import {
     Card,
     CardContent,
-    CardDescription,
     CardFooter,
     CardHeader,
     CardTitle,
@@ -18,32 +16,27 @@ import {
     ChartTooltipContent,
 } from '@/components/ui/chart';
 import { useInvoicesStore } from '@/store/invoices';
-import { useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { getInvoicesChartData } from '@/lib/invoices';
-
-const chartData = [
-    { month: 'January', revenue: 1860 },
-    { month: 'February', revenue: 3050 },
-    { month: 'March', revenue: 2370 },
-    { month: 'April', revenue: 730 },
-    { month: 'May', revenue: 2090 },
-    { month: 'June', revenue: 2140 },
-    { month: 'July', revenue: 2140 },
-    { month: 'August', revenue: 2140 },
-    { month: 'September', revenue: 840 },
-    { month: 'October', revenue: 1140 },
-    { month: 'November', revenue: 3140 },
-    { month: 'December', revenue: 2540 },
-];
+import {
+    Select,
+    SelectTrigger,
+    SelectValue,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+} from '@/components/ui/select';
+import { getCurrentYear } from '@/lib/dates';
 
 const chartConfig = {
     desktop: {
-        label: 'Desktop',
+        label: 'Revenue',
         color: 'hsl(var(--chart-1))',
     },
 } satisfies ChartConfig;
 
 export default function Statistics() {
+    const [selectedYear, setSelectedYear] = useState<number>(getCurrentYear());
     const invoices = useInvoicesStore(({ invoices }) => invoices);
     const fetchInvoices = useInvoicesStore(
         ({ fetchInvoices }) => fetchInvoices
@@ -54,9 +47,30 @@ export default function Statistics() {
         [invoices]
     );
 
+    const currentYearChartData = useMemo(() => {
+        const chartData = chartDataByYear.get(selectedYear);
+
+        if (chartData) {
+            return chartData
+                .entries()
+                .toArray()
+                .map(([month, revenue]) => ({
+                    month,
+                    revenue,
+                }));
+        }
+
+        return [];
+    }, [chartDataByYear]);
+
     const years = useMemo(
         () => chartDataByYear.keys().toArray(),
         [chartDataByYear]
+    );
+
+    const handleSelectYear = useCallback(
+        (year: string) => setSelectedYear(parseInt(year)),
+        []
     );
 
     useEffect(() => {
@@ -64,63 +78,63 @@ export default function Statistics() {
     }, []);
 
     return (
-        <Card>
-            <CardHeader>
-                <CardTitle>Area Chart - Linear</CardTitle>
-                <CardDescription>
-                    Showing total visitors for the last 6 months
-                </CardDescription>
-            </CardHeader>
-            <CardContent>
-                <ChartContainer config={chartConfig}>
-                    <AreaChart
-                        accessibilityLayer
-                        data={chartData}
-                        margin={{
-                            left: 12,
-                            right: 12,
-                        }}
-                    >
-                        <CartesianGrid vertical={false} />
-                        <XAxis
-                            dataKey="month"
-                            tickLine={false}
-                            axisLine={false}
-                            tickMargin={8}
-                            tickFormatter={(value) => value.slice(0, 3)}
-                        />
-                        <ChartTooltip
-                            cursor={false}
-                            content={
-                                <ChartTooltipContent
-                                    indicator="dot"
-                                    hideLabel
-                                />
-                            }
-                        />
-                        <Area
-                            dataKey="revenue"
-                            type="linear"
-                            fill="var(--color-desktop)"
-                            fillOpacity={0.4}
-                            stroke="var(--color-desktop)"
-                        />
-                    </AreaChart>
-                </ChartContainer>
-            </CardContent>
-            <CardFooter>
-                <div className="flex w-full items-start gap-2 text-sm">
-                    <div className="grid gap-2">
-                        <div className="flex items-center gap-2 font-medium leading-none">
-                            Trending up by 5.2% this month{' '}
-                            <TrendingUp className="h-4 w-4" />
-                        </div>
-                        <div className="flex items-center gap-2 leading-none text-muted-foreground">
-                            January - June 2024
-                        </div>
+        <>
+            <div className="flex justify-end mb-4">
+                <Select
+                    value={String(selectedYear)}
+                    onValueChange={handleSelectYear}
+                >
+                    <SelectTrigger className="w-[180px]">
+                        <SelectValue placeholder="Select a year" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectGroup>
+                            {years.map((year) => (
+                                <SelectItem key={year} value={String(year)}>
+                                    {year}
+                                </SelectItem>
+                            ))}
+                        </SelectGroup>
+                    </SelectContent>
+                </Select>
+            </div>
+
+            <Card>
+                <CardHeader>
+                    <CardTitle>Revenues for year {selectedYear}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <ChartContainer config={chartConfig}>
+                        <BarChart
+                            accessibilityLayer
+                            data={currentYearChartData}
+                        >
+                            <CartesianGrid vertical={false} />
+                            <XAxis
+                                dataKey="month"
+                                tickLine={false}
+                                tickMargin={10}
+                                axisLine={false}
+                                tickFormatter={(value) => value.slice(0, 3)}
+                            />
+                            <ChartTooltip
+                                cursor={false}
+                                content={<ChartTooltipContent hideLabel />}
+                            />
+                            <Bar
+                                dataKey="revenue"
+                                fill="var(--chart-1)"
+                                radius={8}
+                            />
+                        </BarChart>
+                    </ChartContainer>
+                </CardContent>
+                <CardFooter className="flex-col items-start gap-2 text-sm">
+                    <div className="leading-none text-muted-foreground">
+                        {/* Showing total visitors for the last 6 months */}
                     </div>
-                </div>
-            </CardFooter>
-        </Card>
+                </CardFooter>
+            </Card>
+        </>
     );
 }

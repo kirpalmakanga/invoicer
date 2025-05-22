@@ -1,17 +1,17 @@
-export const monthNamesByNumber = {
-    1: 'January',
-    2: 'February',
-    3: 'March',
-    4: 'April',
-    5: 'May',
-    6: 'June',
-    7: 'July',
-    8: 'August',
-    9: 'September',
-    10: 'October',
-    11: 'November',
-    12: 'December',
-};
+export const monthNames = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+];
 
 function getDateObject(date: string | number | Date) {
     return date instanceof Date ? date : new Date(date);
@@ -26,13 +26,11 @@ export function getCurrentYear() {
 }
 
 export function getMonth(date: string | number | Date) {
-    return getDateObject(date).getMonth() + 1;
+    return getDateObject(date).getMonth();
 }
 
 export function getMonthName(date: string | number | Date) {
-    return monthNamesByNumber[
-        getMonth(date) as keyof typeof monthNamesByNumber
-    ];
+    return monthNames[getMonth(date)];
 }
 
 export function getTimestamp(date: string | number | Date) {

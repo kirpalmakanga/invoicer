@@ -1,4 +1,4 @@
-import { getMonthName, getTimestamp, getYear } from './dates';
+import { getMonthName, getTimestamp, getYear, monthNames } from './dates';
 
 export function getInvoiceItemTotal({ quantity, pricePerUnit }: InvoiceItem) {
     return quantity * pricePerUnit;
@@ -8,24 +8,29 @@ export function getInvoiceTotal({ items }: Invoice) {
     return items.reduce((total, item) => total + getInvoiceItemTotal(item), 0);
 }
 
+function getDefaultYearChartData(): Map<string, number> {
+    return new Map(monthNames.map((monthName) => [monthName, 0]));
+}
+
 export function getInvoicesChartData(invoices: Invoice[]) {
-    return invoices
-        .toSorted(
-            ({ datePaid: a }, { datePaid: b }) =>
-                getTimestamp(a) - getTimestamp(b)
-        )
+    /** TODO: add datePaid to invoices */
+    const data = invoices
+        .filter(({ status }) => status === 'paid')
+        // .toSorted(
+        //     ({ datePaid: a }, { datePaid: b }) =>
+        //         getTimestamp(a) - getTimestamp(b)
+        // )
         .reduce((charts, invoice) => {
-            const { status, datePaid } = invoice;
+            const { datePaid } = invoice;
 
-            if (status !== 'paid') {
-                return charts;
-            }
+            // const year = getYear(datePaid);
+            // const month = getMonthName(datePaid);
 
-            const year = getYear(datePaid);
-            const month = getMonthName(datePaid);
+            const year = 2025;
+            const month = 'January';
 
             if (!charts.get(year)) {
-                charts.set(year, new Map());
+                charts.set(year, getDefaultYearChartData());
             }
 
             charts
@@ -38,4 +43,6 @@ export function getInvoicesChartData(invoices: Invoice[]) {
 
             return charts;
         }, new Map() as Map<number, Map<ReturnType<typeof getMonthName>, number>>);
+
+    return data;
 }
