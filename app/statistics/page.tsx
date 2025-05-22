@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/chart';
 import { useInvoicesStore } from '@/store/invoices';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { getInvoicesChartData } from '@/lib/invoices';
+import { getRevenueStatistics } from '@/lib/invoices';
 import {
     Select,
     SelectTrigger,
@@ -43,7 +43,7 @@ export default function Statistics() {
     );
 
     const chartDataByYear = useMemo(
-        () => getInvoicesChartData(invoices),
+        () => getRevenueStatistics(invoices),
         [invoices]
     );
 

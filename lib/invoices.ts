@@ -8,11 +8,11 @@ export function getInvoiceTotal({ items }: Invoice) {
     return items.reduce((total, item) => total + getInvoiceItemTotal(item), 0);
 }
 
-function getDefaultYearChartData(): Map<string, number> {
+function getDefaultYearChartData() {
     return new Map(monthNames.map((monthName) => [monthName, 0]));
 }
 
-export function getInvoicesChartData(invoices: Invoice[]) {
+export function getRevenueStatistics(invoices: Invoice[]) {
     /** TODO: add datePaid to invoices */
     const data = invoices
         .filter(({ status }) => status === 'paid')
@@ -29,20 +29,21 @@ export function getInvoicesChartData(invoices: Invoice[]) {
             const year = 2025;
             const month = 'January';
 
-            if (!charts.get(year)) {
+            if (!charts.has(year)) {
                 charts.set(year, getDefaultYearChartData());
             }
 
-            charts
-                .get(year)
-                ?.set(
+            const yearData = charts.get(year);
+
+            if (yearData) {
+                yearData.set(
                     month,
-                    (charts.get(year)?.get(month) || 0) +
-                        getInvoiceTotal(invoice)
+                    (yearData.get(month) || 0) + getInvoiceTotal(invoice)
                 );
+            }
 
             return charts;
-        }, new Map() as Map<number, Map<ReturnType<typeof getMonthName>, number>>);
+        }, new Map() as Map<number, Map<string, number>>);
 
     return data;
 }
