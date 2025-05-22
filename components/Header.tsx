@@ -126,6 +126,15 @@ export default function Header() {
                                         Customers
                                     </Link>
                                 </NavigationMenuItem>
+                                <NavigationMenuItem>
+                                    <Link
+                                        href="/statistics"
+                                        className={navigationMenuTriggerStyle()}
+                                        passHref
+                                    >
+                                        Statistics
+                                    </Link>
+                                </NavigationMenuItem>
                             </NavigationMenuList>
                         </NavigationMenu>
                     </Authenticated>
