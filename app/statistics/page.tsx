@@ -1,5 +1,6 @@
 'use client';
 
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts';
 
 import {
@@ -15,9 +16,6 @@ import {
     ChartTooltip,
     ChartTooltipContent,
 } from '@/components/ui/chart';
-import { useInvoicesStore } from '@/store/invoices';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { getRevenueStatistics } from '@/lib/invoices';
 import {
     Select,
     SelectTrigger,
@@ -26,6 +24,9 @@ import {
     SelectGroup,
     SelectItem,
 } from '@/components/ui/select';
+import { useInvoicesStore } from '@/store/invoices';
+import { getRevenueStatistics } from '@/lib/invoices';
+
 import { getCurrentYear } from '@/lib/dates';
 
 const chartConfig = {
