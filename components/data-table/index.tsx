@@ -26,6 +26,7 @@ import { Input } from '@/components/ui/input';
 
 import { DataTablePagination } from './pagination';
 import { DataTableViewOptions } from './view-options';
+import Prompt from '@/components/Prompt';
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
@@ -99,10 +100,17 @@ export function DataTable<TData, TValue>({
 
                 <div className="flex items-center space-x-2">
                     {Object.keys(rowSelection).length ? (
-                        <Button className="h-8" onClick={handleRemoveSelected}>
-                            <Trash />
-                            Remove selected
-                        </Button>
+                        <Prompt
+                            title={`Delete selected items ?`}
+                            description="This action cannot be undone"
+                            confirmLabel="Delete"
+                            onSubmit={handleRemoveSelected}
+                        >
+                            <Button className="h-8">
+                                <Trash />
+                                Remove selected
+                            </Button>
+                        </Prompt>
                     ) : null}
 
                     <DataTableViewOptions table={table} />
