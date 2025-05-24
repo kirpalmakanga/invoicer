@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { format } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
 
@@ -17,7 +17,9 @@ function getDateObject(date: string | number | Date) {
     return date instanceof Date ? date : new Date(date);
 }
 
-export function DatePicker<T extends string | number | Date>({
+export function DatePicker<
+    T extends string | number | Date | null | undefined
+>({
     className,
     value,
     onUpdate,
@@ -26,16 +28,21 @@ export function DatePicker<T extends string | number | Date>({
     value: T;
     onUpdate: (value: Date) => void;
 }) {
-    const [date, setDate] = useState<Date>(getDateObject(value));
+    const currentValue = useMemo(
+        () => (value ? getDateObject(value) : new Date()),
+        [value]
+    );
+
+    const [date, setDate] = useState<Date>(currentValue);
 
     const handleSelectDate = useCallback((date: Date | undefined) => {
         if (date) setDate(date);
     }, []);
 
     useEffect(() => {
-        const newDate = getDateObject(value);
-
-        if (newDate.getTime() !== date.getTime()) setDate(getDateObject(value));
+        if (currentValue.getTime() !== date.getTime()) {
+            setDate(currentValue);
+        }
     }, [value]);
 
     useEffect(() => {
