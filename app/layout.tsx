@@ -1,10 +1,10 @@
 import { ReactNode } from 'react';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
+import { Toaster } from '@/components/ui/sonner';
 import Header from '@/components/Header';
-import './globals.css';
-import { Authenticated } from '@/components/Authenticated';
 import { Interceptors } from '@/components/Interceptors';
+import './globals.css';
 
 const geistSans = Geist({
     variable: '--font-geist-sans',
@@ -40,6 +40,8 @@ export default function RootLayout({
                     </main>
                     {/* </Authenticated> */}
                 </Interceptors>
+
+                <Toaster />
             </body>
         </html>
     );

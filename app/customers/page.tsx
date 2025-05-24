@@ -1,12 +1,13 @@
 'use client';
 
 import { useCallback, useEffect, useMemo } from 'react';
+import { toast } from 'sonner';
 import { customerColumns } from '@/components/customers/columns';
 import { DataTable } from '@/components/data-table';
 import { useCustomersStore } from '@/store/customers';
-import { sortByKey } from '@/lib/utils';
 import H1 from '@/components/atoms/H1';
 import { AddCustomerButton } from '@/components/customers/AddCustomerButton';
+import { sortByKey } from '@/lib/utils';
 
 export default function Customers() {
     const customers = useCustomersStore(({ customers }) => customers);
@@ -34,6 +35,8 @@ export default function Customers() {
             }, []);
 
             removeBulkCustomers(ids);
+
+            toast.success(`${indexes.length} invoices removed.`);
         },
         [sortedCustomers, removeBulkCustomers]
     );
