@@ -18,9 +18,11 @@ function getDateObject(date: string | number | Date) {
 }
 
 export function DatePicker<T extends string | number | Date>({
+    className,
     value,
     onUpdate,
 }: {
+    className: string;
     value: T;
     onUpdate: (value: Date) => void;
 }) {
@@ -47,7 +49,8 @@ export function DatePicker<T extends string | number | Date>({
                     variant={'outline'}
                     className={cn(
                         'w-[240px] justify-start text-left font-normal',
-                        !date && 'text-muted-foreground'
+                        !date && 'text-muted-foreground',
+                        className
                     )}
                 >
                     <CalendarIcon />
