@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import {
-    File,
     LogIn,
     LogOut,
     Settings,
