@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo } from 'react';
+import { toast } from 'sonner';
 import { DataTable } from '@/components/data-table';
 import { columns } from '@/components/invoices/columns';
 import { useCustomersStore } from '@/store/customers';
@@ -36,6 +37,8 @@ export default function Home() {
             }, []);
 
             removeBulkInvoices(ids);
+
+            toast.success(`${indexes.length} invoices removed.`);
         },
         [sortedInvoices, removeBulkInvoices]
     );

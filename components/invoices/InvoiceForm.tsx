@@ -4,6 +4,8 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm, SubmitHandler, FormProvider } from 'react-hook-form';
 import { useShallow } from 'zustand/react/shallow';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { toast } from 'sonner';
+import { Save } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -101,6 +103,12 @@ export function InvoiceForm({ invoice, onSubmit }: InvoiceEditFormProps) {
         } else {
             addInvoice(data);
         }
+
+        toast.success(
+            ` ${invoice?.id ? 'Updated' : 'Created'} invoice: ${
+                data.reference
+            }.`
+        );
 
         onSubmit();
     }, []);
@@ -248,7 +256,10 @@ export function InvoiceForm({ invoice, onSubmit }: InvoiceEditFormProps) {
                 </div>
 
                 <div className="flex justify-end pb-4">
-                    <Button type="submit">Save</Button>
+                    <Button type="submit">
+                        <Save />
+                        Save
+                    </Button>
                 </div>
             </form>
         </FormProvider>

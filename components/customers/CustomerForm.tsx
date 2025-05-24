@@ -1,6 +1,8 @@
 'use client';
 
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { Save } from 'lucide-react';
+import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -46,6 +48,10 @@ export function CustomerForm({ customer, onSubmit }: CustomerEditFormProps) {
 
             onSubmit(customer);
         }
+
+        toast.success(
+            ` ${customer?.id ? 'Updated' : 'Created'} customer: ${data.name}.`
+        );
     };
 
     return (
@@ -137,7 +143,9 @@ export function CustomerForm({ customer, onSubmit }: CustomerEditFormProps) {
             </div>
 
             <div className="flex justify-end pb-4">
-                <Button type="submit">Save</Button>
+                <Button type="submit">
+                    <Save /> Save
+                </Button>
             </div>
         </form>
     );
