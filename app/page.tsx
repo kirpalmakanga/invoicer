@@ -1,12 +1,11 @@
 'use client';
 
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect } from 'react';
 import { toast } from 'sonner';
 import { DataTable } from '@/components/data-table';
 import { columns } from '@/components/invoices/columns';
 import { useCustomersStore } from '@/store/customers';
 import { useInvoicesStore } from '@/store/invoices';
-import { sortByKey } from '@/lib/utils';
 import H1 from '@/components/atoms/H1';
 import { AddInvoiceButton } from '@/components/invoices/AddInvoiceButton';
 
@@ -22,14 +21,9 @@ export default function Home() {
         ({ fetchCustomers }) => fetchCustomers
     );
 
-    const sortedInvoices = useMemo(
-        () => sortByKey(invoices, 'reference', -1),
-        [invoices]
-    );
-
     const handleRemoveSelected = useCallback(
         (indexes: number[]) => {
-            const ids = sortedInvoices.reduce((acc: string[], { id }, i) => {
+            const ids = invoices.reduce((acc: string[], { id }, i) => {
                 if (indexes.includes(i)) {
                     acc.push(id);
                 }
@@ -40,7 +34,7 @@ export default function Home() {
 
             toast.success(`${indexes.length} invoices removed.`);
         },
-        [sortedInvoices, removeBulkInvoices]
+        [invoices, removeBulkInvoices]
     );
 
     useEffect(() => {
@@ -60,7 +54,7 @@ export default function Home() {
 
             <DataTable
                 columns={columns}
-                data={sortedInvoices}
+                data={invoices}
                 onRemoveSelected={handleRemoveSelected}
             />
         </>
