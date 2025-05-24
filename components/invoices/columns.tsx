@@ -18,6 +18,8 @@ import { SlidePanel } from '@/components/SlidePanel';
 import { useInvoicesStore } from '@/store/invoices';
 import { useCustomersStore } from '@/store/customers';
 import { getInvoiceTotal } from '@/lib/invoices';
+import { toast } from 'sonner';
+import Prompt from '../Prompt';
 
 function InvoiceCustomerLink({ customerId }: { customerId: string }) {
     const customer = useCustomersStore(({ customers }) =>
@@ -42,10 +44,26 @@ function InvoiceMenu({ invoice }: { invoice: Invoice }) {
 
     const closeForm = useCallback(() => setIsFormOpen(false), []);
 
-    const handleRemoveInvoice = useCallback(
-        () => removeInvoice(invoice.id),
-        [invoice]
+    const [isRemovalPromptOpen, setIsRemovalPromptOpen] =
+        useState<boolean>(false);
+
+    const openRemovalPrompt = useCallback(
+        () => setIsRemovalPromptOpen(true),
+        []
     );
+
+    const closeRemovalPrompt = useCallback(
+        () => setIsRemovalPromptOpen(false),
+        []
+    );
+
+    const handleRemoveInvoice = useCallback(() => {
+        const { id, reference } = invoice;
+
+        removeInvoice(id);
+
+        toast.success(`Removed invoice: ${reference}`);
+    }, [invoice]);
 
     return (
         <>
@@ -64,7 +82,7 @@ function InvoiceMenu({ invoice }: { invoice: Invoice }) {
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
                         className="text-red-500"
-                        onClick={handleRemoveInvoice}
+                        onClick={openRemovalPrompt}
                     >
                         <Trash className="text-current" />
                         Delete invoice
@@ -80,6 +98,15 @@ function InvoiceMenu({ invoice }: { invoice: Invoice }) {
             >
                 <InvoiceForm invoice={invoice} onSubmit={closeForm} />
             </SlidePanel>
+
+            <Prompt
+                isOpen={isRemovalPromptOpen}
+                title={`Delete invoice ${invoice.reference} ?`}
+                description="This action cannot be undone"
+                confirmLabel="Delete"
+                onSubmit={handleRemoveInvoice}
+                onClose={closeRemovalPrompt}
+            />
         </>
     );
 }

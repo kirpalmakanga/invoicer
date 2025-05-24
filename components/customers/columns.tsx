@@ -2,7 +2,8 @@ import { useCallback, useState } from 'react';
 import Link from 'next/link';
 import { Edit, MoreHorizontal, Trash } from 'lucide-react';
 import { ColumnDef } from '@tanstack/react-table';
-import { Checkbox } from '../ui/checkbox';
+import { toast } from 'sonner';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -14,6 +15,7 @@ import { Button } from '@/components/ui/button';
 import { DataTableColumnHeader } from '@/components/data-table/column-header';
 import { CustomerForm } from '@/components/customers/CustomerForm';
 import { SlidePanel } from '@/components/SlidePanel';
+import Prompt from '@/components/Prompt';
 import { useCustomersStore } from '@/store/customers';
 
 function CustomerMenu({ customer }: { customer: Customer }) {
@@ -27,10 +29,26 @@ function CustomerMenu({ customer }: { customer: Customer }) {
 
     const closeForm = useCallback(() => setIsFormOpen(false), []);
 
-    const handleRemoveCustomer = useCallback(
-        () => removeCustomer(customer.id),
-        [customer]
+    const [isRemovalPromptOpen, setIsRemovalPromptOpen] =
+        useState<boolean>(false);
+
+    const openRemovalPrompt = useCallback(
+        () => setIsRemovalPromptOpen(true),
+        []
     );
+
+    const closeRemovalPrompt = useCallback(
+        () => setIsRemovalPromptOpen(false),
+        []
+    );
+
+    const handleRemoveCustomer = useCallback(() => {
+        const { id, name } = customer;
+
+        removeCustomer(id);
+
+        toast.success(`Removed customer: ${name}`);
+    }, [customer]);
 
     return (
         <>
@@ -49,7 +67,7 @@ function CustomerMenu({ customer }: { customer: Customer }) {
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
                         className="text-red-500"
-                        onClick={handleRemoveCustomer}
+                        onClick={openRemovalPrompt}
                     >
                         <Trash className="text-current" />
                         Delete customer
@@ -65,6 +83,15 @@ function CustomerMenu({ customer }: { customer: Customer }) {
             >
                 <CustomerForm customer={customer} onSubmit={closeForm} />
             </SlidePanel>
+
+            <Prompt
+                isOpen={isRemovalPromptOpen}
+                title={`Delete customer ${customer.name} ?`}
+                description="This action cannot be undone"
+                confirmLabel="Delete"
+                onSubmit={handleRemoveCustomer}
+                onClose={closeRemovalPrompt}
+            />
         </>
     );
 }
