@@ -20,6 +20,7 @@ import { useCustomersStore } from '@/store/customers';
 import { getInvoiceTotal } from '@/lib/invoices';
 import { toast } from 'sonner';
 import Prompt from '../Prompt';
+import { formatDate } from '@/lib/dates';
 
 function InvoiceCustomerLink({ customerId }: { customerId: string }) {
     const customer = useCustomersStore(({ customers }) =>
@@ -187,6 +188,22 @@ export const columns: ColumnDef<Invoice>[] = [
                 original: { status },
             },
         }) => <InvoiceStatusBadge status={status} />,
+    },
+    {
+        meta: 'Payment date',
+        accessorKey: 'datePaid',
+        header: ({ column }) => (
+            <DataTableColumnHeader
+                column={column}
+                title="Payment date"
+                className="bg-red"
+            />
+        ),
+        cell: ({
+            row: {
+                original: { datePaid },
+            },
+        }) => (datePaid ? formatDate(datePaid, 'DD/MM/YYYY') : ''),
     },
     {
         header: 'Amount',
