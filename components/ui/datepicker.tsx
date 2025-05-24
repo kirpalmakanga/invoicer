@@ -17,7 +17,7 @@ function getDateObject(date: string | number | Date) {
     return date instanceof Date ? date : new Date(date);
 }
 
-export function DatePickerDemo<T extends string | number | Date>({
+export function DatePicker<T extends string | number | Date>({
     value,
     onUpdate,
 }: {
@@ -29,6 +29,12 @@ export function DatePickerDemo<T extends string | number | Date>({
     const handleSelectDate = useCallback((date: Date | undefined) => {
         if (date) setDate(date);
     }, []);
+
+    useEffect(() => {
+        const newDate = getDateObject(value);
+
+        if (newDate.getTime() !== date.getTime()) setDate(getDateObject(value));
+    }, [value]);
 
     useEffect(() => {
         onUpdate(date);
