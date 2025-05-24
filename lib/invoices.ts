@@ -13,21 +13,17 @@ function getDefaultYearChartData() {
 }
 
 export function getRevenueStatistics(invoices: Invoice[]) {
-    /** TODO: add datePaid to invoices */
     const data = invoices
         .filter(({ status }) => status === 'paid')
-        // .toSorted(
-        //     ({ datePaid: a }, { datePaid: b }) =>
-        //         getTimestamp(a) - getTimestamp(b)
-        // )
+        .toSorted(
+            ({ datePaid: a }, { datePaid: b }) =>
+                getTimestamp(a) - getTimestamp(b)
+        )
         .reduce((charts, invoice) => {
             const { datePaid } = invoice;
 
-            // const year = getYear(datePaid);
-            // const month = getMonthName(datePaid);
-
-            const year = 2025;
-            const month = 'January';
+            const year = getYear(datePaid);
+            const month = getMonthName(datePaid);
 
             if (!charts.has(year)) {
                 charts.set(year, getDefaultYearChartData());
