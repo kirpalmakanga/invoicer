@@ -1,8 +1,7 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useForm, SubmitHandler, FormProvider } from 'react-hook-form';
-import { useShallow } from 'zustand/react/shallow';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { toast } from 'sonner';
 import { Save } from 'lucide-react';
@@ -11,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Combobox, ComboboxItem } from '@/components/ui/combobox';
+import { DatePicker } from '@/components/ui/datepicker';
 import { InvoiceItemInput } from '@/components/invoices/InvoiceItemInput';
 import { AddCustomerButton } from '@/components/customers/AddCustomerButton';
 
@@ -18,9 +18,10 @@ import { useSettingsStore } from '@/store/settings';
 import { useCustomersStore } from '@/store/customers';
 import { useInvoicesStore } from '@/store/invoices';
 
-import { cn, sortByKey } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import { getCurrentYear } from '@/lib/dates';
 import { InvoiceSchema, invoiceSchema } from '@/lib/validation';
+import { useForceRender } from '@/hooks/helpers';
 interface InvoiceEditFormProps {
     invoice?: Invoice;
     onSubmit: () => void;
@@ -38,21 +39,13 @@ const statusSelectItems: ComboboxItem<InvoiceStatus>[] = [
     { label: 'Paid', value: 'paid' },
 ];
 
-function useForceRender() {
-    const [, setState] = useState<boolean>(false);
-
-    return () => setState((v) => !v);
-}
-
 export function InvoiceForm({ invoice, onSubmit }: InvoiceEditFormProps) {
     const forceRender = useForceRender();
 
     const invoicePrefix = useSettingsStore(
         ({ invoicePrefix }) => invoicePrefix
     );
-    const customers = useCustomersStore(
-        useShallow(({ customers }) => sortByKey(customers, 'name'))
-    );
+    const customers = useCustomersStore(({ customers }) => customers);
     const customerSelectItems = useMemo(
         () => customers.map(({ id: value, name: label }) => ({ label, value })),
         [customers]
@@ -85,6 +78,7 @@ export function InvoiceForm({ invoice, onSubmit }: InvoiceEditFormProps) {
                   ],
                   paymentMethod: 'bankTransfer',
                   status: 'pending',
+                  datePaid: null,
               },
         resolver: yupResolver(invoiceSchema),
     });
@@ -115,6 +109,16 @@ export function InvoiceForm({ invoice, onSubmit }: InvoiceEditFormProps) {
 
     const onCreatedCustomer = useCallback(({ id: customerId }: Customer) => {
         setValue('customerId', customerId);
+
+        forceRender();
+    }, []);
+
+    const onUpdateStatus = useCallback((status: InvoiceStatus) => {
+        setValue('status', status);
+
+        if (status !== 'paid') {
+            setValue('datePaid', null);
+        }
 
         forceRender();
     }, []);
@@ -244,7 +248,7 @@ export function InvoiceForm({ invoice, onSubmit }: InvoiceEditFormProps) {
                         <Combobox
                             selectedValue={getValues('status')}
                             items={statusSelectItems}
-                            onSelect={(value) => setValue('status', value)}
+                            onSelect={onUpdateStatus}
                             {...register('status', { required: true })}
                         />
                         {errors.status && (
@@ -253,6 +257,28 @@ export function InvoiceForm({ invoice, onSubmit }: InvoiceEditFormProps) {
                             </span>
                         )}
                     </div>
+
+                    {getValues('status') === 'paid' ? (
+                        <div>
+                            <Label
+                                className={cn(
+                                    'font-bold mb-1',
+                                    errors.datePaid && 'text-red-500'
+                                )}
+                                htmlFor="datePaid"
+                            >
+                                Status
+                            </Label>
+                            <DatePicker
+                                className="w-full"
+                                value={getValues('datePaid')}
+                                onUpdate={(date) => {
+                                    setValue('datePaid', date.toISOString());
+                                }}
+                                {...register('datePaid')}
+                            />
+                        </div>
+                    ) : null}
                 </div>
 
                 <div className="flex justify-end pb-4">
