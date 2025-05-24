@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts';
+import { Bar, BarChart, CartesianGrid, LabelList, XAxis } from 'recharts';
 
 import {
     Card,
@@ -126,7 +126,9 @@ export default function Statistics() {
                                 dataKey="revenue"
                                 fill="var(--chart-1)"
                                 radius={8}
-                            />
+                            >
+                                <LabelList dataKey="revenue" position="top" />
+                            </Bar>
                         </BarChart>
                     </ChartContainer>
                 </CardContent>
