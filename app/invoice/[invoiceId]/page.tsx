@@ -3,7 +3,7 @@
 import { useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import { Clock, Send } from 'lucide-react';
+import { FileText, User2 } from 'lucide-react';
 import H1 from '@/components/atoms/H1';
 import H2 from '@/components/atoms/H2';
 import { NotFound } from '@/components/NotFound';
@@ -68,6 +68,8 @@ export default function Invoice() {
             <div className="grid grid-cols-2">
                 <div>
                     <H1 className="flex items-center gap-2 mb-4">
+                        <FileText />
+
                         <span>Invoice n° {invoice.reference}</span>
 
                         <InvoiceStatusBadge status={invoice.status} />
@@ -90,9 +92,8 @@ export default function Invoice() {
 
                 {customer ? (
                     <div>
-                        <H2 className="mb-4">Customer</H2>
-
-                        <p className="mb-4">
+                        <p className="flex items-center gap-2 mb-4">
+                            <User2 />
                             <Link href={`/customer/${customer.id}`}>
                                 {customer.name}
                             </Link>

@@ -1,12 +1,4 @@
-import {
-    array,
-    number,
-    object,
-    string,
-    mixed,
-    type InferType,
-    date,
-} from 'yup';
+import { array, number, object, string, mixed, type InferType } from 'yup';
 
 const invoiceItemSchema = object({
     description: string().required(),

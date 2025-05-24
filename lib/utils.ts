@@ -57,10 +57,7 @@ export function sortByKey<T, K extends keyof T>(
     });
 }
 
-export function debounce<A extends unknown>(
-    callback: (...args: A[]) => void,
-    delay: number
-) {
+export function debounce<A>(callback: (...args: A[]) => void, delay: number) {
     let timer: ReturnType<typeof setTimeout>;
 
     return (...args: A[]) => {
@@ -70,8 +67,10 @@ export function debounce<A extends unknown>(
     };
 }
 
-export function stopPropagation<F extends Function>(callback: F) {
-    return (e: { stopPropagation: () => void }) => {
+export function stopPropagation<E extends Event, F extends (e: E) => void>(
+    callback: F
+) {
+    return (e: E) => {
         e.stopPropagation();
 
         callback(e);

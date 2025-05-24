@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import H1 from '@/components/atoms/H1';
 import { Input } from '@/components/ui/input';
@@ -21,7 +21,6 @@ export default function Settings() {
     } = useSettingsStore();
 
     const {
-        getValues,
         reset,
         register,
         handleSubmit,

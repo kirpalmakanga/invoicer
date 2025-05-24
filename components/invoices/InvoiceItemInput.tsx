@@ -14,7 +14,6 @@ import {
     SelectContent,
     SelectGroup,
     SelectItem,
-    SelectLabel,
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
@@ -36,7 +35,6 @@ function getInitialRowState(): InvoiceItem {
 export function InvoiceItemInput({ items, onUpdate }: InvoiceItemInputProps) {
     const {
         formState: { errors },
-        setValue,
     } = useFormContext<InvoiceSchema>();
 
     const [currentItems, setCurrentItems] = useState<InvoiceItem[]>(
