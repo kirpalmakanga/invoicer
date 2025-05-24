@@ -1,4 +1,12 @@
-import { array, number, object, string, mixed, type InferType } from 'yup';
+import {
+    array,
+    number,
+    object,
+    string,
+    mixed,
+    type InferType,
+    date,
+} from 'yup';
 
 const invoiceItemSchema = object({
     description: string().required(),
@@ -13,6 +21,7 @@ export const invoiceSchema = object({
     paymentMethod: mixed<PaymentMethod>().required(),
     status: mixed<InvoiceStatus>().required(),
     items: array().of(invoiceItemSchema).min(1).required(),
+    datePaid: string().default(null),
 });
 
 export type InvoiceSchema = InferType<typeof invoiceSchema>;
