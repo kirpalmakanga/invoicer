@@ -51,9 +51,17 @@ export default function Prompt({
         }
     }, [isOpen]);
 
+    useEffect(() => {
+        if (!open) {
+            onClose?.();
+        }
+    }, [open]);
+
     return (
-        <Dialog open={open} onOpenChange={onClose}>
-            <DialogTrigger asChild>{children}</DialogTrigger>
+        <Dialog open={open} onOpenChange={setOpen}>
+            {children ? (
+                <DialogTrigger asChild>{children}</DialogTrigger>
+            ) : null}
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>{title}</DialogTitle>
