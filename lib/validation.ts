@@ -21,7 +21,7 @@ export const invoiceSchema = object({
     paymentMethod: mixed<PaymentMethod>().required(),
     status: mixed<InvoiceStatus>().required(),
     items: array().of(invoiceItemSchema).min(1).required(),
-    datePaid: string().default(null),
+    datePaid: string().nullable().default(null),
 });
 
 export type InvoiceSchema = InferType<typeof invoiceSchema>;
