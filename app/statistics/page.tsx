@@ -102,7 +102,7 @@ export default function Statistics() {
 
             <Card>
                 <CardHeader>
-                    <CardTitle>Revenues for year {selectedYear}</CardTitle>
+                    <CardTitle>Revenue for year {selectedYear}</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <ChartContainer config={chartConfig}>
