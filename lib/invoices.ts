@@ -1,45 +1,41 @@
-import { getMonthName, getTimestamp, getYear, monthNames } from './dates';
+import { getMonth, getYear } from './dates';
+import { sum } from './utils';
 
 export function getInvoiceItemTotal({ quantity, pricePerUnit }: InvoiceItem) {
     return quantity * pricePerUnit;
 }
 
 export function getInvoiceTotal({ items }: Invoice) {
-    return items.reduce((total, item) => total + getInvoiceItemTotal(item), 0);
+    return sum(...items.map(getInvoiceItemTotal));
 }
 
 function getDefaultYearChartData() {
-    return new Map(monthNames.map((monthName) => [monthName, 0]));
+    return Array.from({ length: 12 }).map(() => 0);
 }
 
 export function getRevenueStatistics(invoices: Invoice[]) {
-    const data = invoices
-        .filter(({ status }) => status === 'paid')
-        .toSorted(
-            ({ datePaid: a }, { datePaid: b }) =>
-                getTimestamp(a) - getTimestamp(b)
-        )
-        .reduce((charts, invoice) => {
-            const { datePaid } = invoice;
+    const result: Map<number, number[]> = new Map();
 
-            const year = getYear(datePaid);
-            const month = getMonthName(datePaid);
+    for (const invoice of invoices) {
+        const { status, datePaid } = invoice;
 
-            if (!charts.has(year)) {
-                charts.set(year, getDefaultYearChartData());
-            }
+        if (status !== 'paid' || !datePaid) {
+            continue;
+        }
 
-            const yearData = charts.get(year);
+        const year = getYear(datePaid);
+        const month = getMonth(datePaid);
 
-            if (yearData) {
-                yearData.set(
-                    month,
-                    (yearData.get(month) || 0) + getInvoiceTotal(invoice)
-                );
-            }
+        if (!result.has(year)) {
+            result.set(year, getDefaultYearChartData());
+        }
 
-            return charts;
-        }, new Map() as Map<number, Map<string, number>>);
+        const revenueByMonth = result.get(year);
 
-    return data;
+        if (revenueByMonth) {
+            revenueByMonth[month] += getInvoiceTotal(invoice);
+        }
+    }
+
+    return result;
 }

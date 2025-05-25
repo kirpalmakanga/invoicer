@@ -27,7 +27,9 @@ import {
 import { useInvoicesStore } from '@/store/invoices';
 import { getRevenueStatistics } from '@/lib/invoices';
 
-import { getCurrentYear } from '@/lib/dates';
+import { getCurrentYear, monthNames } from '@/lib/dates';
+import { useShallow } from 'zustand/react/shallow';
+import { sum } from '@/lib/utils';
 
 const chartConfig = {
     desktop: {
@@ -38,35 +40,53 @@ const chartConfig = {
 
 export default function Statistics() {
     const [selectedYear, setSelectedYear] = useState<number>(getCurrentYear());
-    const invoices = useInvoicesStore(({ invoices }) => invoices);
+    const invoices = useInvoicesStore(
+        useShallow(({ invoices }) =>
+            invoices.filter(
+                ({ status, datePaid }) => status === 'paid' && datePaid
+            )
+        )
+    );
     const fetchInvoices = useInvoicesStore(
         ({ fetchInvoices }) => fetchInvoices
     );
 
-    const chartDataByYear = useMemo(
+    const revenueDataByYear = useMemo(
         () => getRevenueStatistics(invoices),
         [invoices]
     );
 
-    const currentYearChartData = useMemo(() => {
-        const chartData = chartDataByYear.get(selectedYear);
+    const { currentYearChartData, currentYearTotalRevenue } = useMemo(() => {
+        const currentYearRevenueData = revenueDataByYear.get(selectedYear);
+        const result: {
+            currentYearChartData: { month: string; revenue: number }[];
+            currentYearTotalRevenue: number;
+        } = {
+            currentYearChartData: [],
+            currentYearTotalRevenue: 0,
+        };
 
-        if (chartData) {
-            return chartData
-                .entries()
-                .toArray()
-                .map(([month, revenue]) => ({
-                    month,
+        if (currentYearRevenueData) {
+            result.currentYearChartData = currentYearRevenueData.map(
+                (revenue, month) => ({
+                    month: monthNames[month],
                     revenue,
-                }));
+                })
+            );
+
+            result.currentYearTotalRevenue = sum(...currentYearRevenueData);
         }
 
-        return [];
-    }, [chartDataByYear]);
+        return result;
+    }, [selectedYear, revenueDataByYear]);
 
     const years = useMemo(
-        () => chartDataByYear.keys().toArray(),
-        [chartDataByYear]
+        () =>
+            revenueDataByYear
+                .keys()
+                .toArray()
+                .toSorted((a, b) => b - a),
+        [revenueDataByYear]
     );
 
     const handleSelectYear = useCallback(
@@ -109,6 +129,7 @@ export default function Statistics() {
                         <BarChart
                             accessibilityLayer
                             data={currentYearChartData}
+                            margin={{ top: 20 }}
                         >
                             <CartesianGrid vertical={false} />
                             <XAxis
@@ -135,6 +156,13 @@ export default function Statistics() {
                 <CardFooter className="flex-col items-start gap-2 text-sm">
                     <div className="leading-none text-muted-foreground">
                         {/* Showing total visitors for the last 6 months */}
+                    </div>
+                </CardFooter>
+
+                <CardFooter>
+                    <div className="leading-none text-muted-foreground text-sm">
+                        <strong>Total revenue:</strong>{' '}
+                        {currentYearTotalRevenue}€
                     </div>
                 </CardFooter>
             </Card>
