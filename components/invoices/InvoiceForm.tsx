@@ -98,10 +98,13 @@ export function InvoiceForm({ invoice, onSubmit }: InvoiceEditFormProps) {
     const validateReference = useCallback(
         ({ currentTarget: { value } }: FormEvent<HTMLInputElement>) => {
             setReferenceAlreadyExists(
-                invoices.some(({ reference }) => reference === value)
+                invoices.some(
+                    ({ id, reference }) =>
+                        id !== invoice?.id && reference === value
+                )
             );
         },
-        [invoices]
+        [invoice, invoices]
     );
 
     const submit: SubmitHandler<InvoiceSchema> = useCallback((data) => {
