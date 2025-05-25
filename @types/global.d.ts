@@ -51,7 +51,7 @@ interface Invoice {
     status: InvoiceStatus;
     items: InvoiceItem[];
     dateCreated: string;
-    datePaid: string;
+    datePaid: string | null;
 }
 
 type InvoiceFormData = Omit<Invoice, 'id'>;
