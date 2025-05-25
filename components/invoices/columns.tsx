@@ -203,7 +203,7 @@ export const columns: ColumnDef<Invoice>[] = [
             row: {
                 original: { datePaid },
             },
-        }) => (datePaid ? formatDate(datePaid, 'DD/MM/YYYY') : ''),
+        }) => (datePaid ? formatDate(datePaid, 'medium') : ''),
     },
     {
         header: 'Amount',
