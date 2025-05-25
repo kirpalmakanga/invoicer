@@ -79,7 +79,7 @@ export default function Statistics() {
     }, []);
 
     return (
-        <>
+        <div className="md:w-2xl mx-auto">
             <div className="flex justify-end mb-4">
                 <Select
                     value={String(selectedYear)}
@@ -138,6 +138,6 @@ export default function Statistics() {
                     </div>
                 </CardFooter>
             </Card>
-        </>
+        </div>
     );
 }
