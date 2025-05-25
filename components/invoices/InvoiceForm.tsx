@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useMemo } from 'react';
+import { FormEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm, SubmitHandler, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { toast } from 'sonner';
@@ -45,6 +45,7 @@ export function InvoiceForm({ invoice, onSubmit }: InvoiceEditFormProps) {
     const invoicePrefix = useSettingsStore(
         ({ invoicePrefix }) => invoicePrefix
     );
+    const invoices = useInvoicesStore(({ invoices }) => invoices);
     const customers = useCustomersStore(({ customers }) => customers);
     const customerSelectItems = useMemo(
         () => customers.map(({ id: value, name: label }) => ({ label, value })),
@@ -91,7 +92,23 @@ export function InvoiceForm({ invoice, onSubmit }: InvoiceEditFormProps) {
         formState: { errors },
     } = methods;
 
+    const [referenceAlreadyExists, setReferenceAlreadyExists] =
+        useState<boolean>(false);
+
+    const validateReference = useCallback(
+        ({ currentTarget: { value } }: FormEvent<HTMLInputElement>) => {
+            setReferenceAlreadyExists(
+                invoices.some(({ reference }) => reference === value)
+            );
+        },
+        [invoices]
+    );
+
     const submit: SubmitHandler<InvoiceSchema> = useCallback((data) => {
+        if (referenceAlreadyExists) {
+            return;
+        }
+
         if (invoice) {
             updateInvoice(invoice.id, data);
         } else {
@@ -147,7 +164,8 @@ export function InvoiceForm({ invoice, onSubmit }: InvoiceEditFormProps) {
                         <Label
                             className={cn(
                                 'font-bold mb-1',
-                                errors.reference && 'text-red-500'
+                                (errors.reference || referenceAlreadyExists) &&
+                                    'text-red-500'
                             )}
                             htmlFor="reference"
                         >
@@ -155,11 +173,17 @@ export function InvoiceForm({ invoice, onSubmit }: InvoiceEditFormProps) {
                         </Label>
                         <Input
                             id="reference"
+                            onInput={validateReference}
                             {...register('reference', { required: true })}
                         />
                         {errors.reference && (
                             <span className="text-xs text-red-500">
                                 This field is required
+                            </span>
+                        )}
+                        {referenceAlreadyExists && (
+                            <span className="text-xs text-red-500">
+                                This reference already exists
                             </span>
                         )}
                     </div>
