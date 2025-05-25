@@ -42,7 +42,9 @@ type DateFormats =
     | 'DD MMM YYYY'
     | 'MMMM DD, YYYY'
     | 'MM/DD/YYYY'
-    | 'DD/MM/YYYY';
+    | 'DD/MM/YYYY'
+    | 'full'
+    | 'medium';
 
 export function formatDate(date: string | number | Date, format: DateFormats) {
     const dateObject = date instanceof Date ? date : new Date(date);
@@ -90,6 +92,18 @@ export function formatDate(date: string | number | Date, format: DateFormats) {
         }
         case 'DD/MM/YYYY': {
             result = dateObject.toLocaleDateString('en-GB');
+            break;
+        }
+        case 'full': {
+            result = dateObject.toLocaleDateString('en-US', {
+                dateStyle: 'full',
+            });
+            break;
+        }
+        case 'medium': {
+            result = dateObject.toLocaleDateString('en-US', {
+                dateStyle: 'medium',
+            });
             break;
         }
     }
