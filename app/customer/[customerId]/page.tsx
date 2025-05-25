@@ -16,13 +16,10 @@ export default function Customer() {
     const customers = useCustomersStore(({ customers }) => customers);
     const invoices = useInvoicesStore(({ invoices }) => invoices);
 
-    /** TODO: sort invoices by datecreated desc */
-
     const fetchSingleCustomer = useCustomersStore(
         ({ fetchSingleCustomer }) => fetchSingleCustomer
     );
 
-    /** TODO: fetch invoice for current customerId */
     const fetchInvoices = useInvoicesStore(
         ({ fetchInvoices }) => fetchInvoices
     );
