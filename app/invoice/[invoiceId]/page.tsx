@@ -3,7 +3,13 @@
 import { useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import { FileText, User2 } from 'lucide-react';
+import {
+    Calendar,
+    CalendarCheck,
+    FileText,
+    HandCoins,
+    User2,
+} from 'lucide-react';
 import H1 from '@/components/atoms/H1';
 import H2 from '@/components/atoms/H2';
 import { NotFound } from '@/components/NotFound';
@@ -19,7 +25,8 @@ import {
 } from '@/components/ui/table';
 import { CustomerInfo } from '@/components/customers/CustomerInfo';
 import { InvoiceStatusBadge } from '@/components/invoices/InvoiceStatusBadge';
-import { getInvoiceTotal } from '@/lib/invoices';
+import { getInvoiceTotal, paymentMethodsById } from '@/lib/invoices';
+import { formatDate } from '@/lib/dates';
 
 /** TODO: create StatusBadge (set colors in component) */
 
@@ -75,19 +82,24 @@ export default function Invoice() {
                         <InvoiceStatusBadge status={invoice.status} />
                     </H1>
 
-                    {/* <p className="flex items-center gap-2 mb-4">
-                        <Clock /> {invoice.dateCreated}
+                    <p className="flex items-center gap-2 mb-4">
+                        <Calendar /> <strong>Created:</strong>{' '}
+                        {formatDate(invoice.dateCreated, 'full')}
                     </p>
 
-                    {invoice.dateSent ? (
-                        <p className="flex items-center gap-2 mb-4">
-                            <Send /> {invoice.dateSent}
-                        </p>
-                    ) : null} */}
+                    {invoice.status === 'paid' && invoice.datePaid ? (
+                        <>
+                            <p className="flex items-center gap-2 mb-4">
+                                <CalendarCheck /> <strong>Paid:</strong>{' '}
+                                {formatDate(invoice.datePaid, 'full')}
+                            </p>
 
-                    <p className="mb-4">
-                        Payment method: {invoice.paymentMethod}
-                    </p>
+                            <p className="flex items-center gap-2 mb-4">
+                                <HandCoins /> <strong>Payment method:</strong>{' '}
+                                {paymentMethodsById[invoice.paymentMethod]}
+                            </p>
+                        </>
+                    ) : null}
                 </div>
 
                 {customer ? (
