@@ -28,8 +28,6 @@ import { InvoiceStatusBadge } from '@/components/invoices/InvoiceStatusBadge';
 import { getInvoiceTotal, paymentMethodsById } from '@/lib/invoices';
 import { formatDate } from '@/lib/dates';
 
-/** TODO: create StatusBadge (set colors in component) */
-
 export default function Invoice() {
     const { invoiceId } = useParams<{ invoiceId: string }>();
 
