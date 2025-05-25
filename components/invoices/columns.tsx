@@ -17,7 +17,7 @@ import { InvoiceStatusBadge } from '@/components/invoices/InvoiceStatusBadge';
 import { SlidePanel } from '@/components/SlidePanel';
 import { useInvoicesStore } from '@/store/invoices';
 import { useCustomersStore } from '@/store/customers';
-import { getInvoiceTotal } from '@/lib/invoices';
+import { getInvoiceTotal, paymentMethodsById } from '@/lib/invoices';
 import { toast } from 'sonner';
 import Prompt from '../Prompt';
 import { formatDate } from '@/lib/dates';
@@ -171,7 +171,7 @@ export const columns: ColumnDef<Invoice>[] = [
             row: {
                 original: { paymentMethod },
             },
-        }) => paymentMethod,
+        }) => paymentMethodsById[paymentMethod],
     },
     {
         meta: 'Status',
@@ -208,7 +208,11 @@ export const columns: ColumnDef<Invoice>[] = [
     {
         header: 'Amount',
         meta: 'Amount',
-        cell: ({ row: { original } }) => `${getInvoiceTotal(original)}€`,
+        cell: ({ row: { original } }) => (
+            <div className="w-full text-right">
+                {`${getInvoiceTotal(original)}€`}
+            </div>
+        ),
     },
     {
         id: 'actions',

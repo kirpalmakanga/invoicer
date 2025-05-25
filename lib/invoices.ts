@@ -1,6 +1,12 @@
 import { getMonth, getYear } from './dates';
 import { sum } from './utils';
 
+export const paymentMethodsById: Record<PaymentMethod, string> = {
+    bankTransfer: 'Bank Transfer',
+    creditCard: 'Credit Card',
+    payPal: 'PayPal',
+};
+
 export function getInvoiceItemTotal({ quantity, pricePerUnit }: InvoiceItem) {
     return quantity * pricePerUnit;
 }
