@@ -11,15 +11,9 @@ import { AddInvoiceButton } from '@/components/invoices/AddInvoiceButton';
 
 export default function Home() {
     const invoices = useInvoicesStore(({ invoices }) => invoices);
-    const fetchInvoices = useInvoicesStore(
-        ({ fetchInvoices }) => fetchInvoices
-    );
-    const removeBulkInvoices = useInvoicesStore(
-        ({ removeBulkInvoices }) => removeBulkInvoices
-    );
-    const fetchCustomers = useCustomersStore(
-        ({ fetchCustomers }) => fetchCustomers
-    );
+    const fetchInvoices = useInvoicesStore(({ fetchInvoices }) => fetchInvoices);
+    const removeBulkInvoices = useInvoicesStore(({ removeBulkInvoices }) => removeBulkInvoices);
+    const fetchCustomers = useCustomersStore(({ fetchCustomers }) => fetchCustomers);
 
     const handleRemoveSelected = useCallback(
         (indexes: number[]) => {
@@ -42,7 +36,7 @@ export default function Home() {
             await fetchCustomers();
             await fetchInvoices();
         })();
-    }, []);
+    }, [fetchCustomers, fetchInvoices]);
 
     return (
         <>
@@ -52,11 +46,7 @@ export default function Home() {
                 <AddInvoiceButton />
             </div>
 
-            <DataTable
-                columns={columns}
-                data={invoices}
-                onRemoveSelected={handleRemoveSelected}
-            />
+            <DataTable columns={columns} data={invoices} onRemoveSelected={handleRemoveSelected} />
         </>
     );
 }

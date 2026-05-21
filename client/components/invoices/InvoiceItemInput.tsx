@@ -7,7 +7,7 @@ import {
     TableCell,
     TableHead,
     TableHeader,
-    TableRow,
+    TableRow
 } from '@/components/ui/table';
 import {
     Select,
@@ -15,7 +15,7 @@ import {
     SelectGroup,
     SelectItem,
     SelectTrigger,
-    SelectValue,
+    SelectValue
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
@@ -34,7 +34,7 @@ function getInitialRowState(): InvoiceItem {
 
 export function InvoiceItemInput({ items, onUpdate }: InvoiceItemInputProps) {
     const {
-        formState: { errors },
+        formState: { errors }
     } = useFormContext<InvoiceSchema>();
 
     const [currentItems, setCurrentItems] = useState<InvoiceItem[]>(
@@ -49,14 +49,9 @@ export function InvoiceItemInput({ items, onUpdate }: InvoiceItemInputProps) {
         setCurrentItems((items) => items.filter((_, i) => i !== index));
     }, []);
 
-    const updateRow = useCallback(
-        (index: number, data: Partial<InvoiceItem>) => {
-            setCurrentItems((items) =>
-                items.with(index, { ...items[index], ...data })
-            );
-        },
-        []
-    );
+    const updateRow = useCallback((index: number, data: Partial<InvoiceItem>) => {
+        setCurrentItems((items) => items.with(index, { ...items[index], ...data }));
+    }, []);
 
     useEffect(() => {
         if (!isEqual(items, currentItems)) {
@@ -74,117 +69,96 @@ export function InvoiceItemInput({ items, onUpdate }: InvoiceItemInputProps) {
                         <TableHead className="font-bold">Price/Unit</TableHead>
                         <TableHead className="font-bold">Unit</TableHead>
 
-                        {currentItems.length > 1 ? (
-                            <TableHead></TableHead>
-                        ) : null}
+                        {currentItems.length > 1 ? <TableHead></TableHead> : null}
                     </TableRow>
                 </TableHeader>
 
                 <TableBody>
-                    {currentItems.map(
-                        (
-                            { description, quantity, pricePerUnit, unit },
-                            index
-                        ) => (
-                            <TableRow key={index}>
-                                <TableCell>
-                                    <Textarea
-                                        value={description}
-                                        onInput={({
-                                            currentTarget: {
-                                                value: description,
-                                            },
-                                        }) => updateRow(index, { description })}
-                                    />
-                                    {errors.items?.[index]?.description && (
-                                        <span className="text-xs text-red-500">
-                                            This field is required
-                                        </span>
-                                    )}
-                                </TableCell>
-                                <TableCell className="align-top w-[100px]">
-                                    <Input
-                                        type="number"
-                                        value={quantity}
-                                        step={1}
-                                        min={0}
-                                        onInput={({
-                                            currentTarget: { value },
-                                        }) =>
-                                            updateRow(index, {
-                                                quantity: parseInt(value),
-                                            })
-                                        }
-                                    />
-                                    {errors.items?.[index]?.quantity && (
-                                        <span className="text-xs text-red-500">
-                                            This field is required
-                                        </span>
-                                    )}
-                                </TableCell>
-                                <TableCell className="align-top w-[100px]">
-                                    <Input
-                                        type="number"
-                                        value={pricePerUnit}
-                                        step={1}
-                                        min={0}
-                                        onInput={({
-                                            currentTarget: { value },
-                                        }) =>
-                                            updateRow(index, {
-                                                pricePerUnit: parseFloat(value),
-                                            })
-                                        }
-                                    />
-                                    {errors.items?.[index]?.pricePerUnit && (
-                                        <span className="text-xs text-red-500">
-                                            This field is required
-                                        </span>
-                                    )}
-                                </TableCell>
-                                <TableCell className="align-top w-[100px]">
-                                    <Select
-                                        value={unit}
-                                        onValueChange={(
-                                            unit: InvoiceItemUnit
-                                        ) => updateRow(index, { unit })}
-                                    >
-                                        <SelectTrigger className="w-[180px]">
-                                            <SelectValue placeholder="Select a unit" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectGroup>
-                                                <SelectItem value="hour">
-                                                    Hour
-                                                </SelectItem>
-                                                <SelectItem value="day">
-                                                    Day
-                                                </SelectItem>
-                                                <SelectItem value="week">
-                                                    Week
-                                                </SelectItem>
-                                            </SelectGroup>
-                                        </SelectContent>
-                                    </Select>
+                    {currentItems.map(({ description, quantity, pricePerUnit, unit }, index) => (
+                        <TableRow key={index}>
+                            <TableCell>
+                                <Textarea
+                                    value={description}
+                                    onInput={({ currentTarget: { value: description } }) =>
+                                        updateRow(index, { description })
+                                    }
+                                />
+                                {errors.items?.[index]?.description && (
+                                    <span className="text-xs text-red-500">
+                                        This field is required
+                                    </span>
+                                )}
+                            </TableCell>
+                            <TableCell className="align-top w-[100px]">
+                                <Input
+                                    type="number"
+                                    value={quantity}
+                                    step={1}
+                                    min={0}
+                                    onInput={({ currentTarget: { value } }) =>
+                                        updateRow(index, {
+                                            quantity: parseInt(value)
+                                        })
+                                    }
+                                />
+                                {errors.items?.[index]?.quantity && (
+                                    <span className="text-xs text-red-500">
+                                        This field is required
+                                    </span>
+                                )}
+                            </TableCell>
+                            <TableCell className="align-top w-[100px]">
+                                <Input
+                                    type="number"
+                                    value={pricePerUnit}
+                                    step={1}
+                                    min={0}
+                                    onInput={({ currentTarget: { value } }) =>
+                                        updateRow(index, {
+                                            pricePerUnit: parseFloat(value)
+                                        })
+                                    }
+                                />
+                                {errors.items?.[index]?.pricePerUnit && (
+                                    <span className="text-xs text-red-500">
+                                        This field is required
+                                    </span>
+                                )}
+                            </TableCell>
+                            <TableCell className="align-top w-[100px]">
+                                <Select
+                                    value={unit}
+                                    onValueChange={(unit: InvoiceItemUnit) =>
+                                        updateRow(index, { unit })
+                                    }
+                                >
+                                    <SelectTrigger className="w-[180px]">
+                                        <SelectValue placeholder="Select a unit" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectGroup>
+                                            <SelectItem value="hour">Hour</SelectItem>
+                                            <SelectItem value="day">Day</SelectItem>
+                                            <SelectItem value="week">Week</SelectItem>
+                                        </SelectGroup>
+                                    </SelectContent>
+                                </Select>
 
-                                    {errors.items?.[index]?.unit && (
-                                        <span className="text-xs text-red-500">
-                                            This field is required
-                                        </span>
-                                    )}
+                                {errors.items?.[index]?.unit && (
+                                    <span className="text-xs text-red-500">
+                                        This field is required
+                                    </span>
+                                )}
+                            </TableCell>
+                            {currentItems.length > 1 ? (
+                                <TableCell className="align-top w-[50px]">
+                                    <Button onClick={() => deleteRow(index)}>
+                                        <Trash />
+                                    </Button>
                                 </TableCell>
-                                {currentItems.length > 1 ? (
-                                    <TableCell className="align-top w-[50px]">
-                                        <Button
-                                            onClick={() => deleteRow(index)}
-                                        >
-                                            <Trash />
-                                        </Button>
-                                    </TableCell>
-                                ) : null}
-                            </TableRow>
-                        )
-                    )}
+                            ) : null}
+                        </TableRow>
+                    ))}
                 </TableBody>
             </Table>
 

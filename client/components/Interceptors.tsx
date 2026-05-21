@@ -26,7 +26,7 @@ export function Interceptors({ children }: { children: ReactNode }) {
             async (error) => {
                 const {
                     response: { status },
-                    config,
+                    config
                 } = error;
 
                 if (status === 401 && !config._retry) {
@@ -47,7 +47,7 @@ export function Interceptors({ children }: { children: ReactNode }) {
         );
 
         setIsAuthReady(true);
-    }, []);
+    }, [logOut, refreshAccessToken, push]);
 
     return isAuthReady ? children : null;
 }

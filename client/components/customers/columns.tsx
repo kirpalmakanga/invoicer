@@ -9,7 +9,7 @@ import {
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuSeparator,
-    DropdownMenuTrigger,
+    DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { DataTableColumnHeader } from '@/components/data-table/column-header';
@@ -19,9 +19,7 @@ import Prompt from '@/components/Prompt';
 import { useCustomersStore } from '@/store/customers';
 
 function CustomerMenu({ customer }: { customer: Customer }) {
-    const removeCustomer = useCustomersStore(
-        ({ removeCustomer }) => removeCustomer
-    );
+    const removeCustomer = useCustomersStore(({ removeCustomer }) => removeCustomer);
 
     const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
 
@@ -29,18 +27,11 @@ function CustomerMenu({ customer }: { customer: Customer }) {
 
     const closeForm = useCallback(() => setIsFormOpen(false), []);
 
-    const [isRemovalPromptOpen, setIsRemovalPromptOpen] =
-        useState<boolean>(false);
+    const [isRemovalPromptOpen, setIsRemovalPromptOpen] = useState<boolean>(false);
 
-    const openRemovalPrompt = useCallback(
-        () => setIsRemovalPromptOpen(true),
-        []
-    );
+    const openRemovalPrompt = useCallback(() => setIsRemovalPromptOpen(true), []);
 
-    const closeRemovalPrompt = useCallback(
-        () => setIsRemovalPromptOpen(false),
-        []
-    );
+    const closeRemovalPrompt = useCallback(() => setIsRemovalPromptOpen(false), []);
 
     const handleRemoveCustomer = useCallback(() => {
         const { id, name } = customer;
@@ -48,7 +39,7 @@ function CustomerMenu({ customer }: { customer: Customer }) {
         removeCustomer(id);
 
         toast.success(`Removed customer: ${name}`);
-    }, [customer]);
+    }, [customer, removeCustomer]);
 
     return (
         <>
@@ -65,10 +56,7 @@ function CustomerMenu({ customer }: { customer: Customer }) {
                         <Edit /> Edit
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem
-                        className="text-red-500"
-                        onClick={openRemovalPrompt}
-                    >
+                    <DropdownMenuItem className="text-red-500" onClick={openRemovalPrompt}>
                         <Trash className="text-current" />
                         Delete customer
                     </DropdownMenuItem>
@@ -105,9 +93,7 @@ export const customerColumns: ColumnDef<Customer>[] = [
                     table.getIsAllPageRowsSelected() ||
                     (table.getIsSomePageRowsSelected() && 'indeterminate')
                 }
-                onCheckedChange={(value) =>
-                    table.toggleAllPageRowsSelected(!!value)
-                }
+                onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
                 aria-label="Select all"
             />
         ),
@@ -117,54 +103,46 @@ export const customerColumns: ColumnDef<Customer>[] = [
                 onCheckedChange={(value) => row.toggleSelected(!!value)}
                 aria-label="Select row"
             />
-        ),
+        )
     },
     {
         accessorKey: 'name',
         meta: 'Name',
-        header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Name" />
-        ),
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Name" />,
         cell: ({
             row: {
-                original: { id, name },
-            },
+                original: { id, name }
+            }
         }) => <Link href={`/customer/${id}`}>{name}</Link>,
-        enableHiding: false,
+        enableHiding: false
     },
     {
         accessorKey: 'email',
         meta: 'Email',
-        header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Email" />
-        ),
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Email" />,
         cell: ({
             row: {
-                original: { email },
-            },
-        }) => <a href={`mailto:${email}`}>{email}</a>,
+                original: { email }
+            }
+        }) => <a href={`mailto:${email}`}>{email}</a>
     },
     {
         accessorKey: 'tel',
         meta: 'Telephone',
-        header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Telephone" />
-        ),
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Telephone" />,
         cell: ({
             row: {
-                original: { tel },
-            },
-        }) => <a href={`mailto:${tel}`}>{tel}</a>,
+                original: { tel }
+            }
+        }) => <a href={`mailto:${tel}`}>{tel}</a>
     },
     {
         accessorKey: 'address',
         meta: 'Address',
-        header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Address" />
-        ),
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Address" />
     },
     {
         id: 'actions',
-        cell: ({ row: { original } }) => <CustomerMenu customer={original} />,
-    },
+        cell: ({ row: { original } }) => <CustomerMenu customer={original} />
+    }
 ];

@@ -4,7 +4,7 @@ const invoiceItemSchema = object({
     description: string().required(),
     quantity: number().integer().positive().required(),
     pricePerUnit: number().positive().required(),
-    unit: string<InvoiceItemUnit>().required(),
+    unit: string<InvoiceItemUnit>().required()
 });
 
 export const invoiceSchema = object({
@@ -13,7 +13,7 @@ export const invoiceSchema = object({
     paymentMethod: mixed<PaymentMethod>().required(),
     status: mixed<InvoiceStatus>().required(),
     items: array().of(invoiceItemSchema).min(1).required(),
-    datePaid: string().nullable().default(null),
+    datePaid: string().nullable().default(null)
 });
 
 export type InvoiceSchema = InferType<typeof invoiceSchema>;

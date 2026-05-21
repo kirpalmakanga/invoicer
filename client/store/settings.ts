@@ -5,24 +5,22 @@ interface SettingsStoreActions {
     saveSettings: (data: Settings) => void;
 }
 
-export const useSettingsStore = create<Settings & SettingsStoreActions>(
-    (set) => ({
-        name: '',
-        address: '',
-        email: '',
-        companyId: '',
-        invoicePrefix: '',
-        async fetchSettings() {
-            const settings = await getSettings();
+export const useSettingsStore = create<Settings & SettingsStoreActions>((set) => ({
+    name: '',
+    address: '',
+    email: '',
+    companyId: '',
+    invoicePrefix: '',
+    async fetchSettings() {
+        const settings = await getSettings();
 
-            if (settings) {
-                set(() => settings);
-            }
-        },
-        async saveSettings(updatedSettings) {
-            await updateSettings(updatedSettings);
+        if (settings) {
+            set(() => settings);
+        }
+    },
+    async saveSettings(updatedSettings) {
+        await updateSettings(updatedSettings);
 
-            set((settings) => ({ ...settings, ...updatedSettings }));
-        },
-    })
-);
+        set((settings) => ({ ...settings, ...updatedSettings }));
+    }
+}));

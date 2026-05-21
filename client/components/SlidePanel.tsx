@@ -1,9 +1,4 @@
-import {
-    Sheet,
-    SheetContent,
-    SheetHeader,
-    SheetTitle,
-} from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { ReactNode } from 'react';
 
 interface SlidePanelProps {
@@ -14,13 +9,7 @@ interface SlidePanelProps {
     children?: ReactNode;
 }
 
-export function SlidePanel({
-    isOpen,
-    title,
-    children,
-    onClose,
-    className,
-}: SlidePanelProps) {
+export function SlidePanel({ isOpen, title, children, onClose, className }: SlidePanelProps) {
     return (
         <Sheet open={isOpen} onOpenChange={onClose}>
             <SheetContent className={className}>

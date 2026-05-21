@@ -28,10 +28,7 @@ export function isEqual(a: unknown, b: unknown): boolean {
     return false;
 }
 
-export function omit<T extends object, K extends keyof T>(
-    base: T,
-    ...keys: K[]
-): Omit<T, K> {
+export function omit<T extends object, K extends keyof T>(base: T, ...keys: K[]): Omit<T, K> {
     if (keys.length) {
         const result = { ...base };
 
@@ -45,7 +42,7 @@ export function omit<T extends object, K extends keyof T>(
 
 enum SortByOrder {
     ASC = 1,
-    DESC = -1,
+    DESC = -1
 }
 export function sortByKey<T, K extends keyof T>(
     items: T[],
@@ -67,9 +64,7 @@ export function debounce<A>(callback: (...args: A[]) => void, delay: number) {
     };
 }
 
-export function stopPropagation<E extends Event, F extends (e: E) => void>(
-    callback: F
-) {
+export function stopPropagation<E extends Event, F extends (e: E) => void>(callback: F) {
     return (e: E) => {
         e.stopPropagation();
 

@@ -3,13 +3,7 @@
 import { useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import {
-    Calendar,
-    CalendarCheck,
-    FileText,
-    HandCoins,
-    User2,
-} from 'lucide-react';
+import { Calendar, CalendarCheck, FileText, HandCoins, User2 } from 'lucide-react';
 import H1 from '@/components/atoms/H1';
 import H2 from '@/components/atoms/H2';
 import { NotFound } from '@/components/NotFound';
@@ -21,7 +15,7 @@ import {
     TableCell,
     TableHead,
     TableHeader,
-    TableRow,
+    TableRow
 } from '@/components/ui/table';
 import { CustomerInfo } from '@/components/customers/CustomerInfo';
 import { InvoiceStatusBadge } from '@/components/invoices/InvoiceStatusBadge';
@@ -34,13 +28,9 @@ export default function Invoice() {
     const invoices = useInvoicesStore(({ invoices }) => invoices);
     const customers = useCustomersStore(({ customers }) => customers);
 
-    const fetchSingleInvoice = useInvoicesStore(
-        ({ fetchSingleInvoice }) => fetchSingleInvoice
-    );
+    const fetchSingleInvoice = useInvoicesStore(({ fetchSingleInvoice }) => fetchSingleInvoice);
 
-    const fetchSingleCustomer = useCustomersStore(
-        ({ fetchSingleCustomer }) => fetchSingleCustomer
-    );
+    const fetchSingleCustomer = useCustomersStore(({ fetchSingleCustomer }) => fetchSingleCustomer);
 
     const invoice = useMemo(
         () => invoices.find(({ id }) => id === invoiceId),
@@ -53,10 +43,7 @@ export default function Invoice() {
         }
     }, [invoice, customers]);
 
-    const total = useMemo(
-        () => (invoice ? getInvoiceTotal(invoice) : 0),
-        [invoice]
-    );
+    const total = useMemo(() => (invoice ? getInvoiceTotal(invoice) : 0), [invoice]);
 
     useEffect(() => {
         fetchSingleInvoice(invoiceId);
@@ -66,7 +53,7 @@ export default function Invoice() {
         if (invoice) {
             fetchSingleCustomer(invoice.customerId);
         }
-    }, [invoice]);
+    }, [invoice, fetchSingleCustomer]);
 
     return invoice ? (
         <>
@@ -104,9 +91,7 @@ export default function Invoice() {
                     <div>
                         <p className="flex items-center gap-2 mb-4">
                             <User2 />
-                            <Link href={`/customer/${customer.id}`}>
-                                {customer.name}
-                            </Link>
+                            <Link href={`/customer/${customer.id}`}>{customer.name}</Link>
                         </p>
 
                         <CustomerInfo {...customer} />
@@ -120,28 +105,17 @@ export default function Invoice() {
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead className="font-bold">
-                                Description
-                            </TableHead>
-                            <TableHead className="font-bold">
-                                Quantity
-                            </TableHead>
-                            <TableHead className="font-bold">
-                                Price/Unit
-                            </TableHead>
+                            <TableHead className="font-bold">Description</TableHead>
+                            <TableHead className="font-bold">Quantity</TableHead>
+                            <TableHead className="font-bold">Price/Unit</TableHead>
                             <TableHead className="font-bold">Unit</TableHead>
-                            <TableHead className="font-bold text-right">
-                                Total
-                            </TableHead>
+                            <TableHead className="font-bold text-right">Total</TableHead>
                         </TableRow>
                     </TableHeader>
 
                     <TableBody>
                         {invoice.items.map(
-                            (
-                                { description, quantity, pricePerUnit, unit },
-                                index
-                            ) => (
+                            ({ description, quantity, pricePerUnit, unit }, index) => (
                                 <TableRow key={index}>
                                     <TableCell>{description}</TableCell>
                                     <TableCell>{quantity}</TableCell>
@@ -154,10 +128,7 @@ export default function Invoice() {
                             )
                         )}
                         <TableRow>
-                            <TableCell
-                                className="text-right"
-                                colSpan={4}
-                            ></TableCell>
+                            <TableCell className="text-right" colSpan={4}></TableCell>
                             <TableCell className="text-right">
                                 <span className="font-bold">Total: </span>
                                 {total}€

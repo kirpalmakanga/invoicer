@@ -10,7 +10,7 @@ import {
     getPaginationRowModel,
     getSortedRowModel,
     getFilteredRowModel,
-    useReactTable,
+    useReactTable
 } from '@tanstack/react-table';
 
 import {
@@ -19,7 +19,7 @@ import {
     TableCell,
     TableHead,
     TableHeader,
-    TableRow,
+    TableRow
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -37,15 +37,13 @@ interface DataTableProps<TData, TValue> {
 export function DataTable<TData, TValue>({
     columns,
     data,
-    onRemoveSelected,
+    onRemoveSelected
 }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = useState<SortingState>([]);
 
     const [globalFilter, setGlobalFilter] = useState('');
 
-    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(
-        {}
-    );
+    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
 
     const [rowSelection, setRowSelection] = useState({});
 
@@ -60,7 +58,7 @@ export function DataTable<TData, TValue>({
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
         getSortedRowModel: getSortedRowModel(),
-        getFilteredRowModel: getFilteredRowModel(),
+        getFilteredRowModel: getFilteredRowModel()
     });
 
     const handleFilterUpdate = useCallback<FormEventHandler<HTMLInputElement>>(
@@ -128,8 +126,7 @@ export function DataTable<TData, TValue>({
                                             {header.isPlaceholder
                                                 ? null
                                                 : flexRender(
-                                                      header.column.columnDef
-                                                          .header,
+                                                      header.column.columnDef.header,
                                                       header.getContext()
                                                   )}
                                         </TableHead>
@@ -143,9 +140,7 @@ export function DataTable<TData, TValue>({
                             table.getRowModel().rows.map((row) => (
                                 <TableRow
                                     key={row.id}
-                                    data-state={
-                                        row.getIsSelected() && 'selected'
-                                    }
+                                    data-state={row.getIsSelected() && 'selected'}
                                 >
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell key={cell.id}>
@@ -159,10 +154,7 @@ export function DataTable<TData, TValue>({
                             ))
                         ) : (
                             <TableRow>
-                                <TableCell
-                                    colSpan={columns.length}
-                                    className="h-24 text-center"
-                                >
+                                <TableCell colSpan={columns.length} className="h-24 text-center">
                                     No results.
                                 </TableCell>
                             </TableRow>

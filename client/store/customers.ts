@@ -5,7 +5,7 @@ import {
     deleteCustomers,
     getAllCustomers,
     getCustomerById,
-    updateCustomer,
+    updateCustomer
 } from '@/lib/api';
 interface CustomersStoreState {
     customers: Customer[];
@@ -27,67 +27,67 @@ interface CustomersStoreActions {
     removeBulkCustomers: (customerIds: string[]) => void;
 }
 
-export const useCustomersStore = create<
-    CustomersStoreState & CustomersStoreActions
->((set, get) => ({
-    customers: [],
-    async fetchCustomers() {
-        const customers = await getAllCustomers();
+export const useCustomersStore = create<CustomersStoreState & CustomersStoreActions>(
+    (set, get) => ({
+        customers: [],
+        async fetchCustomers() {
+            const customers = await getAllCustomers();
 
-        set(() => ({ customers }));
-    },
-    async fetchSingleCustomer(customerId) {
-        const customer = await getCustomerById(customerId);
+            set(() => ({ customers }));
+        },
+        async fetchSingleCustomer(customerId) {
+            const customer = await getCustomerById(customerId);
 
-        set(({ customers }) => {
+            set(({ customers }) => {
+                const index = customers.findIndex(({ id }) => id === customerId);
+
+                if (index > -1) {
+                    return {
+                        customers: customers.with(index, {
+                            ...customers[index],
+                            ...customer
+                        })
+                    };
+                } else {
+                    return { customers: [...customers, customer] };
+                }
+            });
+        },
+        async addCustomer(data) {
+            const customer = await createCustomer(data);
+
+            set(({ customers }) => ({ customers: [...customers, customer] }));
+
+            return customer;
+        },
+        async updateCustomer(customerId, customerData) {
+            const { customers } = get();
             const index = customers.findIndex(({ id }) => id === customerId);
 
             if (index > -1) {
-                return {
+                await updateCustomer(customerId, customerData);
+
+                set(() => ({
                     customers: customers.with(index, {
                         ...customers[index],
-                        ...customer,
-                    }),
-                };
-            } else {
-                return { customers: [...customers, customer] };
+                        ...customerData
+                    })
+                }));
             }
-        });
-    },
-    async addCustomer(data) {
-        const customer = await createCustomer(data);
+        },
+        async removeCustomer(customerId) {
+            await deleteCustomer(customerId);
 
-        set(({ customers }) => ({ customers: [...customers, customer] }));
+            set(({ customers }) => ({
+                customers: customers.filter(({ id }) => id !== customerId)
+            }));
+        },
+        async removeBulkCustomers(customerIds) {
+            await deleteCustomers(customerIds);
 
-        return customer;
-    },
-    async updateCustomer(customerId, customerData) {
-        const { customers } = get();
-        const index = customers.findIndex(({ id }) => id === customerId);
-
-        if (index > -1) {
-            await updateCustomer(customerId, customerData);
-
-            set(() => ({
-                customers: customers.with(index, {
-                    ...customers[index],
-                    ...customerData,
-                }),
+            set(({ customers }) => ({
+                customers: customers.filter(({ id }) => !customerIds.includes(id))
             }));
         }
-    },
-    async removeCustomer(customerId) {
-        await deleteCustomer(customerId);
-
-        set(({ customers }) => ({
-            customers: customers.filter(({ id }) => id !== customerId),
-        }));
-    },
-    async removeBulkCustomers(customerIds) {
-        await deleteCustomers(customerIds);
-
-        set(({ customers }) => ({
-            customers: customers.filter(({ id }) => !customerIds.includes(id)),
-        }));
-    },
-}));
+    })
+);

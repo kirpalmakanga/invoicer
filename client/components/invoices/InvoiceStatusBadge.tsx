@@ -5,16 +5,16 @@ import { cn } from '@/lib/utils';
 const config: Record<InvoiceStatus, { className: string; text: string }> = {
     paid: {
         className: 'bg-green-900',
-        text: 'Paid',
+        text: 'Paid'
     },
     unpaid: {
         className: 'bg-red-900',
-        text: 'Unpaid',
+        text: 'Unpaid'
     },
     pending: {
         className: 'bg-blue-900',
-        text: 'Pending',
-    },
+        text: 'Pending'
+    }
 };
 
 export function InvoiceStatusBadge({ status }: { status: InvoiceStatus }) {

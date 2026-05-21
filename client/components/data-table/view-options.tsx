@@ -8,16 +8,14 @@ import {
     DropdownMenuCheckboxItem,
     DropdownMenuContent,
     DropdownMenuLabel,
-    DropdownMenuSeparator,
+    DropdownMenuSeparator
 } from '@/components/ui/dropdown-menu';
 
 interface DataTableViewOptionsProps<TData> {
     table: Table<TData>;
 }
 
-export function DataTableViewOptions<TData>({
-    table,
-}: DataTableViewOptionsProps<TData>) {
+export function DataTableViewOptions<TData>({ table }: DataTableViewOptionsProps<TData>) {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -32,18 +30,14 @@ export function DataTableViewOptions<TData>({
                 {table
                     .getAllColumns()
                     .filter(
-                        (column) =>
-                            typeof column.accessorFn !== 'undefined' &&
-                            column.getCanHide()
+                        (column) => typeof column.accessorFn !== 'undefined' && column.getCanHide()
                     )
                     .map((column) => (
                         <DropdownMenuCheckboxItem
                             key={column.id}
                             className="capitalize"
                             checked={column.getIsVisible()}
-                            onCheckedChange={(value) =>
-                                column.toggleVisibility(!!value)
-                            }
+                            onCheckedChange={(value) => column.toggleVisibility(!!value)}
                         >
                             {column.columnDef.meta as string}
                         </DropdownMenuCheckboxItem>

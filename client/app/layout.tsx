@@ -8,21 +8,21 @@ import './globals.css';
 
 const geistSans = Geist({
     variable: '--font-geist-sans',
-    subsets: ['latin'],
+    subsets: ['latin']
 });
 
 const geistMono = Geist_Mono({
     variable: '--font-geist-mono',
-    subsets: ['latin'],
+    subsets: ['latin']
 });
 
 export const metadata: Metadata = {
     title: 'Invoicer',
-    description: 'Simple invoice editing/management app',
+    description: 'Simple invoice editing/management app'
 };
 
 export default function RootLayout({
-    children,
+    children
 }: Readonly<{
     children: ReactNode;
 }>) {
@@ -35,9 +35,7 @@ export default function RootLayout({
                     <Header />
 
                     {/* <Authenticated> */}
-                    <main className="flex flex-col grow p-4 container mx-auto">
-                        {children}
-                    </main>
+                    <main className="flex flex-col grow p-4 container mx-auto">{children}</main>
                     {/* </Authenticated> */}
                 </Interceptors>
 

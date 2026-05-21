@@ -11,13 +11,9 @@ import { AddCustomerButton } from '@/components/customers/AddCustomerButton';
 export default function Customers() {
     const customers = useCustomersStore(({ customers }) => customers);
 
-    const fetchCustomers = useCustomersStore(
-        ({ fetchCustomers }) => fetchCustomers
-    );
+    const fetchCustomers = useCustomersStore(({ fetchCustomers }) => fetchCustomers);
 
-    const removeBulkCustomers = useCustomersStore(
-        ({ removeBulkCustomers }) => removeBulkCustomers
-    );
+    const removeBulkCustomers = useCustomersStore(({ removeBulkCustomers }) => removeBulkCustomers);
 
     const handleRemoveSelected = useCallback(
         (indexes: number[]) => {
@@ -35,9 +31,7 @@ export default function Customers() {
         [customers, removeBulkCustomers]
     );
 
-    useEffect(() => {
-        fetchCustomers();
-    }, []);
+    useEffect(() => fetchCustomers(), [fetchCustomers]);
 
     return (
         <>

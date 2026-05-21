@@ -5,7 +5,7 @@ import {
     deleteInvoices,
     getAllInvoices,
     getInvoiceById,
-    updateInvoice,
+    updateInvoice
 } from '@/lib/api';
 import { InvoiceSchema } from '@/lib/validation';
 
@@ -22,9 +22,7 @@ interface InvoicesStoreActions {
     removeBulkInvoices: (invoiceIds: string[]) => void;
 }
 
-export const useInvoicesStore = create<
-    InvoicesStoreState & InvoicesStoreActions
->((set, get) => ({
+export const useInvoicesStore = create<InvoicesStoreState & InvoicesStoreActions>((set, get) => ({
     invoices: [],
     async fetchInvoices() {
         const invoices = await getAllInvoices();
@@ -41,8 +39,8 @@ export const useInvoicesStore = create<
                 return {
                     invoices: invoices.with(index, {
                         ...invoices[index],
-                        ...invoice,
-                    }),
+                        ...invoice
+                    })
                 };
             } else {
                 return { invoices: [...invoices, invoice] };
@@ -64,8 +62,8 @@ export const useInvoicesStore = create<
             set(() => ({
                 invoices: invoices.with(index, {
                     ...invoices[index],
-                    ...invoiceData,
-                }),
+                    ...invoiceData
+                })
             }));
         }
     },
@@ -73,14 +71,14 @@ export const useInvoicesStore = create<
         await deleteInvoice(invoiceId);
 
         set(({ invoices }) => ({
-            invoices: invoices.filter(({ id }) => id !== invoiceId),
+            invoices: invoices.filter(({ id }) => id !== invoiceId)
         }));
     },
     async removeBulkInvoices(invoiceIds) {
         await deleteInvoices(invoiceIds);
 
         set(({ invoices }) => ({
-            invoices: invoices.filter(({ id }) => !invoiceIds.includes(id)),
+            invoices: invoices.filter(({ id }) => !invoiceIds.includes(id))
         }));
-    },
+    }
 }));

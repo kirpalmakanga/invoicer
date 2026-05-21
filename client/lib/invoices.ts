@@ -4,7 +4,7 @@ import { sum } from './utils';
 export const paymentMethodsById: Record<PaymentMethod, string> = {
     bankTransfer: 'Bank Transfer',
     creditCard: 'Credit Card',
-    payPal: 'PayPal',
+    payPal: 'PayPal'
 };
 
 export function getInvoiceItemTotal({ quantity, pricePerUnit }: InvoiceItem) {

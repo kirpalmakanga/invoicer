@@ -16,13 +16,9 @@ export default function Customer() {
     const customers = useCustomersStore(({ customers }) => customers);
     const invoices = useInvoicesStore(({ invoices }) => invoices);
 
-    const fetchSingleCustomer = useCustomersStore(
-        ({ fetchSingleCustomer }) => fetchSingleCustomer
-    );
+    const fetchSingleCustomer = useCustomersStore(({ fetchSingleCustomer }) => fetchSingleCustomer);
 
-    const fetchInvoices = useInvoicesStore(
-        ({ fetchInvoices }) => fetchInvoices
-    );
+    const fetchInvoices = useInvoicesStore(({ fetchInvoices }) => fetchInvoices);
 
     const customer = useMemo(
         () => customers.find(({ id }) => id === customerId),
@@ -30,18 +26,14 @@ export default function Customer() {
     );
 
     const customerInvoices = useMemo(
-        () =>
-            invoices.filter(
-                ({ customerId: itemCustomerId }) =>
-                    itemCustomerId === customerId
-            ),
+        () => invoices.filter(({ customerId: itemCustomerId }) => itemCustomerId === customerId),
         [invoices, customerId]
     );
 
     useEffect(() => {
         fetchSingleCustomer(customerId);
         fetchInvoices();
-    }, [customerId]);
+    }, [customerId, fetchSingleCustomer, fetchInvoices]);
 
     return customer ? (
         <>

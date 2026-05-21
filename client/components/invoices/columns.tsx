@@ -9,7 +9,7 @@ import {
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuSeparator,
-    DropdownMenuTrigger,
+    DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { DataTableColumnHeader } from '@/components/data-table/column-header';
 import { InvoiceForm } from '@/components/invoices/InvoiceForm';
@@ -35,9 +35,7 @@ function InvoiceCustomerLink({ customerId }: { customerId: string }) {
 }
 
 function InvoiceMenu({ invoice }: { invoice: Invoice }) {
-    const removeInvoice = useInvoicesStore(
-        ({ removeInvoice }) => removeInvoice
-    );
+    const removeInvoice = useInvoicesStore(({ removeInvoice }) => removeInvoice);
 
     const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
 
@@ -45,18 +43,11 @@ function InvoiceMenu({ invoice }: { invoice: Invoice }) {
 
     const closeForm = useCallback(() => setIsFormOpen(false), []);
 
-    const [isRemovalPromptOpen, setIsRemovalPromptOpen] =
-        useState<boolean>(false);
+    const [isRemovalPromptOpen, setIsRemovalPromptOpen] = useState<boolean>(false);
 
-    const openRemovalPrompt = useCallback(
-        () => setIsRemovalPromptOpen(true),
-        []
-    );
+    const openRemovalPrompt = useCallback(() => setIsRemovalPromptOpen(true), []);
 
-    const closeRemovalPrompt = useCallback(
-        () => setIsRemovalPromptOpen(false),
-        []
-    );
+    const closeRemovalPrompt = useCallback(() => setIsRemovalPromptOpen(false), []);
 
     const handleRemoveInvoice = useCallback(() => {
         const { id, reference } = invoice;
@@ -64,7 +55,7 @@ function InvoiceMenu({ invoice }: { invoice: Invoice }) {
         removeInvoice(id);
 
         toast.success(`Removed invoice: ${reference}`);
-    }, [invoice]);
+    }, [invoice, removeInvoice]);
 
     return (
         <>
@@ -81,10 +72,7 @@ function InvoiceMenu({ invoice }: { invoice: Invoice }) {
                         <Edit /> Edit
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem
-                        className="text-red-500"
-                        onClick={openRemovalPrompt}
-                    >
+                    <DropdownMenuItem className="text-red-500" onClick={openRemovalPrompt}>
                         <Trash className="text-current" />
                         Delete invoice
                     </DropdownMenuItem>
@@ -121,9 +109,7 @@ export const columns: ColumnDef<Invoice>[] = [
                     table.getIsAllPageRowsSelected() ||
                     (table.getIsSomePageRowsSelected() && 'indeterminate')
                 }
-                onCheckedChange={(value) =>
-                    table.toggleAllPageRowsSelected(!!value)
-                }
+                onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
                 aria-label="Select all"
             />
         ),
@@ -133,91 +119,75 @@ export const columns: ColumnDef<Invoice>[] = [
                 onCheckedChange={(value) => row.toggleSelected(!!value)}
                 aria-label="Select row"
             />
-        ),
+        )
     },
     {
         accessorKey: 'reference',
-        header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="ID" />
-        ),
+        header: ({ column }) => <DataTableColumnHeader column={column} title="ID" />,
         cell: ({
             row: {
-                original: { id, reference },
-            },
+                original: { id, reference }
+            }
         }) => <Link href={`/invoice/${id}`}>{reference}</Link>,
-        enableHiding: false,
+        enableHiding: false
     },
     {
         id: 'customer',
         accessorKey: 'customerId',
         meta: 'Customer',
-        header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Customer" />
-        ),
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Customer" />,
         cell: ({
             row: {
-                original: { customerId },
-            },
-        }) => <InvoiceCustomerLink customerId={customerId} />,
+                original: { customerId }
+            }
+        }) => <InvoiceCustomerLink customerId={customerId} />
     },
 
     {
         meta: 'Payment method',
         accessorKey: 'paymentMethod',
-        header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Payment method" />
-        ),
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Payment method" />,
         cell: ({
             row: {
-                original: { paymentMethod },
-            },
-        }) => paymentMethodsById[paymentMethod],
+                original: { paymentMethod }
+            }
+        }) => paymentMethodsById[paymentMethod]
     },
     {
         meta: 'Status',
         accessorKey: 'status',
         header: ({ column }) => (
-            <DataTableColumnHeader
-                column={column}
-                title="Status"
-                className="bg-red"
-            />
+            <DataTableColumnHeader column={column} title="Status" className="bg-red" />
         ),
         cell: ({
             row: {
-                original: { status },
-            },
-        }) => <InvoiceStatusBadge status={status} />,
+                original: { status }
+            }
+        }) => <InvoiceStatusBadge status={status} />
     },
     {
         meta: 'Payment date',
         accessorKey: 'datePaid',
         header: ({ column }) => (
-            <DataTableColumnHeader
-                column={column}
-                title="Payment date"
-                className="bg-red"
-            />
+            <DataTableColumnHeader column={column} title="Payment date" className="bg-red" />
         ),
         cell: ({
             row: {
-                original: { datePaid },
-            },
-        }) => (datePaid ? formatDate(datePaid, 'medium') : ''),
+                original: { datePaid }
+            }
+        }) => (datePaid ? formatDate(datePaid, 'medium') : '')
     },
     {
         header: 'Amount',
         meta: 'Amount',
         cell: ({ row: { original } }) => (
-            <div className="w-full text-right">
-                {`${getInvoiceTotal(original)}€`}
-            </div>
-        ),
+            <div className="w-full text-right">{`${getInvoiceTotal(original)}€`}</div>
+        )
     },
     {
         id: 'actions',
-        cell: ({ row: { original } }) => <InvoiceMenu invoice={original} />,
-    },
+        cell: ({ row: { original } }) => <InvoiceMenu invoice={original} />
+    }
 ];
 
 export const customerColumns = columns.filter(({ id }) => id !== 'customer');

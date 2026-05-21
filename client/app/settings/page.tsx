@@ -10,43 +10,32 @@ import { useSettingsStore } from '@/store/settings';
 import { cn, isEqual } from '@/lib/utils';
 
 export default function Settings() {
-    const {
-        name,
-        address,
-        email,
-        companyId,
-        invoicePrefix,
-        fetchSettings,
-        saveSettings,
-    } = useSettingsStore();
+    const { name, address, email, companyId, invoicePrefix, fetchSettings, saveSettings } =
+        useSettingsStore();
 
     const {
         reset,
         register,
         handleSubmit,
-        formState: { errors },
+        formState: { errors }
     } = useForm<Settings>({
         defaultValues: {
             name,
             address,
             email,
             companyId,
-            invoicePrefix,
-        },
+            invoicePrefix
+        }
     });
 
-    useEffect(() => {
-        fetchSettings();
-    }, []);
+    useEffect(() => fetchSettings(), [fetchSettings]);
 
     useEffect(() => {
         reset({ name, address, email, companyId, invoicePrefix });
-    }, [name, address, email, companyId, invoicePrefix]);
+    }, [name, address, email, companyId, invoicePrefix, reset]);
 
     const submit: SubmitHandler<Settings> = (data) => {
-        if (
-            !isEqual(data, { name, address, email, companyId, invoicePrefix })
-        ) {
+        if (!isEqual(data, { name, address, email, companyId, invoicePrefix })) {
             saveSettings(data);
         }
     };
@@ -59,94 +48,59 @@ export default function Settings() {
                 <div className="flex flex-col grow gap-6">
                     <div>
                         <Label
-                            className={cn(
-                                'font-bold mb-1',
-                                errors.name && 'text-red-500'
-                            )}
+                            className={cn('font-bold mb-1', errors.name && 'text-red-500')}
                             htmlFor="name"
                         >
                             Name
                         </Label>
-                        <Input
-                            id="name"
-                            {...register('name', { required: true })}
-                        />
+                        <Input id="name" {...register('name', { required: true })} />
                         {errors.name && (
-                            <span className="text-xs text-red-500">
-                                This field is required
-                            </span>
+                            <span className="text-xs text-red-500">This field is required</span>
                         )}
                     </div>
 
                     <div>
                         <Label
-                            className={cn(
-                                'font-bold mb-1',
-                                errors.address && 'text-red-500'
-                            )}
+                            className={cn('font-bold mb-1', errors.address && 'text-red-500')}
                             htmlFor="address"
                         >
                             Address
                         </Label>
-                        <Input
-                            id="address"
-                            {...register('address', { required: true })}
-                        />
+                        <Input id="address" {...register('address', { required: true })} />
                         {errors.address && (
-                            <span className="text-xs text-red-500">
-                                This field is required
-                            </span>
+                            <span className="text-xs text-red-500">This field is required</span>
                         )}
                     </div>
 
                     <div>
                         <Label
-                            className={cn(
-                                'font-bold mb-1',
-                                errors.email && 'text-red-500'
-                            )}
+                            className={cn('font-bold mb-1', errors.email && 'text-red-500')}
                             htmlFor="email"
                         >
                             Email
                         </Label>
-                        <Input
-                            id="email"
-                            {...register('email', { required: true })}
-                        />
+                        <Input id="email" {...register('email', { required: true })} />
                         {errors.email && (
-                            <span className="text-xs text-red-500">
-                                This field is required
-                            </span>
+                            <span className="text-xs text-red-500">This field is required</span>
                         )}
                     </div>
 
                     <div>
                         <Label
-                            className={cn(
-                                'font-bold mb-1',
-                                errors.companyId && 'text-red-500'
-                            )}
+                            className={cn('font-bold mb-1', errors.companyId && 'text-red-500')}
                             htmlFor="companyId"
                         >
                             Company ID
                         </Label>
-                        <Input
-                            id="companyId"
-                            {...register('companyId', { required: true })}
-                        />
+                        <Input id="companyId" {...register('companyId', { required: true })} />
                         {errors.companyId && (
-                            <span className="text-xs text-red-500">
-                                This field is required
-                            </span>
+                            <span className="text-xs text-red-500">This field is required</span>
                         )}
                     </div>
 
                     <div>
                         <Label
-                            className={cn(
-                                'font-bold mb-1',
-                                errors.invoicePrefix && 'text-red-500'
-                            )}
+                            className={cn('font-bold mb-1', errors.invoicePrefix && 'text-red-500')}
                             htmlFor="invoicePrefix"
                         >
                             Invoice prefix
@@ -156,9 +110,7 @@ export default function Settings() {
                             {...register('invoicePrefix', { required: true })}
                         />
                         {errors.invoicePrefix && (
-                            <span className="text-xs text-red-500">
-                                This field is required
-                            </span>
+                            <span className="text-xs text-red-500">This field is required</span>
                         )}
                     </div>
                 </div>

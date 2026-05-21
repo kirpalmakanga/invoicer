@@ -21,7 +21,7 @@ export default function Callback() {
 
             push('/');
         })();
-    }, []);
+    }, [searchParams, logIn, push]);
 
     return (
         <div className="flex flex-col grow justify-center items-center gap-4">

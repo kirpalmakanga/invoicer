@@ -13,14 +13,14 @@ export function SignUpForm({ onSubmit }: { onSubmit: () => void }) {
     const {
         register,
         handleSubmit,
-        formState: { errors },
+        formState: { errors }
     } = useForm<AuthRegisterCredentials>({
         defaultValues: {
             name: '',
             email: '',
             password: '',
-            confirmPassword: '',
-        },
+            confirmPassword: ''
+        }
     });
 
     const submit: SubmitHandler<AuthRegisterCredentials> = (data) => {
@@ -34,52 +34,33 @@ export function SignUpForm({ onSubmit }: { onSubmit: () => void }) {
             <div className="flex flex-col grow gap-6">
                 <div>
                     <Label
-                        className={cn(
-                            'font-bold mb-1',
-                            errors.name && 'text-red-500'
-                        )}
+                        className={cn('font-bold mb-1', errors.name && 'text-red-500')}
                         htmlFor="name"
                     >
                         Name
                     </Label>
-                    <Input
-                        id="name"
-                        {...register('name', { required: true })}
-                    />
+                    <Input id="name" {...register('name', { required: true })} />
                     {errors.name && (
-                        <span className="text-xs text-red-500">
-                            This field is required
-                        </span>
+                        <span className="text-xs text-red-500">This field is required</span>
                     )}
                 </div>
 
                 <div>
                     <Label
-                        className={cn(
-                            'font-bold mb-1',
-                            errors.email && 'text-red-500'
-                        )}
+                        className={cn('font-bold mb-1', errors.email && 'text-red-500')}
                         htmlFor="email"
                     >
                         Email
                     </Label>
-                    <Input
-                        id="email"
-                        {...register('email', { required: true })}
-                    />
+                    <Input id="email" {...register('email', { required: true })} />
                     {errors.email && (
-                        <span className="text-xs text-red-500">
-                            This field is required
-                        </span>
+                        <span className="text-xs text-red-500">This field is required</span>
                     )}
                 </div>
 
                 <div>
                     <Label
-                        className={cn(
-                            'font-bold mb-1',
-                            errors.password && 'text-red-500'
-                        )}
+                        className={cn('font-bold mb-1', errors.password && 'text-red-500')}
                         htmlFor="password"
                     >
                         Password
@@ -90,18 +71,13 @@ export function SignUpForm({ onSubmit }: { onSubmit: () => void }) {
                         {...register('password', { required: true })}
                     />
                     {errors.password && (
-                        <span className="text-xs text-red-500">
-                            This field is required
-                        </span>
+                        <span className="text-xs text-red-500">This field is required</span>
                     )}
                 </div>
 
                 <div>
                     <Label
-                        className={cn(
-                            'font-bold mb-1',
-                            errors.confirmPassword && 'text-red-500'
-                        )}
+                        className={cn('font-bold mb-1', errors.confirmPassword && 'text-red-500')}
                         htmlFor="confirmPassword"
                     >
                         Confirm password
@@ -112,9 +88,7 @@ export function SignUpForm({ onSubmit }: { onSubmit: () => void }) {
                         {...register('confirmPassword', { required: true })}
                     />
                     {errors.confirmPassword && (
-                        <span className="text-xs text-red-500">
-                            This field is required
-                        </span>
+                        <span className="text-xs text-red-500">This field is required</span>
                     )}
                 </div>
             </div>

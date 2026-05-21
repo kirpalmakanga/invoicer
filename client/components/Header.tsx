@@ -9,7 +9,7 @@ import {
     UserPlus,
     Users,
     ChartColumn,
-    FileText,
+    FileText
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -17,13 +17,13 @@ import {
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuSeparator,
-    DropdownMenuTrigger,
+    DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import {
     NavigationMenu,
     NavigationMenuItem,
     NavigationMenuList,
-    navigationMenuTriggerStyle,
+    navigationMenuTriggerStyle
 } from '@/components/ui/navigation-menu';
 
 import { useAuthStore } from '@/store/auth';
@@ -43,7 +43,7 @@ function ProfileDropDown() {
         logOut();
 
         push('/');
-    }, []);
+    }, [logOut, push]);
 
     return (
         <>
@@ -77,10 +77,7 @@ function ProfileDropDown() {
                     </Authenticated>
 
                     <Unauthenticated>
-                        <DropdownMenuItem
-                            className="items-center gap-2"
-                            onClick={redirect}
-                        >
+                        <DropdownMenuItem className="items-center gap-2" onClick={redirect}>
                             <LogIn className="text-current" />
                             Log in
                         </DropdownMenuItem>
@@ -113,10 +110,7 @@ export default function Header() {
                                 <NavigationMenuItem>
                                     <Link
                                         href="/"
-                                        className={cn(
-                                            'flex gap-2',
-                                            navigationMenuTriggerStyle()
-                                        )}
+                                        className={cn('flex gap-2', navigationMenuTriggerStyle())}
                                         passHref
                                     >
                                         <FileText />
@@ -126,10 +120,7 @@ export default function Header() {
                                 <NavigationMenuItem>
                                     <Link
                                         href="/customers"
-                                        className={cn(
-                                            'flex gap-2',
-                                            navigationMenuTriggerStyle()
-                                        )}
+                                        className={cn('flex gap-2', navigationMenuTriggerStyle())}
                                         passHref
                                     >
                                         <Users />
@@ -139,10 +130,7 @@ export default function Header() {
                                 <NavigationMenuItem>
                                     <Link
                                         href="/statistics"
-                                        className={cn(
-                                            'flex gap-2',
-                                            navigationMenuTriggerStyle()
-                                        )}
+                                        className={cn('flex gap-2', navigationMenuTriggerStyle())}
                                         passHref
                                     >
                                         <ChartColumn />

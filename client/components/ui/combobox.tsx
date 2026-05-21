@@ -10,13 +10,9 @@ import {
     CommandGroup,
     CommandInput,
     CommandItem,
-    CommandList,
+    CommandList
 } from '@/components/ui/command';
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from '@/components/ui/popover';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
 import { cn, isEqual } from '@/lib/utils';
 
@@ -36,7 +32,7 @@ export function Combobox<T>({
     selectedValue,
     items,
     placeholder = '',
-    onSelect,
+    onSelect
 }: ComboboxProps<T>) {
     const [open, setOpen] = useState(false);
     const [localValue, setLocalValue] = useState(selectedValue);
@@ -78,9 +74,7 @@ export function Combobox<T>({
                     role="combobox"
                     aria-expanded={open}
                     className="w-full text-left data-[placeholder]:text-muted-foreground"
-                    {...(getCurrentLabel() === placeholder
-                        ? { 'data-placeholder': '' }
-                        : {})}
+                    {...(getCurrentLabel() === placeholder ? { 'data-placeholder': '' } : {})}
                 >
                     <span className="grow truncate">{getCurrentLabel()}</span>
 
@@ -89,10 +83,7 @@ export function Combobox<T>({
             </PopoverTrigger>
             <PopoverContent className="w-full p-0">
                 <Command>
-                    <CommandInput
-                        placeholder="Search items..."
-                        className="h-9"
-                    />
+                    <CommandInput placeholder="Search items..." className="h-9" />
                     <CommandList>
                         <CommandEmpty>No item found.</CommandEmpty>
                         <CommandGroup>
@@ -107,9 +98,7 @@ export function Combobox<T>({
                                     <Check
                                         className={cn(
                                             'ml-auto',
-                                            isCurrentValue(value)
-                                                ? 'opacity-100'
-                                                : 'opacity-0'
+                                            isCurrentValue(value) ? 'opacity-100' : 'opacity-0'
                                         )}
                                     />
                                 </CommandItem>

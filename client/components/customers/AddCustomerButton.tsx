@@ -3,11 +3,7 @@ import { Button } from '@/components/ui/button';
 import { SlidePanel } from '@/components/SlidePanel';
 import { CustomerForm } from '@/components/customers/CustomerForm';
 
-export function AddCustomerButton({
-    onCreated,
-}: {
-    onCreated?: (customer: Customer) => void;
-}) {
+export function AddCustomerButton({ onCreated }: { onCreated?: (customer: Customer) => void }) {
     const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
 
     const openForm = useCallback(() => {
@@ -24,7 +20,7 @@ export function AddCustomerButton({
         }
 
         closeForm();
-    }, []);
+    }, [closeForm, onCreated]);
 
     return (
         <>

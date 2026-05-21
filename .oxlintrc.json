@@ -1,0 +1,7 @@
+{
+    "plugins": ["react", "nextjs"],
+    "options": {
+        "typeAware": true,
+        "typeCheck": true
+    }
+}

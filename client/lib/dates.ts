@@ -10,7 +10,7 @@ export const monthNames = [
     'September',
     'October',
     'November',
-    'December',
+    'December'
 ];
 
 function getDateObject(date: string | number | Date) {
@@ -57,7 +57,7 @@ export function formatDate(date: string | number | Date, format: DateFormats) {
                 .toLocaleDateString('en-GB', {
                     year: 'numeric',
                     month: '2-digit',
-                    day: '2-digit',
+                    day: '2-digit'
                 })
                 .split('/')
                 .reverse()
@@ -68,7 +68,7 @@ export function formatDate(date: string | number | Date, format: DateFormats) {
             const formattedDate = dateObject.toLocaleDateString('en-US', {
                 day: '2-digit',
                 month: 'short',
-                year: 'numeric',
+                year: 'numeric'
             });
             const [m, d, y] = formattedDate.split(' ');
             result = `${d} ${m.toUpperCase()} ${y}`;
@@ -78,7 +78,7 @@ export function formatDate(date: string | number | Date, format: DateFormats) {
             result = dateObject.toLocaleDateString(undefined, {
                 month: 'long',
                 day: 'numeric',
-                year: 'numeric',
+                year: 'numeric'
             });
             break;
         }
@@ -86,7 +86,7 @@ export function formatDate(date: string | number | Date, format: DateFormats) {
             result = dateObject.toLocaleDateString('en-US', {
                 month: '2-digit',
                 day: '2-digit',
-                year: 'numeric',
+                year: 'numeric'
             });
             break;
         }
@@ -96,13 +96,13 @@ export function formatDate(date: string | number | Date, format: DateFormats) {
         }
         case 'full': {
             result = dateObject.toLocaleDateString('en-US', {
-                dateStyle: 'full',
+                dateStyle: 'full'
             });
             break;
         }
         case 'medium': {
             result = dateObject.toLocaleDateString('en-US', {
-                dateStyle: 'medium',
+                dateStyle: 'medium'
             });
             break;
         }

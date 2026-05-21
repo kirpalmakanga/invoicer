@@ -8,11 +8,10 @@ import {
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuSeparator,
-    DropdownMenuTrigger,
+    DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 
-interface DataTableColumnHeaderProps<TData, TValue>
-    extends React.HTMLAttributes<HTMLDivElement> {
+interface DataTableColumnHeaderProps<TData, TValue> extends React.HTMLAttributes<HTMLDivElement> {
     column: Column<TData, TValue>;
     title: string;
 }
@@ -20,7 +19,7 @@ interface DataTableColumnHeaderProps<TData, TValue>
 export function DataTableColumnHeader<TData, TValue>({
     column,
     title,
-    className,
+    className
 }: DataTableColumnHeaderProps<TData, TValue>) {
     if (!column.getCanSort()) {
         return <div className={cn(className)}>{title}</div>;
@@ -46,24 +45,18 @@ export function DataTableColumnHeader<TData, TValue>({
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="start">
-                    <DropdownMenuItem
-                        onClick={() => column.toggleSorting(false)}
-                    >
+                    <DropdownMenuItem onClick={() => column.toggleSorting(false)}>
                         <ArrowUp className="h-3.5 w-3.5 text-muted-foreground/70" />
                         Asc
                     </DropdownMenuItem>
-                    <DropdownMenuItem
-                        onClick={() => column.toggleSorting(true)}
-                    >
+                    <DropdownMenuItem onClick={() => column.toggleSorting(true)}>
                         <ArrowDown className="h-3.5 w-3.5 text-muted-foreground/70" />
                         Desc
                     </DropdownMenuItem>
                     {column.getCanHide() && (
                         <>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem
-                                onClick={() => column.toggleVisibility(false)}
-                            >
+                            <DropdownMenuItem onClick={() => column.toggleVisibility(false)}>
                                 <EyeOff className="h-3.5 w-3.5 text-muted-foreground/70" />
                                 Hide
                             </DropdownMenuItem>

@@ -3,18 +3,12 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Bar, BarChart, CartesianGrid, LabelList, XAxis } from 'recharts';
 
-import {
-    Card,
-    CardContent,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import {
     ChartConfig,
     ChartContainer,
     ChartTooltip,
-    ChartTooltipContent,
+    ChartTooltipContent
 } from '@/components/ui/chart';
 import {
     Select,
@@ -22,7 +16,7 @@ import {
     SelectValue,
     SelectContent,
     SelectGroup,
-    SelectItem,
+    SelectItem
 } from '@/components/ui/select';
 import { useInvoicesStore } from '@/store/invoices';
 import { getRevenueStatistics } from '@/lib/invoices';
@@ -34,27 +28,20 @@ import { sum } from '@/lib/utils';
 const chartConfig = {
     desktop: {
         label: 'Revenue',
-        color: 'hsl(var(--chart-1))',
-    },
+        color: 'hsl(var(--chart-1))'
+    }
 } satisfies ChartConfig;
 
 export default function Statistics() {
     const [selectedYear, setSelectedYear] = useState<number>(getCurrentYear());
     const invoices = useInvoicesStore(
         useShallow(({ invoices }) =>
-            invoices.filter(
-                ({ status, datePaid }) => status === 'paid' && datePaid
-            )
+            invoices.filter(({ status, datePaid }) => status === 'paid' && datePaid)
         )
     );
-    const fetchInvoices = useInvoicesStore(
-        ({ fetchInvoices }) => fetchInvoices
-    );
+    const fetchInvoices = useInvoicesStore(({ fetchInvoices }) => fetchInvoices);
 
-    const revenueDataByYear = useMemo(
-        () => getRevenueStatistics(invoices),
-        [invoices]
-    );
+    const revenueDataByYear = useMemo(() => getRevenueStatistics(invoices), [invoices]);
 
     const { currentYearChartData, currentYearTotalRevenue } = useMemo(() => {
         const currentYearRevenueData = revenueDataByYear.get(selectedYear);
@@ -63,16 +50,14 @@ export default function Statistics() {
             currentYearTotalRevenue: number;
         } = {
             currentYearChartData: [],
-            currentYearTotalRevenue: 0,
+            currentYearTotalRevenue: 0
         };
 
         if (currentYearRevenueData) {
-            result.currentYearChartData = currentYearRevenueData.map(
-                (revenue, month) => ({
-                    month: monthNames[month],
-                    revenue,
-                })
-            );
+            result.currentYearChartData = currentYearRevenueData.map((revenue, month) => ({
+                month: monthNames[month],
+                revenue
+            }));
 
             result.currentYearTotalRevenue = sum(...currentYearRevenueData);
         }
@@ -89,22 +74,14 @@ export default function Statistics() {
         [revenueDataByYear]
     );
 
-    const handleSelectYear = useCallback(
-        (year: string) => setSelectedYear(parseInt(year)),
-        []
-    );
+    const handleSelectYear = useCallback((year: string) => setSelectedYear(parseInt(year)), []);
 
-    useEffect(() => {
-        fetchInvoices();
-    }, []);
+    useEffect(() => fetchInvoices(), [fetchInvoices]);
 
     return (
         <div className="md:w-2xl mx-auto">
             <div className="flex justify-end mb-4">
-                <Select
-                    value={String(selectedYear)}
-                    onValueChange={handleSelectYear}
-                >
+                <Select value={String(selectedYear)} onValueChange={handleSelectYear}>
                     <SelectTrigger className="w-[180px]">
                         <SelectValue placeholder="Select a year" />
                     </SelectTrigger>
@@ -143,11 +120,7 @@ export default function Statistics() {
                                 cursor={false}
                                 content={<ChartTooltipContent hideLabel />}
                             />
-                            <Bar
-                                dataKey="revenue"
-                                fill="var(--chart-1)"
-                                radius={8}
-                            >
+                            <Bar dataKey="revenue" fill="var(--chart-1)" radius={8}>
                                 <LabelList dataKey="revenue" position="top" />
                             </Bar>
                         </BarChart>
@@ -161,8 +134,7 @@ export default function Statistics() {
 
                 <CardFooter>
                     <div className="leading-none text-muted-foreground text-sm">
-                        <strong>Total revenue:</strong>{' '}
-                        {currentYearTotalRevenue}€
+                        <strong>Total revenue:</strong> {currentYearTotalRevenue}€
                     </div>
                 </CardFooter>
             </Card>

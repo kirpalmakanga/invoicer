@@ -19,7 +19,7 @@ function getInitialState(): AuthStoreState {
     return {
         userName: '',
         accessToken: '',
-        refreshToken: '',
+        refreshToken: ''
     };
 }
 
@@ -43,10 +43,10 @@ export const useAuthStore = create<AuthStoreState & AuthStoreActions>()(
                 const tokens = await refreshAccessToken(refreshToken);
 
                 set(() => tokens);
-            },
+            }
         }),
         {
-            name: 'auth',
+            name: 'auth'
         }
     )
 );

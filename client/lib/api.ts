@@ -3,7 +3,7 @@ import { InvoiceSchema } from './validation';
 
 /** Auth */ export async function redirect() {
     const {
-        data: { data },
+        data: { data }
     } = await api.get('/auth/redirect');
 
     window.location.href = data;
@@ -17,7 +17,7 @@ export async function register(credentials: AuthRegisterCredentials) {
 
 export async function logIn(code: string, state: string) {
     const {
-        data: { data },
+        data: { data }
     } = await api.get(`/auth/token`, { params: { code, state } });
 
     return data as AuthTokens;
@@ -25,7 +25,7 @@ export async function logIn(code: string, state: string) {
 
 export async function refreshAccessToken(refreshToken: string) {
     const {
-        data: { data },
+        data: { data }
     } = await api.get('/auth/refresh', { params: { refreshToken } });
 
     return data as AuthTokens;
@@ -38,7 +38,7 @@ export async function logOut() {
 /** Customers */
 export async function getAllCustomers() {
     const {
-        data: { data },
+        data: { data }
     } = await api.get('/customers');
 
     return data as Customer[];
@@ -46,7 +46,7 @@ export async function getAllCustomers() {
 
 export async function getCustomerById(id: string) {
     const {
-        data: { data },
+        data: { data }
     } = await api.get(`/customers/${id}`);
 
     return data as Customer;
@@ -54,16 +54,13 @@ export async function getCustomerById(id: string) {
 
 export async function createCustomer(customerData: CustomerFormData) {
     const {
-        data: { data },
+        data: { data }
     } = await api.post(`/customers`, customerData);
 
     return data as Customer;
 }
 
-export async function updateCustomer(
-    id: string,
-    customerData: Partial<Customer>
-) {
+export async function updateCustomer(id: string, customerData: Partial<Customer>) {
     await api.put(`/customers/${id}`, customerData);
 }
 
@@ -78,7 +75,7 @@ export async function deleteCustomers(ids: string[]) {
 /** Invoices */
 export async function getAllInvoices() {
     const {
-        data: { data },
+        data: { data }
     } = await api.get('/invoices');
 
     return data as Invoice[];
@@ -86,7 +83,7 @@ export async function getAllInvoices() {
 
 export async function getInvoiceById(id: string) {
     const {
-        data: { data },
+        data: { data }
     } = await api.get(`/invoices/${id}`);
 
     return data as Invoice;
@@ -94,7 +91,7 @@ export async function getInvoiceById(id: string) {
 
 export async function createInvoice(invoiceData: InvoiceSchema) {
     const {
-        data: { data },
+        data: { data }
     } = await api.post(`/invoices`, invoiceData);
 
     return data as Invoice;
@@ -115,7 +112,7 @@ export async function deleteInvoices(ids: string[]) {
 /** Settings */
 export async function getSettings() {
     const {
-        data: { data },
+        data: { data }
     } = await api.get('/settings');
 
     return data as Settings | null;

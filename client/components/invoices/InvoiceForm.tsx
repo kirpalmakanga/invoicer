@@ -30,21 +30,19 @@ interface InvoiceEditFormProps {
 const paymentMethodSelectItems: ComboboxItem<PaymentMethod>[] = [
     { label: 'Bank transfer', value: 'bankTransfer' },
     { label: 'Credit card', value: 'creditCard' },
-    { label: 'PayPal', value: 'payPal' },
+    { label: 'PayPal', value: 'payPal' }
 ];
 
 const statusSelectItems: ComboboxItem<InvoiceStatus>[] = [
     { label: 'Pending', value: 'pending' },
     { label: 'Unpaid', value: 'unpaid' },
-    { label: 'Paid', value: 'paid' },
+    { label: 'Paid', value: 'paid' }
 ];
 
 export function InvoiceForm({ invoice, onSubmit }: InvoiceEditFormProps) {
     const forceRender = useForceRender();
 
-    const invoicePrefix = useSettingsStore(
-        ({ invoicePrefix }) => invoicePrefix
-    );
+    const invoicePrefix = useSettingsStore(({ invoicePrefix }) => invoicePrefix);
     const invoices = useInvoicesStore(({ invoices }) => invoices);
     const customers = useCustomersStore(({ customers }) => customers);
     const customerSelectItems = useMemo(
@@ -52,16 +50,10 @@ export function InvoiceForm({ invoice, onSubmit }: InvoiceEditFormProps) {
         [customers]
     );
     const addInvoice = useInvoicesStore(({ addInvoice }) => addInvoice);
-    const updateInvoice = useInvoicesStore(
-        ({ updateInvoice }) => updateInvoice
-    );
+    const updateInvoice = useInvoicesStore(({ updateInvoice }) => updateInvoice);
 
-    const fetchSettings = useSettingsStore(
-        ({ fetchSettings }) => fetchSettings
-    );
-    const fetchCustomers = useCustomersStore(
-        ({ fetchCustomers }) => fetchCustomers
-    );
+    const fetchSettings = useSettingsStore(({ fetchSettings }) => fetchSettings);
+    const fetchCustomers = useCustomersStore(({ fetchCustomers }) => fetchCustomers);
 
     const methods = useForm<InvoiceSchema>({
         defaultValues: invoice
@@ -74,14 +66,14 @@ export function InvoiceForm({ invoice, onSubmit }: InvoiceEditFormProps) {
                           description: '',
                           quantity: 0,
                           pricePerUnit: 0,
-                          unit: 'hour',
-                      },
+                          unit: 'hour'
+                      }
                   ],
                   paymentMethod: 'bankTransfer',
                   status: 'pending',
-                  datePaid: null,
+                  datePaid: null
               },
-        resolver: yupResolver(invoiceSchema),
+        resolver: yupResolver(invoiceSchema)
     });
 
     const {
@@ -89,64 +81,65 @@ export function InvoiceForm({ invoice, onSubmit }: InvoiceEditFormProps) {
         handleSubmit,
         getValues,
         setValue,
-        formState: { errors },
+        formState: { errors }
     } = methods;
 
-    const [referenceAlreadyExists, setReferenceAlreadyExists] =
-        useState<boolean>(false);
+    const [referenceAlreadyExists, setReferenceAlreadyExists] = useState<boolean>(false);
 
     const validateReference = useCallback(
         ({ currentTarget: { value } }: FormEvent<HTMLInputElement>) => {
             setReferenceAlreadyExists(
-                invoices.some(
-                    ({ id, reference }) =>
-                        id !== invoice?.id && reference === value
-                )
+                invoices.some(({ id, reference }) => id !== invoice?.id && reference === value)
             );
         },
         [invoice, invoices]
     );
 
-    const submit: SubmitHandler<InvoiceSchema> = useCallback((data) => {
-        if (referenceAlreadyExists) {
-            return;
-        }
+    const submit: SubmitHandler<InvoiceSchema> = useCallback(
+        (data) => {
+            if (referenceAlreadyExists) {
+                return;
+            }
 
-        if (invoice) {
-            updateInvoice(invoice.id, data);
-        } else {
-            addInvoice(data);
-        }
+            if (invoice) {
+                updateInvoice(invoice.id, data);
+            } else {
+                addInvoice(data);
+            }
 
-        toast.success(
-            ` ${invoice?.id ? 'Updated' : 'Created'} invoice: ${
-                data.reference
-            }.`
-        );
+            toast.success(` ${invoice?.id ? 'Updated' : 'Created'} invoice: ${data.reference}.`);
 
-        onSubmit();
-    }, []);
+            onSubmit();
+        },
+        [referenceAlreadyExists, invoice, addInvoice, updateInvoice, onSubmit]
+    );
 
-    const onCreatedCustomer = useCallback(({ id: customerId }: Customer) => {
-        setValue('customerId', customerId);
+    const onCreatedCustomer = useCallback(
+        ({ id: customerId }: Customer) => {
+            setValue('customerId', customerId);
 
-        forceRender();
-    }, []);
+            forceRender();
+        },
+        [setValue, forceRender]
+    );
 
-    const onUpdateStatus = useCallback((status: InvoiceStatus) => {
-        setValue('status', status);
+    const onUpdateStatus = useCallback(
+        (status: InvoiceStatus) => {
+            setValue('status', status);
 
-        if (status !== 'paid') {
-            setValue('datePaid', null);
-        }
+            if (status !== 'paid') {
+                setValue('datePaid', null);
+            }
 
-        forceRender();
-    }, []);
+            forceRender();
+        },
+        [setValue, forceRender]
+    );
 
     useEffect(() => {
         fetchSettings();
         fetchCustomers();
-    }, []);
+    }, [fetchSettings, fetchCustomers]);
 
     useEffect(() => {
         if (!invoice?.id) {
@@ -154,21 +147,17 @@ export function InvoiceForm({ invoice, onSubmit }: InvoiceEditFormProps) {
 
             forceRender();
         }
-    }, [invoicePrefix]);
+    }, [invoice, invoicePrefix, setValue, forceRender]);
 
     return (
         <FormProvider {...methods}>
-            <form
-                className="flex flex-col grow px-4"
-                onSubmit={handleSubmit(submit)}
-            >
+            <form className="flex flex-col grow px-4" onSubmit={handleSubmit(submit)}>
                 <div className="flex flex-col grow gap-6">
                     <div>
                         <Label
                             className={cn(
                                 'font-bold mb-1',
-                                (errors.reference || referenceAlreadyExists) &&
-                                    'text-red-500'
+                                (errors.reference || referenceAlreadyExists) && 'text-red-500'
                             )}
                             htmlFor="reference"
                         >
@@ -180,9 +169,7 @@ export function InvoiceForm({ invoice, onSubmit }: InvoiceEditFormProps) {
                             {...register('reference', { required: true })}
                         />
                         {errors.reference && (
-                            <span className="text-xs text-red-500">
-                                This field is required
-                            </span>
+                            <span className="text-xs text-red-500">This field is required</span>
                         )}
                         {referenceAlreadyExists && (
                             <span className="text-xs text-red-500">
@@ -193,10 +180,7 @@ export function InvoiceForm({ invoice, onSubmit }: InvoiceEditFormProps) {
 
                     <div>
                         <Label
-                            className={cn(
-                                'font-bold mb-1',
-                                errors.customerId && 'text-red-500'
-                            )}
+                            className={cn('font-bold mb-1', errors.customerId && 'text-red-500')}
                             htmlFor="customerId"
                         >
                             Customer
@@ -209,9 +193,7 @@ export function InvoiceForm({ invoice, onSubmit }: InvoiceEditFormProps) {
                             {...register('customerId', { required: true })}
                         />
                         {errors.customerId && (
-                            <span className="text-xs text-red-500">
-                                This field is required
-                            </span>
+                            <span className="text-xs text-red-500">This field is required</span>
                         )}
 
                         <div className="flex justify-end mt-4">
@@ -221,10 +203,7 @@ export function InvoiceForm({ invoice, onSubmit }: InvoiceEditFormProps) {
 
                     <div>
                         <Label
-                            className={cn(
-                                'font-bold mb-1',
-                                errors.items && 'text-red-500'
-                            )}
+                            className={cn('font-bold mb-1', errors.items && 'text-red-500')}
                             htmlFor="items"
                         >
                             Items
@@ -239,10 +218,7 @@ export function InvoiceForm({ invoice, onSubmit }: InvoiceEditFormProps) {
 
                     <div>
                         <Label
-                            className={cn(
-                                'font-bold mb-1',
-                                errors.paymentMethod && 'text-red-500'
-                            )}
+                            className={cn('font-bold mb-1', errors.paymentMethod && 'text-red-500')}
                             htmlFor="paymentMethod"
                         >
                             Payment method
@@ -250,24 +226,17 @@ export function InvoiceForm({ invoice, onSubmit }: InvoiceEditFormProps) {
                         <Combobox
                             selectedValue={getValues('paymentMethod')}
                             items={paymentMethodSelectItems}
-                            onSelect={(value) =>
-                                setValue('paymentMethod', value)
-                            }
+                            onSelect={(value) => setValue('paymentMethod', value)}
                             {...register('paymentMethod', { required: true })}
                         />
                         {errors.paymentMethod && (
-                            <span className="text-xs text-red-500">
-                                This field is required
-                            </span>
+                            <span className="text-xs text-red-500">This field is required</span>
                         )}
                     </div>
 
                     <div>
                         <Label
-                            className={cn(
-                                'font-bold mb-1',
-                                errors.status && 'text-red-500'
-                            )}
+                            className={cn('font-bold mb-1', errors.status && 'text-red-500')}
                             htmlFor="status"
                         >
                             Status
@@ -279,19 +248,14 @@ export function InvoiceForm({ invoice, onSubmit }: InvoiceEditFormProps) {
                             {...register('status', { required: true })}
                         />
                         {errors.status && (
-                            <span className="text-xs text-red-500">
-                                This field is required
-                            </span>
+                            <span className="text-xs text-red-500">This field is required</span>
                         )}
                     </div>
 
                     {getValues('status') === 'paid' ? (
                         <div>
                             <Label
-                                className={cn(
-                                    'font-bold mb-1',
-                                    errors.datePaid && 'text-red-500'
-                                )}
+                                className={cn('font-bold mb-1', errors.datePaid && 'text-red-500')}
                                 htmlFor="datePaid"
                             >
                                 Status

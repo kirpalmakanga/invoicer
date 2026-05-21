@@ -6,7 +6,7 @@ import {
     DialogHeader,
     DialogTitle,
     DialogDescription,
-    DialogFooter,
+    DialogFooter
 } from './ui/dialog';
 import { Button } from './ui/button';
 
@@ -29,21 +29,19 @@ export default function Prompt({
     cancelLabel = 'Cancel',
     children,
     onSubmit,
-    onClose,
+    onClose
 }: PromptProps) {
     const [open, setOpen] = useState<boolean>(false);
 
     const handleCancellation = useCallback(() => {
         setOpen(false);
-
         onClose?.();
-    }, []);
+    }, [onClose]);
 
     const handleConfirmation = useCallback(() => {
         setOpen(false);
-
         onSubmit();
-    }, []);
+    }, [onSubmit]);
 
     useEffect(() => {
         if (typeof isOpen === 'boolean') {
@@ -55,19 +53,15 @@ export default function Prompt({
         if (!open) {
             onClose?.();
         }
-    }, [open]);
+    }, [open, onClose]);
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            {children ? (
-                <DialogTrigger asChild>{children}</DialogTrigger>
-            ) : null}
+            {children ? <DialogTrigger asChild>{children}</DialogTrigger> : null}
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>{title}</DialogTitle>
-                    {description ? (
-                        <DialogDescription>{description}</DialogDescription>
-                    ) : null}
+                    {description ? <DialogDescription>{description}</DialogDescription> : null}
                 </DialogHeader>
                 <DialogFooter className="flex justify-end gap-4">
                     {cancelLabel ? (
