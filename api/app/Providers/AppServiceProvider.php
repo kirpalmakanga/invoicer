@@ -20,6 +20,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         URL::forceScheme('https');
 
+        Passport::enablePasswordGrant();
         Passport::tokensExpireIn(CarbonInterval::minutes(30));
         Passport::refreshTokensExpireIn(CarbonInterval::days(7));
 
