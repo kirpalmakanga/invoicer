@@ -1,4 +1,5 @@
 import { clsx, type ClassValue } from 'clsx';
+import { error } from 'console';
 import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
@@ -74,4 +75,8 @@ export function stopPropagation<E extends Event, F extends (e: E) => void>(callb
 
 export function sum(...numbers: number[]) {
     return numbers.reduce((sum, value) => sum + value, 0);
+}
+
+export function captureError(error: string | Error) {
+    console.error(typeof error === 'string' ? new Error(error) : error);
 }
