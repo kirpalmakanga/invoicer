@@ -14,13 +14,16 @@ export function AddCustomerButton({ onCreated }: { onCreated?: (customer: Custom
         setIsFormOpen(false);
     }, []);
 
-    const handleSubmit = useCallback((customer?: Customer) => {
-        if (customer && onCreated) {
-            onCreated(customer);
-        }
+    const handleSubmit = useCallback(
+        (customer?: Customer) => {
+            if (customer && onCreated) {
+                onCreated(customer);
+            }
 
-        closeForm();
-    }, [closeForm, onCreated]);
+            closeForm();
+        },
+        [closeForm, onCreated]
+    );
 
     return (
         <>

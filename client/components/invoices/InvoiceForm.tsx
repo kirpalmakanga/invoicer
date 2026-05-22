@@ -1,6 +1,6 @@
 'use client';
 
-import { FormEvent, useCallback, useEffect, useMemo, useState } from 'react';
+import { InputEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm, SubmitHandler, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { toast } from 'sonner';
@@ -9,7 +9,7 @@ import { Save } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Combobox, ComboboxItem } from '@/components/ui/combobox';
+import { Combobox } from '@/components/ui/combobox';
 import { DatePicker } from '@/components/ui/datepicker';
 import { InvoiceItemInput } from '@/components/invoices/InvoiceItemInput';
 import { AddCustomerButton } from '@/components/customers/AddCustomerButton';
@@ -27,13 +27,13 @@ interface InvoiceEditFormProps {
     onSubmit: () => void;
 }
 
-const paymentMethodSelectItems: ComboboxItem<PaymentMethod>[] = [
+const paymentMethodSelectItems = [
     { label: 'Bank transfer', value: 'bankTransfer' },
     { label: 'Credit card', value: 'creditCard' },
     { label: 'PayPal', value: 'payPal' }
 ];
 
-const statusSelectItems: ComboboxItem<InvoiceStatus>[] = [
+const statusSelectItems = [
     { label: 'Pending', value: 'pending' },
     { label: 'Unpaid', value: 'unpaid' },
     { label: 'Paid', value: 'paid' }
@@ -87,7 +87,7 @@ export function InvoiceForm({ invoice, onSubmit }: InvoiceEditFormProps) {
     const [referenceAlreadyExists, setReferenceAlreadyExists] = useState<boolean>(false);
 
     const validateReference = useCallback(
-        ({ currentTarget: { value } }: FormEvent<HTMLInputElement>) => {
+        ({ currentTarget: { value } }: InputEvent<HTMLInputElement>) => {
             setReferenceAlreadyExists(
                 invoices.some(({ id, reference }) => id !== invoice?.id && reference === value)
             );
@@ -186,10 +186,11 @@ export function InvoiceForm({ invoice, onSubmit }: InvoiceEditFormProps) {
                             Customer
                         </Label>
                         <Combobox
-                            placeholder="Select a customer"
-                            selectedValue={getValues('customerId')}
+                            value={getValues('customerId')}
                             items={customerSelectItems}
-                            onSelect={(value) => setValue('customerId', value)}
+                            onValueChange={(value) =>
+                                value !== null && setValue('customerId', value)
+                            }
                             {...register('customerId', { required: true })}
                         />
                         {errors.customerId && (
@@ -224,9 +225,11 @@ export function InvoiceForm({ invoice, onSubmit }: InvoiceEditFormProps) {
                             Payment method
                         </Label>
                         <Combobox
-                            selectedValue={getValues('paymentMethod')}
+                            value={getValues('paymentMethod')}
                             items={paymentMethodSelectItems}
-                            onSelect={(value) => setValue('paymentMethod', value)}
+                            onValueChange={(value) =>
+                                value !== null && setValue('paymentMethod', value)
+                            }
                             {...register('paymentMethod', { required: true })}
                         />
                         {errors.paymentMethod && (
@@ -242,9 +245,9 @@ export function InvoiceForm({ invoice, onSubmit }: InvoiceEditFormProps) {
                             Status
                         </Label>
                         <Combobox
-                            selectedValue={getValues('status')}
+                            value={getValues('status')}
                             items={statusSelectItems}
-                            onSelect={onUpdateStatus}
+                            onValueChange={(value) => value !== null && onUpdateStatus(value)}
                             {...register('status', { required: true })}
                         />
                         {errors.status && (

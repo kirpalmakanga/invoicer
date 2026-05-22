@@ -46,7 +46,7 @@ export function DatePicker<T extends string | number | Date | null | undefined>(
                 <Button
                     variant={'outline'}
                     className={cn(
-                        'w-[240px] justify-start text-left font-normal',
+                        'w-60 justify-start text-left font-normal',
                         !date && 'text-muted-foreground',
                         className
                     )}
@@ -56,7 +56,7 @@ export function DatePicker<T extends string | number | Date | null | undefined>(
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0" align="start">
-                <Calendar mode="single" selected={date} onSelect={handleSelectDate} initialFocus />
+                <Calendar mode="single" selected={date} onSelect={handleSelectDate} />
             </PopoverContent>
         </Popover>
     );
