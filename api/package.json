@@ -5,8 +5,7 @@
         "dev": "vite",
         "build": "vite build",
         "serve": "frankenphp run",
-        "generate:key": "php artisan key:generate",
-        "postreset": "php artisan passport:install && php artisan passport:keys && php artisan passport:client"
+        "postreset": "php artisan key:generate && php artisan passport:install && php artisan passport:keys && php artisan passport:client"
     },
     "dependencies": {
         "@tailwindcss/vite": "^4.1.7",
