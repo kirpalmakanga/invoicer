@@ -76,7 +76,9 @@ export default function Statistics() {
 
     const handleSelectYear = useCallback((year: string) => setSelectedYear(parseInt(year)), []);
 
-    useEffect(() => fetchInvoices(), [fetchInvoices]);
+    useEffect(() => {
+        fetchInvoices();
+    }, [fetchInvoices]);
 
     return (
         <div className="md:w-2xl mx-auto">

@@ -31,7 +31,9 @@ export default function Customers() {
         [customers, removeBulkCustomers]
     );
 
-    useEffect(() => fetchCustomers(), [fetchCustomers]);
+    useEffect(() => {
+        fetchCustomers();
+    }, [fetchCustomers]);
 
     return (
         <>
