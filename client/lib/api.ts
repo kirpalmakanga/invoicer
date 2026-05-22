@@ -1,7 +1,12 @@
-import api from './axiosInstance';
+import axios from 'axios';
 import { InvoiceSchema } from './validation';
 
-/** Auth */ export async function redirect() {
+export const api = axios.create({
+    baseURL: `https://api.invoicer.localhost`
+});
+
+/** Auth */
+export async function redirect() {
     const {
         data: { data }
     } = await api.get('/auth/redirect');
