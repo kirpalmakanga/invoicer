@@ -18,7 +18,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['https://invoicer.dev', 'https://api.invoicer.dev'],
+    'allowed_origins' => ['https://invoicer.localhost', 'https://api.invoicer.localhost'],
 
     'allowed_origins_patterns' => [],
 
